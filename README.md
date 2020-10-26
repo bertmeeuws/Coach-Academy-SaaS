@@ -13,20 +13,21 @@ Elke klant heeft zijn eigen agenda, trainingsschema, dieet en profiel dat wordt 
 a.d.h.v. een chat en video conferenties.
 
 ## Deliverables
-- Een persoon heeft zijn eigen profiel
-    -- Met persoonlijke dashboard waarin je je vooruitgang kan meten
-    -- Persoonlijk agenda
-    -- Persoonlijk Trainingsschema met eventueel notities van de coach
-    -- Persoonlijk Dieetplan + supplement protocol met eventueel notities van de coach
-- De coach heeft een adminpaneel dat al zijn cliënten kan beheren
-    -- De coach kan dingen inplannen in de agenda van een cliënt zoals: check-ins, verandering van trainingsschema...
-    -- Kan het dieet, trainingsschema en supplement protocol aanpassen van een cliënt
-- De coach en de cliënt staan 24/7 in contact met elkaar
-    -- De coach heeft een privé gesprek met de cliënt voor eventuele vragen
-    -- De coach heeft een broadcast kanaal waarin die aankondigingen kan doen voor al zijn cliënten
-    -- De coach kan video conferenties inplannen met de cliënten om de vooruitgang te meten
-    -- De cliënt kan een melding sturen naar de coach als er iets is foutgelopen. Bijvoorbeeld, een cliënt heeft geen toegang tot een specifiek toestel.
+* Een persoon heeft zijn eigen profiel
+    * Met persoonlijke dashboard waarin je je vooruitgang kan meten
+    * Persoonlijk agenda
+    * Persoonlijk Trainingsschema met eventueel notities van de coach
+    * Persoonlijk Dieetplan + supplement protocol met eventueel notities van de coach
+* De coach heeft een adminpaneel dat al zijn cliënten kan beheren
+    * De coach kan dingen inplannen in de agenda van een cliënt zoals: check-ins, verandering van trainingsschema...
+    * Kan het dieet, trainingsschema en supplement protocol aanpassen van een cliënt
+* De coach en de cliënt staan 24/7 in contact met elkaar
+    * De coach heeft een privé gesprek met de cliënt voor eventuele vragen
+    * De coach heeft een broadcast kanaal waarin die aankondigingen kan doen voor al zijn cliënten
+    * De coach kan video conferenties inplannen met de cliënten om de vooruitgang te meten
+    * De cliënt kan een melding sturen naar de coach als er iets is foutgelopen. Bijvoorbeeld, een cliënt heeft geen toegang tot een specifiek toestel.
 Of het schema loopt bijna ten einde.
 
+[Blog](https://bertmeeuws27.wixsite.com/mysite)
 
 
