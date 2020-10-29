@@ -28,6 +28,8 @@ a.d.h.v. een chat en video conferenties.
     * De cliënt kan een melding sturen naar de coach als er iets is foutgelopen. Bijvoorbeeld, een cliënt heeft geen toegang tot een specifiek toestel.
 Of het schema loopt bijna ten einde.
 
+![roadmap](https://i.imgur.com/SeRP2SJ.png)
+
 [Blog](https://bertmeeuws27.wixsite.com/mysite)
 
 
