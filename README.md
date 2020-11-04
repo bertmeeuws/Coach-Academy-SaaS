@@ -1,70 +1,37 @@
-# Getting Started with Create React App
+# Coach Academy
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## De klant
 
-## Available Scripts
+De klant zijn fitness coaches dat de communicatie met hun cliënten beter willen doen verlopen.
+Onze hoofddoelgroep zijn fitness coaches die vooral mensen helpen met het veranderen van hun lichaam. Dus geen coaches voor marathonlopers bijvoorbeeld.
+En door onze unieke feature zijn coaches die wedstrijdbegeleiding doen en bodybuilders trainen ook welkom op dit platform.
 
-In the project directory, you can run:
+## Core project statement
 
-### `yarn start`
+Coach Academy is een online platform dat kan gebruikt worden door fitness coaches om de communicatie met hun klanten effeciënt en gemakkelijk te doen verlopen.
+Dit idee kwam oorspronkelijk terplaatse doordat velen coaches nog steeds whatsapp of facebook groepen gebruiken om te communiceren met hun cliënten. In België zijn dit soort platformen nog niet zo bekend maar in Amerika wel. Coach Academy kan gebruikt worden door de doorsnee coach maar ook door coaches dat wedstrijdbegeleiding doen.
+Ik heb toegang tot de meningen van verschillende soorten coaches die ik kan interviewen om nieuwe features eventueel te implementeren.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Elke klant heeft zijn eigen agenda, trainingsschema, dieet en profiel dat wordt opgevolgd door de coach. De coach staat 24/7 in contact met de cliënt,
+a.d.h.v. een chat en video conferenties.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Deliverables
 
-### `yarn test`
+- Een persoon heeft zijn eigen profiel
+  - Met persoonlijke dashboard waarin je je vooruitgang kan meten
+  - Persoonlijk agenda
+  - Persoonlijk Trainingsschema met eventueel notities van de coach
+  - Persoonlijk Dieetplan + supplement protocol met eventueel notities van de coach
+- De coach heeft een adminpaneel dat al zijn cliënten kan beheren
+  - De coach kan dingen inplannen in de agenda van een cliënt zoals: check-ins, verandering van trainingsschema...
+  - Kan het dieet, trainingsschema en supplement protocol aanpassen van een cliënt
+- De coach en de cliënt staan 24/7 in contact met elkaar
+  _ De coach heeft een privé gesprek met de cliënt voor eventuele vragen
+  _ De coach heeft een broadcast kanaal waarin die aankondigingen kan doen voor al zijn cliënten
+  _ De coach kan video conferenties inplannen met de cliënten om de vooruitgang te meten
+  _ De cliënt kan een melding sturen naar de coach als er iets is foutgelopen. Bijvoorbeeld, een cliënt heeft geen toegang tot een specifiek toestel.
+  Of het schema loopt bijna ten einde.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+![roadmap](https://i.imgur.com/SeRP2SJ.png)
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[Blog](https://bertmeeuws27.wixsite.com/mysite)

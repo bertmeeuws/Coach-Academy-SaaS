@@ -1,0 +1,12 @@
+.identifier {
+  display: flex;
+  align-items: center;
+}
+.identifier p {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.form {
+  display: flex;
+  flex-direction: column;
+}
