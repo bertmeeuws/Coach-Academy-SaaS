@@ -2,6 +2,7 @@
 @import "./styles/reset.css";
 @import "./styles/style.css";
 @import "./styles/vars.css";
+@import "./styles/clients.css";
 
 html {
   box-sizing: border-box;

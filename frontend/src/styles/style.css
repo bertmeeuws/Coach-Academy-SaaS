@@ -255,3 +255,8 @@ button {
 .dashboard-agenda-date {
   margin-top: 2rem;
 }
+
+.container-grid {
+  display: grid;
+  grid-template-rows: 9rem 1fr;
+}

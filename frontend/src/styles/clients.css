@@ -1,0 +1,78 @@
+.clients {
+  display: grid;
+  grid-template-columns: 2.1fr 1fr;
+  padding: 2.5rem;
+}
+.clients-search {
+  height: 6rem;
+  width: 100%;
+  background-color: var(--white);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.clients-search .search-input {
+  outline: none;
+  border: none;
+  font-size: 2rem;
+  width: 100%;
+  margin-left: 2rem;
+}
+.clients-search img {
+  padding-left: 2rem;
+}
+.clients-addbutton {
+  background-color: var(--green);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease-in-out;
+}
+.clients-addbutton:hover {
+  background-color: var(--white);
+  color: var(--green);
+}
+
+.clients-header {
+  display: grid;
+  grid-column-gap: 1rem;
+  grid-template-columns: 1fr 12rem;
+}
+.client-list-header {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr 1fr;
+  margin-top: 2rem;
+  margin-left: 2rem;
+}
+.clients-list {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-row-gap: 2rem;
+}
+.clientItem-circle {
+  background-color: var(--red);
+  height: 4rem;
+  width: 4rem;
+  border-radius: 50%;
+  margin-right: 2rem;
+}
+.clientItem {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1.7fr 1fr 1fr;
+  height: 6.2rem;
+  padding-left: 2rem;
+  background-color: var(--white);
+}
+.clientItem .clientItem-container {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 100%;
+}
+.clientItem-actions img {
+  margin-right: 1.5rem;
+}

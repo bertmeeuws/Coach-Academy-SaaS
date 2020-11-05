@@ -22,7 +22,7 @@ export default function Sidebar() {
                 <ul className={style.grid}>
                     <li><img src={Dashboard} alt=""/><Link className="link" to="/dashboard">Dashboard</Link></li>
                     <li><img src={Inbox} alt=""/><Link className="link" to="/inbox">Inbox</Link></li>
-                    <li><img src={Calendar} alt=""/><Link className="link" to="/inbox">Inbox</Link></li>
+                    <li><img src={Calendar} alt=""/><Link className="link" to="/calendar">Calendar</Link></li>
                     <li><img src={Todos} alt=""/><Link  className="link"to="/todos">Todos</Link></li>
                     
                 </ul>
