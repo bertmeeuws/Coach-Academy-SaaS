@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 2.1fr 1fr;
   padding: 2.5rem;
+  grid-column-gap: 2.5rem;
 }
 .clients-search {
   height: 6rem;
@@ -30,6 +31,7 @@
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease-in-out;
+  cursor: pointer;
 }
 .clients-addbutton:hover {
   background-color: var(--white);
@@ -57,6 +59,8 @@
   height: 4rem;
   width: 4rem;
   border-radius: 50%;
+  margin-left: 2rem;
+
   margin-right: 2rem;
 }
 .clientItem {
@@ -64,7 +68,7 @@
   display: grid;
   grid-template-columns: 1.7fr 1fr 1fr;
   height: 6.2rem;
-  padding-left: 2rem;
+
   background-color: var(--white);
 }
 .clientItem .clientItem-container {
@@ -75,4 +79,61 @@
 }
 .clientItem-actions img {
   margin-right: 1.5rem;
+}
+.client-overview {
+  height: 100%;
+  background-color: var(--white);
+  width: 100%;
+  position: relative;
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+.client-overview-background {
+  position: absolute;
+  background-color: var(--green);
+  height: 18.3rem;
+  width: 100%;
+  overflow: none;
+  z-index: 1;
+  border-radius: 0.675rem;
+}
+.client-overview-circle {
+  width: 20rem;
+  height: 20rem;
+  z-index: 10;
+  border-radius: 50%;
+  margin: 0 auto;
+  background-color: rgb(255, 0, 157);
+}
+.client-overview-block {
+  display: flex;
+  flex-direction: column;
+}
+.client-overview .dob,
+.client-overview .name {
+  text-align: center;
+  margin: 0 auto;
+}
+.client-overview .address {
+  margin-top: 5rem;
+  grid-area: address;
+}
+.client-overview .postal {
+  grid-area: postal;
+}
+.client-overview .city {
+  grid-area: city;
+}
+.client-overview .age {
+  grid-area: age;
+}
+.client-overview-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-areas:
+    "address address"
+    "postal city"
+    "age age";
+  grid-row-gap: 2rem;
 }
