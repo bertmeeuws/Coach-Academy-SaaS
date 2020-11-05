@@ -1,0 +1,49 @@
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60%;
+}
+.grid {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 27rem;
+}
+.sidebar {
+  padding: 2rem;
+  box-shadow: 0 0 1.5rem 1rem rgba(0, 0, 0, 0.015);
+  background-color: var(--white);
+  display: grid;
+  grid-template-rows: 9.1rem 1fr;
+}
+.smalltext {
+  font-size: 1.2rem;
+  line-height: 1.8rem;
+  color: var(--grey);
+  font-weight: 500;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+.grid li {
+  height: 5rem;
+
+  background-color: var(--green);
+  border-radius: 0.675rem;
+  color: var(--white);
+  font-weight: 600;
+  font-size: 1.8rem;
+  line-height: 2.7rem;
+  display: flex;
+  align-items: center;
+  padding-left: 2.5rem;
+}
+
+.grid li img {
+  margin-right: 1.3rem;
+}
+.bottom {
+  height: 40%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+}

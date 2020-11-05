@@ -1,0 +1,46 @@
+.header {
+  margin-left: 4rem;
+  margin-right: 4rem;
+  border-bottom: 1px solid rgba(52, 75, 99, 0.1);
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--darkblue);
+}
+.content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  height: 100%;
+  margin-left: 2rem;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+}
+.personal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.icons {
+  margin-left: 4rem;
+  margin-right: 4rem;
+  border-left: 1px solid rgba(52, 75, 99, 0.3);
+  border-right: 1px solid rgba(52, 75, 99, 0.3);
+}
+.icons img {
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+.title {
+  font-size: 2.4rem;
+}
+.name {
+  margin-right: 2rem;
+}
+.name span {
+  color: var(--green);
+}

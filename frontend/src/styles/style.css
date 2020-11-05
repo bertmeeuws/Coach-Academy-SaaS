@@ -15,7 +15,7 @@ html {
   border-radius: 1rem;
 }
 .padding {
-  padding: 2rem;
+  padding: 2.5rem;
 }
 .auth-section {
   position: relative;
@@ -25,6 +25,10 @@ html {
 
   justify-content: center;
   align-items: center;
+}
+.link {
+  text-decoration: none;
+  color: var(--white);
 }
 .login {
   width: 53.3rem;
@@ -91,13 +95,163 @@ button {
 }
 .sidebar-section {
   grid: sidebar;
-  background-color: red;
+  background-color: var(--white);
   width: 100%;
   height: 100%;
 }
 .dashboard-section {
   width: 100%;
   height: 100%;
-  grid: content;
-  background-color: antiquewhite;
+
+  background-color: var(--ghost);
+}
+.dashboard {
+  overflow: hidden;
+}
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1.2fr;
+  margin-left: 2.2rem;
+  margin-right: 2.2rem;
+  padding-top: 2.2rem;
+  grid-template-areas:
+    "weather todos agenda"
+    "stats todos agenda"
+    "inbox inbox agenda";
+  height: 95%;
+  overflow: hidden;
+  grid-gap: 3rem;
+}
+.weather {
+  grid-area: weather;
+}
+.todos {
+  grid-area: todos;
+}
+.stats {
+  grid-area: stats;
+  background-color: var(--green);
+}
+.agenda {
+  grid-area: agenda;
+}
+.inbox {
+  grid-area: inbox;
+}
+.inbox,
+.agenda,
+.todos,
+.weather {
+  background-color: var(--white);
+}
+.box-header {
+  border-bottom: 1px solid rgba(52, 75, 99, 0.1);
+  padding-bottom: 1rem;
+}
+.todos-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.button-add {
+  color: var(--white);
+  font-weight: 600;
+  font-size: 2.4rem;
+  line-height: 2.4rem;
+  background-color: var(--green);
+  width: 2.8rem;
+  height: 2.8rem;
+  cursor: pointer;
+  border-radius: 0.2rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.todoitem-circle {
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--red);
+  border-radius: 50%;
+}
+.TodoItem-grid {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr 2.1rem;
+  vertical-align: middle;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding-left: 1rem;
+  padding-right: 2rem;
+}
+.todoitem-text {
+  margin-left: 2rem;
+  display: flex;
+  align-items: center;
+}
+.inbox-grid {
+  margin-top: 2rem;
+  grid-gap: 2rem;
+  display: grid;
+  grid-template-columns: 18rem 1fr 14rem;
+
+  grid-template-areas: "sender subject subject";
+}
+.inbox-sender {
+  grid-area: sender;
+}
+.inbox-subject {
+  grid-area: subject;
+}
+
+.inboxItem-grid {
+  display: grid;
+  grid-template-columns: 3.2rem 1fr 2.1rem;
+  vertical-align: middle;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  padding-left: 1rem;
+  padding-right: 2rem;
+}
+
+.inbox-circle {
+  margin-right: 2rem;
+}
+.InboxItem-flex {
+  display: flex;
+  align-items: center;
+}
+.inbox-reply {
+  margin-left: 2rem;
+}
+
+.agenda-item {
+  display: flex;
+
+  flex-direction: row;
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  align-items: center;
+}
+.agenda-item-time {
+  display: flex;
+  flex-direction: column;
+}
+.agenda-item-time span:last-child,
+.agenda-item-information span:last-child {
+  opacity: 50%;
+}
+.agenda-item-information {
+  display: flex;
+  flex-direction: column;
+}
+.agenda-item .bar {
+  background-color: var(--red);
+  border-radius: 0.8rem;
+  width: 0.5rem;
+  height: 5.4rem;
+  margin-left: 3.5rem;
+  margin-right: 1.5rem;
+}
+.dashboard-agenda-date {
+  margin-top: 2rem;
 }

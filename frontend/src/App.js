@@ -12,20 +12,19 @@ import Content from './content/Content';
 function App() {
   return (
     <BrowserRouter>
-    <Switch>
-    <Route path="/login">
+    <Route exact path="/login">
     <Login/>
     </Route>
-    <Route path="/registerclient">
+    <Route exact path="/registerclient">
     <RegisterClient/>
     </Route>
-    <Route path="/registercoach">
+    <Route exact path="/registercoach">
     <RegisterCoach/>
     </Route>
-    <Route path="/">
+    <Route exact path="/dashboard">
     <Content />
     </Route>
-    </Switch>
+    
     </BrowserRouter>
   );
 }
