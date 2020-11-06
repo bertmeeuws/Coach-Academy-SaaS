@@ -21,7 +21,7 @@ export default function Login() {
 
                
                <img src={logo} width="222" height="26.21" alt=""/>
-               <p>Who are you?</p>
+               <p className="bigtext">Who are you?</p>
                <div className={style.identifier}>
                <p>Coach</p>
                <label className="switch">
@@ -61,6 +61,7 @@ export default function Login() {
          /* and other goodies */
        }) => (
          <form className={style.form} onSubmit={handleSubmit}>
+           <label className="smalltext" htmlFor="email">Email address</label>
            <input
              type="email"
              name="email"
@@ -68,7 +69,8 @@ export default function Login() {
              onBlur={handleBlur}
              value={values.email}
            />
-           {errors.email && touched.email && errors.email}
+           <p className={style.error}>{errors.email && touched.email && errors.email}</p>
+           <label className="smalltext" htmlFor="password">Password</label>
            <input
              type="password"
              name="password"
@@ -77,16 +79,14 @@ export default function Login() {
              value={values.password}
            />
            {errors.password && touched.password && errors.password}
-           <button type="submit" disabled={isSubmitting}>
-             Submit
-           </button>
+           <div className="login-buttons">
+               <button type="submit" className="button-login">Login</button>
+               <button className="button-register"><Link className="link" to="/registerClient">Register</Link></button>
+               </div>
          </form>
        )}
      </Formik>
-            <div className="login-buttons">
-               <button className="button-login">Login</button>
-               <button className="button-register"><Link to="/registerClient">Register</Link></button>
-               </div>
+            
            </div>
            </div>
        </section>

@@ -4,6 +4,15 @@ import {
   Switch,
   Route,
 } from "react-router-dom";
+import {
+  ApolloProvider,
+  ApolloClient,
+  HttpLink,
+  InMemoryCache,
+  split,
+} from "@apollo/client";
+import { getMainDefinition } from "@apollo/client/utilities";
+import { WebSocketLink } from "@apollo/link-ws";
 import Login from "./content/authentication/Login"
 import RegisterClient from "./content/authentication/RegisterClient"
 import RegisterCoach from "./content/authentication/RegisterCoach"
@@ -13,10 +22,43 @@ import Sidebar from './components/Sidebar/'
 import Dashboard from './content/coach/Dashboard'
 import Clients from './content/coach/Clients'
 import Todos from './content/coach/Todos'
+import Calendar from './content/Calendar'
+
+const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
+
+const httpLink = new HttpLink({
+  uri: `https://${GRAPHQL_ENDPOINT}`,
+});
+
+const wsLink = new WebSocketLink({
+  uri: `ws://${GRAPHQL_ENDPOINT}`,
+  options: {
+    reconnect: true,
+  },
+});
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  httpLink
+);
+
+const client = new ApolloClient({
+  cache: new InMemoryCache(),
+  link: splitLink,
+});
+
 
 function App() {
   return (
     <BrowserRouter>
+    <ApolloProvider client={client}>
     <Route exact path="/login">
     <Login/>
     </Route>
@@ -51,7 +93,7 @@ function App() {
           <Sidebar/>
           <div className="container-grid">
           <Header title="Calendar"/>
-          
+          <Calendar/>
           </div>
         </div>
     </Route>
@@ -65,6 +107,7 @@ function App() {
           </div>
         </div>
     </Route>
+    </ApolloProvider>
     </BrowserRouter>
   );
 }

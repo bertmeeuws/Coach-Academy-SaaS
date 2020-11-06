@@ -29,7 +29,9 @@ html {
 .link {
   text-decoration: none;
   color: var(--white);
+  cursor: pointer;
 }
+
 .login {
   width: 53.3rem;
   height: 55.1rem;
@@ -62,6 +64,7 @@ button {
   border-radius: 0.675rem;
   border: none;
 }
+
 .button-login {
   background-color: var(--green);
   color: var(--white);

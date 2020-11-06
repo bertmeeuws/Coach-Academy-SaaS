@@ -9,4 +9,19 @@
 .form {
   display: flex;
   flex-direction: column;
+  width: 27.6rem;
+}
+.form input {
+  padding-bottom: 0.5rem;
+  font-size: 1.6rem;
+  font-size: Poppins;
+  border: none;
+  border-bottom: 0.1rem solid var(--grey);
+  color: var(--grey);
+  outline: none;
+  margin-bottom: 2rem;
+}
+.error {
+  color: var(--red);
+  margin-bottom: 1rem;
 }
