@@ -43,15 +43,26 @@
 }
 
 .calendar .header {
-  text-transform: uppercase;
+  text-transform: capitalize;
   font-weight: 700;
   font-size: 115%;
   padding: 1.5em 0;
+  display: flex;
+  color: var(--darkblue);
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
-
+.calendar .header-month {
+  display: flex;
+  flex-direction: row;
+}
 .calendar .header .icon {
   cursor: pointer;
   transition: 0.15s ease-out;
+}
+.calendar .header .icon:hover {
+  transform: translateX(0.7rem);
 }
 
 .calendar .header .icon:first-of-type {
@@ -65,8 +76,7 @@
 .calendar .days {
   text-transform: capitalize;
   font-weight: 400;
-  color: var(--white);
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   color: var(--grey);
   text-align: left;
   padding: 0.75em 0;
@@ -76,7 +86,7 @@
 .calendar .body .cell {
   position: relative;
   height: 15rem;
-  border-right: 1px solid var(--grey);
+  border-right: 1px solid var(--lightgrey);
   overflow: hidden;
   cursor: pointer;
   background: var(--neutral-color);
@@ -84,7 +94,7 @@
 }
 
 .calendar .body .cell:hover {
-  background: var(--green);
+  background: var(--lightgrey);
   transition: 0.5s ease-out;
 }
 
@@ -95,7 +105,7 @@
 }
 
 .calendar .body .row {
-  border-bottom: 1px solid var(--grey);
+  border-bottom: 1px solid var(--lightgrey);
 }
 
 .calendar .body .row:last-child {
@@ -105,7 +115,10 @@
 .calendar .body .cell:last-child {
   border-right: none;
 }
-
+.calendar .header .monthName {
+  width: 18rem;
+  text-align: center;
+}
 .calendar .body .cell .number {
   position: absolute;
   font-size: 1.8rem;
@@ -118,7 +131,7 @@
 }
 
 .calendar .body .disabled {
-  color: var(--grey);
+  color: var(--lightgrey);
   pointer-events: none;
 }
 
@@ -145,4 +158,22 @@
   flex-grow: 0;
   flex-basis: calc(100% / 7);
   width: calc(100% / 7);
+}
+
+.calender-button {
+  background-color: var(--green);
+  color: var(--white);
+  padding-left: 2.5rem;
+  padding-right: 2.5rem;
+  height: 4rem;
+  font-size: 1.6rem;
+  line-height: auto;
+  margin-left: 1rem;
+  font-weight: 500;
+  font-family: "Poppins";
+  cursor: pointer;
+}
+.calendar .button-active {
+  background-color: var(--ghostgrey);
+  color: var(--darkblue);
 }

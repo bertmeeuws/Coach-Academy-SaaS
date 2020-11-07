@@ -26,8 +26,7 @@
 }
 .grid li {
   height: 5rem;
-
-  background-color: var(--green);
+  background-color: var(--white);
   border-radius: 0.675rem;
   color: var(--white);
   font-weight: 600;
@@ -36,8 +35,14 @@
   display: flex;
   align-items: center;
   padding-left: 2.5rem;
+  transition: all 0.3s ease-in-out;
 }
-
+.grid li span {
+  margin-left: 1.5rem;
+}
+.grid li:hover {
+  background-color: var(--green);
+}
 .grid li img {
   margin-right: 1.3rem;
 }

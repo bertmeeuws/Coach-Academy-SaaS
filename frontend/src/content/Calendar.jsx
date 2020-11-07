@@ -1,6 +1,9 @@
 import React, {useState} from 'react'
 import dateFns, {isSameDay} from "date-fns";
 import '../styles/calendar.css'
+import ArrowLeft from '../assets/images/svg/ArrowLeft.svg'
+import ArrowRight from '../assets/images/svg/ArrowRight.svg'
+import EventBlock from '../components/EventBlock/EventBlock'
 
 export default function Calendar() {
         const [currentMonth, setCurrentMonth] = useState(new Date())
@@ -8,25 +11,37 @@ export default function Calendar() {
    
        
 
+
+        const viewInformation = () =>{
+          alert("Item clicked")
+        }
+
         
         
           const renderHeader = () => {
             const dateFormat = "MMMM YYYY";
         
             return (
-              <div className="header row flex-middle">
-                <div className="col col-start">
+              <div className="header">
+                <div className="header-month">
+                <div >
                   <div className="icon" onClick={prevMonth}>
-                    Previous
+                    <img src={ArrowLeft} alt=""/>
                   </div>
                 </div>
-                <div className="col col-center">
+                <div className="monthName">
                   <span>{dateFns.format(currentMonth, dateFormat)}</span>
                 </div>
-                <div className="col col-end" onClick={nextMonth}>
-                  <div className="icon">Next</div>
+                <div className="" onClick={nextMonth}>
+                  <div className="icon"><img src={ArrowRight} alt=""/></div>
+                </div>
+                </div>
+                <div>
+                <button className="calender-button shadow">Month</button>
+                <button className="calender-button shadow button-active">Today</button>
                 </div>
               </div>
+
             );
           }
         
@@ -85,7 +100,7 @@ export default function Calendar() {
                     onClick={() => onDateClick(dateFns.parse(cloneDay))}
                   >
                    
-                   {isSameDay(cloneDay,event) ? "yes" : ""}
+                   {isSameDay(cloneDay,event) ? <EventBlock clicked={viewInformation} start="11:00" end="12:00" description="PT Session"/> : ""}
         
                     <span className="number">{formattedDate}</span>
                     <span className="bg">{formattedDate}</span>
