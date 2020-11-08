@@ -1,8 +1,15 @@
 .clients {
   display: grid;
-  grid-template-columns: 2.1fr 1fr;
-  padding: 2.5rem;
+  grid-template-columns: 2.2fr 1fr;
+  margin: 3rem;
   grid-column-gap: 2.5rem;
+  grid-template-areas: "left right";
+}
+.clients-left {
+  grid-area: left;
+}
+.clients-right {
+  grid-area: right;
 }
 .clients-search {
   height: 6rem;
@@ -83,7 +90,7 @@
 .client-overview {
   height: 100%;
   background-color: var(--white);
-  width: 100%;
+
   position: relative;
   padding-left: 4rem;
   padding-right: 4rem;
@@ -103,6 +110,7 @@
   z-index: 10;
   border-radius: 50%;
   margin: 0 auto;
+
   background-color: rgb(255, 0, 157);
 }
 .client-overview-block {
@@ -115,7 +123,6 @@
   margin: 0 auto;
 }
 .client-overview .address {
-  margin-top: 5rem;
   grid-area: address;
 }
 .client-overview .postal {
@@ -128,12 +135,12 @@
   grid-area: age;
 }
 .client-overview-grid {
+  margin-top: 5rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 1fr;
+  grid-template-rows: 8rem 8rem 8rem;
   grid-template-areas:
     "address address"
     "postal city"
     "age age";
-  grid-row-gap: 2rem;
 }

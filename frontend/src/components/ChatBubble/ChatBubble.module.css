@@ -1,0 +1,45 @@
+.me {
+  background-color: var(--orange);
+  border-radius: 10px 10px 10px 0px;
+  padding: 0.6rem 2rem;
+  color: var(--white);
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  position: relative;
+  float: right;
+}
+.other {
+  border-radius: 10px 10px 0px 10px;
+  background-color: var(--green);
+  padding: 0.6rem 2rem;
+  color: var(--white);
+  font-size: 1.6rem;
+  line-height: 2.4rem;
+  position: relative;
+  float: left;
+}
+.left {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.right {
+  display: flex;
+  justify-content: flex-end;
+}
+.me span {
+  position: absolute;
+  bottom: 0;
+  right: 9rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: var(--grey);
+}
+.other span {
+  position: absolute;
+  bottom: 0;
+  right: -7rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: var(--grey);
+}

@@ -4,7 +4,7 @@ export default function ClientOverview() {
     return (
         <section className="client-overview rounded shadow">
              
-            <div className="client-overview-circle"></div>
+        <div className="client-overview-circle"></div>
         <h1 className="subtitle name">Maxime Vercruysse</h1>
         <p className="normaltext dob">20/06/1995</p>
         <div className="client-overview-grid">

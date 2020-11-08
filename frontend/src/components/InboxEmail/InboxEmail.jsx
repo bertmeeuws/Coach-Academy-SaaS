@@ -3,7 +3,7 @@ import React from 'react'
 export default function InboxEmail() {
     return (
         <div className="inbox-email rounded shadow">
-            <div className="mail-avatar"></div>
+            <div className="mail-avatar smalltext"></div>
             <p className="mail-sender">Lisa Meeuws</p>
             <p className="mail-time">12 min ago</p>
             <h2 className="mail-subject">Problem with program</h2>

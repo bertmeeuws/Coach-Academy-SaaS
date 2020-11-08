@@ -14,6 +14,10 @@
   font-weight: 600;
   width: 60%;
 }
+.inbox-unread {
+  color: var(--blue);
+  font-weight: 600;
+}
 .inbox-header {
   display: flex;
   align-items: center;
@@ -21,6 +25,14 @@
   margin-left: 2rem;
   margin-right: 2rem;
 }
+.inbox-options {
+  margin-bottom: 2rem;
+}
+.inbox-options .inbox-option {
+  margin-right: 3rem;
+  cursor: pointer;
+}
+
 .inbox-grid-left {
   grid-area: left;
   margin: 2rem;
@@ -108,4 +120,54 @@
 }
 .inbox-new:hover {
   background-color: var(--darkblue);
+}
+.mail-avatar {
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--red);
+  grid-area: avatar;
+  border-radius: 50%;
+}
+.inbox-email {
+  margin-bottom: 1.5rem;
+  padding: 2rem;
+  display: grid;
+  grid-template-columns: 6rem 1fr 1fr;
+  grid-template-rows: 0.7fr 0.5fr 1fr;
+  grid-template-areas:
+    "avatar sender time"
+    "avatar subject subject"
+    "content content content";
+  background-color: var(--white);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.inbox-email:hover {
+  transform: translateY(-1rem);
+  box-shadow: 0 0 1.5rem 1rem rgba(0, 0, 0, 0.025);
+}
+.mail-sender {
+  grid-area: sender;
+  font-weight: 500;
+  font-size: 1.6rem;
+  color: var(--grey);
+}
+.mail-time {
+  grid-area: time;
+  font-size: 1.2rem;
+  text-align: right;
+  color: var(--grey);
+}
+.mail-subject {
+  grid-area: subject;
+  font-size: 1.6rem;
+  color: var(--darkblue);
+  font-weight: 500;
+}
+.mail-shortcontent {
+  grid-area: content;
+  font-size: 1.2rem;
+  margin-top: 1rem;
+  line-height: 1.6rem;
+  color: var(--darkblue);
 }

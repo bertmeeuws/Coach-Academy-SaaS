@@ -8,7 +8,7 @@ export default function Inbox() {
 
         <section className="inbox-section">
             <div className="inbox-header">
-                <p className="bigtext">10 Unread mails</p>
+                <p className="inbox-unread">10 Unread mails</p>
                 <button className="inbox-new rounded shadow">New mail</button>
             </div>
             <div className="inbox-grid-content">
@@ -19,6 +19,8 @@ export default function Inbox() {
                     </div>
                     <InboxEmail/>
                     <InboxEmail/>
+                    <InboxEmail/>
+                    
                 </div>
                 <div className="inbox-grid-right rounded shadow">
                     <div className="inbox-mailView">

@@ -13,11 +13,11 @@ import Logout from "../../assets/images/svg/Logout.svg"
 import {Link} from "react-router-dom"
 import { useLocation } from 'react-router-dom'
 
-import {Dashboard, Calendar, Chat, Clients, Documents, Inbox, Settings, Todos, Title } from '../Icons/'
+import {Dashboard, Calendar, Chat, Clients, Inbox, Settings, Todos } from '../Icons/'
 
 export default function Sidebar() {
 
-    const test = true;
+    
     const location = useLocation();
     
     

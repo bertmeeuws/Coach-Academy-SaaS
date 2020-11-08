@@ -1,7 +1,6 @@
 import './App.css';
 import {
   BrowserRouter,
-  Switch,
   Route,
 } from "react-router-dom";
 import {
@@ -16,7 +15,6 @@ import { WebSocketLink } from "@apollo/link-ws";
 import Login from "./content/authentication/Login"
 import RegisterClient from "./content/authentication/RegisterClient"
 import RegisterCoach from "./content/authentication/RegisterCoach"
-import Content from './content/Content';
 import Header from './components/Header/'
 import Sidebar from './components/Sidebar/'
 import Dashboard from './content/coach/Dashboard'
@@ -24,6 +22,9 @@ import Clients from './content/coach/Clients'
 import Todos from './content/coach/Todos'
 import Calendar from './content/Calendar'
 import Inbox from './content/Inbox'
+import Chat from './content/Chat'
+import Documents from './content/Documents'
+import Client from './content/coach/Client'
 
 const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
 
@@ -106,7 +107,33 @@ function App() {
           </div>
         </div>
     </Route>
-    
+    <Route exact path="/chat">
+      <div className="content-grid">
+          <Sidebar/>
+          <div className="container-grid">
+          <Header title="Chat"/>
+          <Chat/>
+          </div>
+        </div>
+    </Route>
+    <Route exact path="/documents">
+      <div className="content-grid">
+          <Sidebar/>
+          <div className="container-grid">
+          <Header title="Documents"/>
+          <Documents/>
+          </div>
+        </div>
+    </Route>
+    <Route exact path="/client">
+      <div className="content-grid">
+          <Sidebar/>
+          <div className="container-grid">
+          <Header title="Client overview"/>
+          <Client/>
+          </div>
+        </div>
+    </Route>
     <Route exact path="/todos">
       <div className="content-grid">
           <Sidebar/>
