@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function AddButton() {
+
+export default function AddButton({text}) {
     return (
         <div className="clients-addbutton shadow rounded">
-            <span>Add</span>
+            <span>{text}</span>
         </div>
     )
 }

@@ -23,6 +23,7 @@ import Dashboard from './content/coach/Dashboard'
 import Clients from './content/coach/Clients'
 import Todos from './content/coach/Todos'
 import Calendar from './content/Calendar'
+import Inbox from './content/Inbox'
 
 const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
 
@@ -77,7 +78,6 @@ function App() {
           </div>
         </div>
     </Route>
-
     <Route exact path="/clients">
       <div className="content-grid">
           <Sidebar/>
@@ -94,6 +94,15 @@ function App() {
           <div className="container-grid">
           <Header title="Calendar"/>
           <Calendar/>
+          </div>
+        </div>
+    </Route>
+    <Route exact path="/inbox">
+      <div className="content-grid">
+          <Sidebar/>
+          <div className="container-grid">
+          <Header title="Inbox"/>
+          <Inbox/>
           </div>
         </div>
     </Route>

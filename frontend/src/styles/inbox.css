@@ -1,0 +1,111 @@
+.inbox-section {
+  padding: 2rem;
+}
+
+.inbox-grid-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr;
+  height: 100%;
+  grid-template-areas: "left right right";
+}
+.inbox-option {
+  color: var(--blue);
+  font-weight: 600;
+  width: 60%;
+}
+.inbox-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+.inbox-grid-left {
+  grid-area: left;
+  margin: 2rem;
+}
+.inbox-grid-right {
+  grid-area: right;
+  background-color: var(--white);
+  padding: 3rem;
+  margin: 2rem;
+  position: relative;
+}
+.mailView-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  grid-template-areas:
+    "name metadata"
+    "subject subject";
+}
+.mailView-sender,
+.mailView-subject {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+.mailView-sender {
+  grid-area: name;
+}
+.mailView-metadata {
+  grid-area: metadata;
+  text-align: right;
+  color: var(--grey);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: row;
+  font-size: 1.4rem;
+}
+.mailView-metaData-avatar {
+  width: 4rem;
+  height: 4rem;
+  background-color: var(--red);
+  border-radius: 50%;
+  margin-left: 1rem;
+}
+.mailView-subject {
+  grid-area: subject;
+}
+.mailView-content-text {
+  line-height: 2.4rem;
+  color: var(--darkblue);
+  border-top: 0.2rem solid var(--lightgrey);
+  padding-top: 3rem;
+}
+.mailView-content {
+  position: relative;
+  height: 100%;
+}
+.mailView-reply {
+  background-color: var(--green);
+  color: var(--white);
+  font-family: Poppins;
+  font-weight: 600;
+  padding: 1rem 3rem;
+  margin-right: 3rem;
+  margin-bottom: 3rem;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  transition: all 0.3s ease-in-out;
+}
+.mailView-reply:hover {
+  background-color: var(--darkblue);
+}
+.inbox-new {
+  background-color: var(--green);
+  color: var(--white);
+  font-family: Poppins;
+  font-weight: 600;
+  padding: 1rem 3rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.inbox-new:hover {
+  background-color: var(--darkblue);
+}

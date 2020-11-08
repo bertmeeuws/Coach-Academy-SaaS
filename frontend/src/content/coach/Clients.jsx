@@ -12,7 +12,7 @@ export default function Clients() {
             <div className="clients-left">
             <div className="clients-header">
             <SearchBar/>
-            <AddButton/>
+            <AddButton text="Add"/>
             </div>
             <div className="clients-list">
                 <div className="client-list-header smalltext">
