@@ -25,6 +25,7 @@ import Inbox from './content/Inbox'
 import Chat from './content/Chat'
 import Documents from './content/Documents'
 import Client from './content/coach/Client'
+import ClientDashboard from './content/client/dashboard'
 
 const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
 
@@ -133,6 +134,9 @@ function App() {
           <Client/>
           </div>
         </div>
+    </Route>
+    <Route exact path="/clientdashboard">                       
+          <ClientDashboard/>
     </Route>
     <Route exact path="/todos">
       <div className="content-grid">

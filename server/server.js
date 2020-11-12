@@ -6,7 +6,7 @@ import bodyParser from 'body-parser'
 
 const app = express()
 app.use(bodyParser.json())
-const PORT = 3000
+const PORT = 3001
 
 const HASURA_ENDPOINT = "http://localhost:8085/v1/graphql"
 const HASURA_ADMIN_SECRET = "my-secret"
@@ -86,8 +86,43 @@ app.post("/api/actions/client-signup", async (req, res) => {
     return res.json({ token })
   })
 
+
+  app.post("/api/actions/signup", async (req, res) => {
+   
+    const user = req.body.input.user
+    console.log(user)
+
+    user.password = bcrypt.hashSync(user.password)
+    console.log(user.password)
+  
+    const request = await sendQuery({
+      query: `
+        mutation InsertUser($user: user_insert_input!){
+            insert_user_one(object: $user) {
+              id
+            }
+          }`,
+      variables: { user },
+    })
+
+    if (request.errors) return res.status(400).json({ errors: request.errors })
+    console.log('InsertUser results:', request)
+
+
+    const token = generateJWT({ 
+      defaultRole: 'client',
+      allowedRoles: ['client'],
+      otherClaims: {
+        'x-hasura-client-id': request.data.insert_user_one.id
+      }
+    })
+  
+    // Now return the JWT string 
+    return res.json({ token })
+  })
+
 app.post("/api/actions/client-login", async (req, res) => {
-  const client = req.body.input
+  const client = req.body.input.client
   const request = await sendQuery({
     query: `
       query FindClientByEmail($email: String!){
