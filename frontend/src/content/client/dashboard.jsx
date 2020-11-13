@@ -3,10 +3,12 @@ import "../../styles/client.css"
 import Questionnaire from "../../components/Questionnaire/Questionnaire"
 import {Link} from 'react-router-dom'
 
-export default function dashboard() {
+export default function Dashboard() {
 
 
-    const [checked, setChecked] = useState(undefined)
+    const [craving, setCraving] = useState("")
+    const [energyDay, setEnergyDay] = useState("")
+    const [energyWorkout, setEnergyWorkout] = useState("")
 
 
 
@@ -25,7 +27,9 @@ export default function dashboard() {
                 </div>
                 <div className="client-questionnaire">
                     <div className="cravings">
-                    <Questionnaire name="cravings" onChange={console.log("hi")} />
+                    <Questionnaire value={craving} set={setCraving}  name="cravings" />
+                    <Questionnaire value={energyDay} set={setEnergyDay}  name="day" />
+                    <Questionnaire value={energyWorkout} set={setEnergyWorkout}  name="workout" />
                     </div>
                 </div>
         </section>
