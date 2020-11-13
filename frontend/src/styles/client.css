@@ -1,3 +1,168 @@
 .client-dashboard {
   background-color: var(--ghost);
+  padding: 1.5rem;
+}
+.header-date {
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: var(--darkblue);
+}
+.header-profile {
+  width: 4.6rem;
+  height: 4.6rem;
+  background-color: var(--red);
+  border-radius: 50%;
+}
+.client-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 2rem;
+}
+.client-dashboard-hero {
+  font-size: 3.6rem;
+  color: var(--darkblue);
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.client-dashboard-subtext {
+  font-size: 1.8rem;
+  font-weight: 500;
+  color: var(--green);
+}
+.client-weight {
+  background-color: var(--green);
+  color: var(--white);
+  padding: 2rem;
+  font-weight: 600;
+  font-size: 1.8rem;
+  line-height: 2.7rem;
+  margin-top: 3.4rem;
+}
+.client-weight-input {
+  outline: none;
+  border: none;
+  background: none;
+  border-bottom: 0.2rem solid var(--white);
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--white);
+  width: 6rem;
+}
+.client-weight-button {
+  float: right;
+  color: var(--darkblue);
+  background-color: var(--white);
+  font-family: "Poppins";
+  font-weight: 600;
+  font-size: 1.4rem;
+  padding: 0.2rem 0.5rem;
+}
+.client-questionnaire {
+  background: var(--white);
+  margin-top: 2.5rem;
+  margin-bottom: 4rem;
+  padding: 2rem;
+}
+.questionnaire-component {
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
+}
+.questionnaire-component input {
+  background-color: var(--grey);
+  padding: none;
+}
+.questionnaire-component input[type="radio"]:checked {
+  background-color: var(--green);
+  color: var(--green);
+}
+.questionnaire-name {
+  color: var(--darkblue);
+  font-weight: 600;
+  font-size: 1.8rem;
+  text-align: center;
+  margin-bottom: 2.2rem;
+  margin-top: 1rem;
+}
+.questionnaire-ratings {
+  color: var(--grey);
+  font-weight: 500;
+  font-size: 1.6rem;
+}
+
+.cravings div,
+.energyDay div,
+.energy div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+.client-workout-title,
+.client-mealplan-title {
+  font-size: 2.4rem;
+  font-weight: 600;
+  color: var(--darkblue);
+  margin-bottom: 1.7rem;
+}
+.dashboard-workout {
+  background-color: var(--white);
+  padding: 2rem;
+  text-align: left;
+  width: 100%;
+}
+
+.client-workout {
+  margin-bottom: 4rem;
+}
+.dashboard-workout .workout-name {
+  color: var(--green);
+  font-weight: 500;
+}
+.dashboard-workout tr {
+  margin-bottom: 1.2rem;
+}
+.mealplan-box {
+  background-color: var(--green);
+  color: var(--white);
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: 0.5fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr 1fr 0.5fr;
+  width: 17.4rem;
+  margin-right: 1rem;
+}
+.mealplan-calories {
+  grid-column: 1/3;
+  font-weight: 600;
+  margin-bottom: 2rem;
+}
+.mealplan-macros {
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+.mealplan-box .blue {
+  color: var(--darkblue);
+}
+.mealplan-day {
+  grid-column: 1/3;
+  text-align: right;
+  font-weight: 600;
+}
+.client-mealplan-carousel {
+  display: flex;
+}
+.mealplan-box-inactive {
+  background-color: var(--white);
+}
+.mealplan-box-inactive .mealplan-calories {
+  color: var(--green);
+}
+.mealplan-box-inactive .mealplan-macros,
+.mealplan-box-inactive .mealplan-day {
+  color: var(--grey);
+}
+.mealplan-box-inactive .blue {
+  color: var(--darkblue);
 }

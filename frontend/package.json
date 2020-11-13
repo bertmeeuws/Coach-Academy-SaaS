@@ -11,6 +11,8 @@
     "date-fns": "^1.29.0",
     "formik": "^2.2.1",
     "graphql": "^15.4.0",
+    "gsap": "^3.5.1",
+    "hamburger-react": "^2.3.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",

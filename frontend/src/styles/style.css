@@ -3,6 +3,7 @@ html {
   font-size: 62.5%;
   height: 100%;
   position: relative;
+  overflow: none;
 }
 
 .hidden {
