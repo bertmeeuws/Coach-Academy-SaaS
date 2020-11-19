@@ -23,17 +23,40 @@ import Chat from "./content/Chat";
 import Documents from "./content/Documents";
 import Client from "./content/coach/Client";
 import ClientDashboard from "./content/client/dashboard";
+import { StoreProvider, useStoreState } from "easy-peasy";
+import { store } from "./store";
 
 const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
 
+const getHeaders = () => {
+  const headers = {};
+  const token = store.getState().apollotoken;
+  //console.log(typeof token);
+  //const token = window.localStorage.getItem("apollo-token");
+  console.log("this is the token" + token);
+  if (token !== undefined) {
+    headers.authorization = `Bearer ${String(token)}`;
+    console.log("Token used");
+  } else {
+    headers["X-Hasura-Admin-Secret"] = "my-secret";
+    console.log("Admin secret used");
+  }
+  return headers;
+};
+
 const httpLink = new HttpLink({
   uri: `http://${GRAPHQL_ENDPOINT}`,
+  headers: getHeaders(),
 });
 
 const wsLink = new WebSocketLink({
   uri: `ws://${GRAPHQL_ENDPOINT}`,
   options: {
     reconnect: true,
+    timeout: 30000,
+    connectionParams: () => {
+      return { headers: getHeaders() };
+    },
   },
 });
 
@@ -50,100 +73,102 @@ const splitLink = split(
 );
 
 const client = new ApolloClient({
-  cache: new InMemoryCache(),
+  cache: new InMemoryCache({ addTypename: true }),
   link: splitLink,
 });
 
 function App() {
   return (
     <BrowserRouter>
-      <ApolloProvider client={client}>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/registerclient">
-          <RegisterClient />
-        </Route>
-        <Route exact path="/registercoach">
-          <RegisterCoach />
-        </Route>
-        <Route exact path="/dashboard">
-          <div className="content-grid">
-            <Sidebar />
-            <div className="container-grid">
-              <Header title="Client" />
-              <Dashboard />
+      <StoreProvider store={store}>
+        <ApolloProvider client={client}>
+          <Route exact path="/login">
+            <Login />
+          </Route>
+          <Route exact path="/registerclient">
+            <RegisterClient />
+          </Route>
+          <Route exact path="/registercoach">
+            <RegisterCoach />
+          </Route>
+          <Route exact path="/dashboard">
+            <div className="content-grid">
+              <Sidebar />
+              <div className="container-grid">
+                <Header title="Client" />
+                <Dashboard />
+              </div>
             </div>
-          </div>
-        </Route>
-        <Route exact path="/clients">
-          <div className="content-grid">
-            <Sidebar />
-            <div className="container-grid">
-              <Header title="Clients" />
-              <Clients />
+          </Route>
+          <Route exact path="/clients">
+            <div className="content-grid">
+              <Sidebar />
+              <div className="container-grid">
+                <Header title="Clients" />
+                <Clients />
+              </div>
             </div>
-          </div>
-        </Route>
+          </Route>
 
-        <Route exact path="/calendar">
-          <div className="content-grid">
-            <Sidebar />
-            <div className="container-grid">
-              <Header title="Calendar" />
-              <Calendar />
+          <Route exact path="/calendar">
+            <div className="content-grid">
+              <Sidebar />
+              <div className="container-grid">
+                <Header title="Calendar" />
+                <Calendar />
+              </div>
             </div>
-          </div>
-        </Route>
-        <Route exact path="/inbox">
-          <div className="content-grid">
-            <Sidebar />
-            <div className="container-grid">
-              <Header title="Inbox" />
-              <Inbox />
+          </Route>
+          <Route exact path="/inbox">
+            <div className="content-grid">
+              <Sidebar />
+              <div className="container-grid">
+                <Header title="Inbox" />
+                <Inbox />
+              </div>
             </div>
-          </div>
-        </Route>
-        <Route exact path="/chat">
-          <div className="content-grid">
-            <Sidebar />
-            <div className="container-grid">
-              <Header title="Chat" />
-              <Chat />
+          </Route>
+          <Route exact path="/chat">
+            <div className="content-grid">
+              <Sidebar />
+              <div className="container-grid">
+                <Header title="Chat" />
+                <Chat />
+              </div>
             </div>
-          </div>
-        </Route>
-        <Route exact path="/documents">
-          <div className="content-grid">
-            <Sidebar />
-            <div className="container-grid">
-              <Header title="Documents" />
-              <Documents />
+          </Route>
+          <Route exact path="/documents">
+            <div className="content-grid">
+              <Sidebar />
+              <div className="container-grid">
+                <Header title="Documents" />
+                <Documents />
+              </div>
             </div>
-          </div>
-        </Route>
-        <Route exact path="/client">
-          <div className="content-grid">
-            <Sidebar />
-            <div className="container-grid">
-              <Header title="Client overview" />
-              <Client />
+          </Route>
+          <Route exact path="/client">
+            <div className="content-grid">
+              <Sidebar />
+              <div className="container-grid">
+                <Header title="Client overview" />
+                <Client />
+              </div>
             </div>
-          </div>
-        </Route>
-        <Route exact path="/clientdashboard">
-          <ClientDashboard />
-        </Route>
-        <Route exact path="/todos">
-          <div className="content-grid">
-            <Sidebar />
-            <div className="container-grid">
-              <Header title="Todos" />
-              <Todos />
+          </Route>
+          <Route exact path="/clientdashboard">
+            <ClientDashboard />
+          </Route>
+          <Route exact path="/todos">
+            <div className="content-grid">
+              <Sidebar />
+              <div className="container-grid">
+                <Header title="Todos" />
+                <Todos />
+              </div>
             </div>
-          </div>
-        </Route>
-      </ApolloProvider>
+          </Route>
+        </ApolloProvider>
+      </StoreProvider>
     </BrowserRouter>
   );
 }

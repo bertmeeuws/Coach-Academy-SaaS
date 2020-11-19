@@ -5,6 +5,8 @@ import style from "../authentication/Login.module.css";
 import { Formik } from "formik";
 import { Link } from "react-router-dom";
 import { useMutation, gql } from "@apollo/client";
+import { useStoreActions } from "easy-peasy";
+import jwt_decode from "jwt-decode";
 
 const REGISTER_CLIENT = gql`
   mutation myMutation($user: UserInput!) {
@@ -16,6 +18,9 @@ const REGISTER_CLIENT = gql`
 
 export default function RegisterClient() {
   const [REGISTER] = useMutation(REGISTER_CLIENT);
+
+  const addToken = useStoreActions((actions) => actions.addToken);
+  const addRoles = useStoreActions((actions) => actions.addRoles);
 
   return (
     <section className="auth-section">
@@ -54,7 +59,6 @@ export default function RegisterClient() {
               return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
-              alert("hi");
               const { errors, data } = await REGISTER({
                 variables: {
                   user: {
@@ -74,11 +78,29 @@ export default function RegisterClient() {
                   },
                 },
               });
-              console.log(errors);
-              alert(data.signUp.token);
 
+              console.log(errors);
+              if (!errors) {
+                console.log("Received JWT token");
+                addToken(data.signUp.token);
+                console.log("Token has been added to store");
+                //console.log(jwt_decode(data.signUp.token));
+                const decoded = jwt_decode(data.signUp.token);
+                //
+                console.log(
+                  "Allowed roles: " +
+                    decoded["https://hasura.io/jwt/claims"][
+                      "x-hasura-allowed-roles"
+                    ]
+                );
+                const roles =
+                  decoded["https://hasura.io/jwt/claims"][
+                    "x-hasura-allowed-roles"
+                  ];
+                addRoles(roles);
+                //console.log(roles);
+              }
               setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
                 setSubmitting(false);
               }, 400);
             }}

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import logo from "../../assets/images/logo.svg";
 import "../../styles/slider.css";
 import style from "./Login.module.css";
@@ -19,7 +19,8 @@ export default function Login() {
   const { data, error } = useQuery(TEST);
 
   if (data) {
-    alert(data);
+    console.log(data);
+    console.log(error);
   }
 
   return (
