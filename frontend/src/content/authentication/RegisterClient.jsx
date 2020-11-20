@@ -21,6 +21,7 @@ export default function RegisterClient() {
 
   const addToken = useStoreActions((actions) => actions.addToken);
   const addRoles = useStoreActions((actions) => actions.addRoles);
+  const deleteToken = useStoreActions((actions) => actions.deleteToken);
 
   return (
     <section className="auth-section">
@@ -39,7 +40,7 @@ export default function RegisterClient() {
               city: "",
               profession: "",
               weight: "",
-              length: "",
+              height: "",
               phone: "",
               password: "",
               confirmPassword: "",
@@ -56,9 +57,11 @@ export default function RegisterClient() {
               if (values.password !== values.confirmPassword) {
                 errors.password = "Passwords not matching";
               }
+
               return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
+              deleteToken();
               const { errors, data } = await REGISTER({
                 variables: {
                   user: {
@@ -70,11 +73,11 @@ export default function RegisterClient() {
                     dob: values.dob,
                     postal: values.postal,
                     city: values.city,
+                    phone: values.phone,
                     profession: values.profession,
                     weight: values.weight,
                     height: values.height,
-                    phone: values.phone,
-                    coach: false,
+                    coach: true,
                   },
                 },
               });
@@ -84,7 +87,7 @@ export default function RegisterClient() {
                 console.log("Received JWT token");
                 addToken(data.signUp.token);
                 console.log("Token has been added to store");
-                //console.log(jwt_decode(data.signUp.token));
+
                 const decoded = jwt_decode(data.signUp.token);
                 //
                 console.log(
@@ -220,10 +223,10 @@ export default function RegisterClient() {
                 </label>
                 <input
                   type="number"
-                  name="length"
+                  name="height"
                   onChange={handleChange}
                   onBlur={handleBlur}
-                  value={values.length}
+                  value={values.height}
                 />
                 <label className="smalltext" htmlFor="phone">
                   Phone

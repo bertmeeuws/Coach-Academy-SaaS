@@ -21,6 +21,7 @@ import Calendar from "./content/Calendar";
 import Inbox from "./content/Inbox";
 import Chat from "./content/Chat";
 import Documents from "./content/Documents";
+import AuthenticatedView from "./components/AuthenticatedView/index";
 import Client from "./content/coach/Client";
 import ClientDashboard from "./content/client/dashboard";
 import { StoreProvider, useStoreState } from "easy-peasy";
@@ -31,15 +32,13 @@ const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
 const getHeaders = () => {
   const headers = {};
   const token = store.getState().apollotoken;
-  //console.log(typeof token);
-  //const token = window.localStorage.getItem("apollo-token");
-  console.log("this is the token" + token);
+  console.log("App.js: this is the token " + String(token));
   if (token !== undefined) {
     headers.authorization = `Bearer ${String(token)}`;
-    console.log("Token used");
+    console.log("Token used in headers");
   } else {
     headers["X-Hasura-Admin-Secret"] = "my-secret";
-    console.log("Admin secret used");
+    console.log("Admin secret used in headers");
   }
   return headers;
 };
@@ -91,23 +90,29 @@ function App() {
           <Route exact path="/registercoach">
             <RegisterCoach />
           </Route>
+
           <Route exact path="/dashboard">
-            <div className="content-grid">
-              <Sidebar />
-              <div className="container-grid">
-                <Header title="Client" />
-                <Dashboard />
+            <AuthenticatedView roles={["coach"]}>
+              <div className="content-grid">
+                <Sidebar />
+                <div className="container-grid">
+                  <Header title="Client" />
+                  <Dashboard />
+                </div>
               </div>
-            </div>
+            </AuthenticatedView>
           </Route>
+
           <Route exact path="/clients">
-            <div className="content-grid">
-              <Sidebar />
-              <div className="container-grid">
-                <Header title="Clients" />
-                <Clients />
+            <AuthenticatedView roles={["coach"]}>
+              <div className="content-grid">
+                <Sidebar />
+                <div className="container-grid">
+                  <Header title="Clients" />
+                  <Clients />
+                </div>
               </div>
-            </div>
+            </AuthenticatedView>
           </Route>
 
           <Route exact path="/calendar">
@@ -119,45 +124,25 @@ function App() {
               </div>
             </div>
           </Route>
-          <Route exact path="/inbox">
-            <div className="content-grid">
-              <Sidebar />
-              <div className="container-grid">
-                <Header title="Inbox" />
-                <Inbox />
-              </div>
-            </div>
-          </Route>
-          <Route exact path="/chat">
-            <div className="content-grid">
-              <Sidebar />
-              <div className="container-grid">
-                <Header title="Chat" />
-                <Chat />
-              </div>
-            </div>
-          </Route>
-          <Route exact path="/documents">
-            <div className="content-grid">
-              <Sidebar />
-              <div className="container-grid">
-                <Header title="Documents" />
-                <Documents />
-              </div>
-            </div>
-          </Route>
+
           <Route exact path="/client">
-            <div className="content-grid">
-              <Sidebar />
-              <div className="container-grid">
-                <Header title="Client overview" />
-                <Client />
+            <AuthenticatedView roles={["coach"]}>
+              <div className="content-grid">
+                <Sidebar />
+                <div className="container-grid">
+                  <Header title="Client overview" />
+                  <Client />
+                </div>
               </div>
-            </div>
+            </AuthenticatedView>
           </Route>
+
           <Route exact path="/clientdashboard">
-            <ClientDashboard />
+            <AuthenticatedView roles={["client"]}>
+              <ClientDashboard />
+            </AuthenticatedView>
           </Route>
+
           <Route exact path="/todos">
             <div className="content-grid">
               <Sidebar />

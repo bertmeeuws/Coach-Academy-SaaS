@@ -9,16 +9,16 @@ const model = {
   }),
   deleteToken: action((state) => {
     state.apollotoken = undefined;
+    state.roles = [];
   }),
   addRoles: action((state, payload) => {
-    state.roles = [String(payload)];
+    state.roles = [payload];
     console.log(state.roles);
   }),
 };
 
-
 export const store = createStore(
   persist(model, {
-    storage: "localStorage",
+    storage: "sessionStorage",
   })
 );

@@ -4,24 +4,24 @@ import "../../styles/slider.css";
 import style from "./Login.module.css";
 import { Formik } from "formik";
 import { Link } from "react-router-dom";
-import { useQuery, gql } from "@apollo/client";
+import { action, useStoreActions } from "easy-peasy";
+import jwt_decode from "jwt-decode";
+import { useMutation, gql } from "@apollo/client";
 
-const TEST = gql`
-  query MyQuery {
-    client {
-      id
-      name
+const LOGIN_MUTATION = gql`
+  mutation LoginIn($user: UserInputLogin!) {
+    login(user: $user) {
+      token
     }
   }
 `;
 
 export default function Login() {
-  const { data, error } = useQuery(TEST);
+  const [LOGIN] = useMutation(LOGIN_MUTATION);
 
-  if (data) {
-    console.log(data);
-    console.log(error);
-  }
+  const addToken = useStoreActions((actions) => actions.addToken);
+  const addRoles = useStoreActions((actions) => actions.addRoles);
+  const deleteToken = useStoreActions((actions) => actions.deleteToken);
 
   return (
     <section className="auth-section">
@@ -44,9 +44,45 @@ export default function Login() {
               }
               return errors;
             }}
-            onSubmit={(values, { setSubmitting }) => {
+            onSubmit={async (values, { setSubmitting }) => {
+              deleteToken();
+              const { data, errors } = await LOGIN({
+                variables: {
+                  user: {
+                    email: values.email,
+                    password: values.password,
+                  },
+                },
+              });
+
+              if (errors && !data) {
+                console.log(errors);
+              }
+              if (!errors && data) {
+                console.log("Received JWT token");
+                if (!data.login.token) {
+                  console.log("Token problem");
+                }
+                addToken(String(data.login.token));
+                console.log("Token has been added to store");
+                console.log("Encoded: " + jwt_decode(data.login.token));
+                const decoded = jwt_decode(data.login.token);
+                //
+                console.log(
+                  "Allowed roles: " +
+                    decoded["https://hasura.io/jwt/claims"][
+                      "x-hasura-allowed-roles"
+                    ]
+                );
+                const roles =
+                  decoded["https://hasura.io/jwt/claims"][
+                    "x-hasura-allowed-roles"
+                  ];
+                addRoles(roles);
+                console.log(roles);
+              }
+
               setTimeout(() => {
-                alert(JSON.stringify(values, null, 2));
                 setSubmitting(false);
               }, 400);
             }}

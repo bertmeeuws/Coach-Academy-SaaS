@@ -46,17 +46,6 @@ function generateJWT({ allowedRoles, defaultRole, otherClaims }) {
   return jwt.sign(payload, HASURA_GRAPHQL_JWT_SECRET, { algorithm: "HS256" });
 }
 
-/**
- * We will turn these REST API endpoints into Hasura Actions so that the client can call them through GraphQL queries within Hasura
- * https://hasura.io/docs/1.0/graphql/core/actions/action-handlers.html#http-handler
- *
- * To do this, we just need to define GraphQL types for:
- *  - The function's input arguments
- *  - The function's return type
- *
- * This can be done in the web console UI in Hasura, under the "Actions" tab
- */
-
 app.post("/api/actions/signup", async (req, res) => {
   const data = req.body.input.user;
   console.log(data);
@@ -119,16 +108,16 @@ app.post("/api/actions/signup", async (req, res) => {
 
     if (signUpCoach.errors)
       return res.status(400).json({ errors: signUpCoach.errors });
-    console.log("Sign up coach:", signUpCoach);
-
+    console.log("Sign up coach completed:", signUpCoach);
+    console.log("Creating token");
     const token = generateJWT({
       defaultRole: "coach",
       allowedRoles: ["coach", "client"],
       otherClaims: {
-        "x-hasura-client-id": signUpCoach.data.insert_coach_one.id,
+        "x-hasura-client-id": String(signUpCoach.data.insert_coach_one.id),
       },
     });
-
+    console.log("Now returning token");
     return res.json({ token });
   } else {
     //insert into client table
@@ -162,50 +151,68 @@ app.post("/api/actions/signup", async (req, res) => {
 
     if (signUpClient.errors)
       return res.status(400).json({ errors: signUpClient.errors });
-    console.log("Signup client:", signUpClient);
-
+    console.log("Signup client completed:", signUpClient);
+    console.log("Creating token");
     const token = generateJWT({
       defaultRole: "client",
       allowedRoles: ["client"],
       otherClaims: {
-        "x-hasura-client-id": signUpClient.data.insert_client_one.id,
+        "x-hasura-client-id": String(signUpClient.data.insert_client_one.id),
       },
     });
-
+    console.log("Now returning token");
     return res.json({ token });
   }
 });
 
-app.post("/api/actions/client-login", async (req, res) => {
-  const client = req.body.input.client;
+app.post("/api/actions/login", async (req, res) => {
+  const client = req.body.input.user;
+  console.log("Body received: " + client);
   const request = await sendQuery({
     query: `
-      query FindClientByEmail($email: String!){
-          client(where: { email: { _eq: $email } }, limit: 1) {
-            id
-            password
-          }
-        }`,
+    query FindClientByEmail($email: String!) {
+      user(where: {email: {_eq: $email}}, limit: 1) {
+        email
+        password
+        coach
+      }
+    }`,
     variables: { email: client.email },
   });
 
-  const storedClient = request.client[0];
+  console.log("Request sent");
+  const storedClient = request.data.user[0];
   if (!storedClient) return res.status(400).json({ error: "No client" });
-
+  if (!storedClient) console.log("Client does not exist");
   const validPassword = bcrypt.compareSync(
     client.password,
     storedClient.password
   );
   if (!validPassword) return res.status(400).json({ error: "Invalid" });
+  if (!validPassword) console.log("Passwords not matching");
 
-  const token = generateJWT({
-    defaultRole: "client",
-    allowedRoles: ["client"],
-    otherClaims: {
-      "x-hasura-client-id": storedClient.id,
-    },
-  });
-  return res.json({ token });
+  console.log("Let's check if it's a coach");
+  if (storedClient.coach) {
+    console.log("It's a coach");
+    const token = generateJWT({
+      defaultRole: "coach",
+      allowedRoles: ["coach", "client"],
+      otherClaims: {
+        "x-hasura-client-id": String(storedClient.id),
+      },
+    });
+    return res.json({ token });
+  } else {
+    console.log("It's a client");
+    const token = generateJWT({
+      defaultRole: "client",
+      allowedRoles: ["client"],
+      otherClaims: {
+        "x-hasura-client-id": String(storedClient.id),
+      },
+    });
+    return res.json({ token });
+  }
 });
 
 app.post("/api/actions/coach-login", async (req, res) => {
