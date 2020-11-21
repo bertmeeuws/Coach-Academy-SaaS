@@ -24,7 +24,7 @@ import ClientDashboard from "./content/client/dashboard";
 import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
 
-const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
+export const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
 
 const getHeaders = () => {
   const headers = {};
