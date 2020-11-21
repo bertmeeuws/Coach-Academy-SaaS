@@ -77,7 +77,7 @@ export default function RegisterClient() {
                     profession: values.profession,
                     weight: values.weight,
                     height: values.height,
-                    coach: true,
+                    coach: false,
                   },
                 },
               });

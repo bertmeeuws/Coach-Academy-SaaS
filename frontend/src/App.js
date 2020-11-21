@@ -18,13 +18,10 @@ import Dashboard from "./content/coach/Dashboard";
 import Clients from "./content/coach/Clients";
 import Todos from "./content/coach/Todos";
 import Calendar from "./content/Calendar";
-import Inbox from "./content/Inbox";
-import Chat from "./content/Chat";
-import Documents from "./content/Documents";
 import AuthenticatedView from "./components/AuthenticatedView/index";
 import Client from "./content/coach/Client";
 import ClientDashboard from "./content/client/dashboard";
-import { StoreProvider, useStoreState } from "easy-peasy";
+import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
 
 const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
@@ -32,6 +29,7 @@ const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
 const getHeaders = () => {
   const headers = {};
   const token = store.getState().apollotoken;
+  console.log(store.getState().roles);
   console.log("App.js: this is the token " + String(token));
   if (token !== undefined) {
     headers.authorization = `Bearer ${String(token)}`;

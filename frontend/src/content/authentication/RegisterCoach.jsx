@@ -21,6 +21,8 @@ export default function RegisterCoach() {
   const addToken = useStoreActions((actions) => actions.addToken);
   const addRoles = useStoreActions((actions) => actions.addRoles);
 
+  const deleteToken = useStoreActions((actions) => actions.deleteToken);
+
   return (
     <section className="auth-section">
       <div className="greenbox"></div>
@@ -51,6 +53,7 @@ export default function RegisterCoach() {
               return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
+              deleteToken();
               const { errors, data } = await REGISTER({
                 variables: {
                   user: {

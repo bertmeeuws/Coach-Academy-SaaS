@@ -4,7 +4,7 @@ import "../../styles/slider.css";
 import style from "./Login.module.css";
 import { Formik } from "formik";
 import { Link } from "react-router-dom";
-import { action, useStoreActions } from "easy-peasy";
+import { useStoreActions } from "easy-peasy";
 import jwt_decode from "jwt-decode";
 import { useMutation, gql } from "@apollo/client";
 
@@ -65,21 +65,14 @@ export default function Login() {
                 }
                 addToken(String(data.login.token));
                 console.log("Token has been added to store");
-                console.log("Encoded: " + jwt_decode(data.login.token));
+
                 const decoded = jwt_decode(data.login.token);
-                //
-                console.log(
-                  "Allowed roles: " +
-                    decoded["https://hasura.io/jwt/claims"][
-                      "x-hasura-allowed-roles"
-                    ]
-                );
+
                 const roles =
                   decoded["https://hasura.io/jwt/claims"][
                     "x-hasura-allowed-roles"
                   ];
                 addRoles(roles);
-                console.log(roles);
               }
 
               setTimeout(() => {

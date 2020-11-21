@@ -12,13 +12,14 @@ const model = {
     state.roles = [];
   }),
   addRoles: action((state, payload) => {
-    state.roles = [payload];
-    console.log(state.roles);
+    state.roles = payload;
+    console.log("Roles in store: " + state.roles);
+    console.log("Roles type in store: " + typeof state.roles);
   }),
 };
 
 export const store = createStore(
   persist(model, {
-    storage: "sessionStorage",
+    storage: "localStorage",
   })
 );
