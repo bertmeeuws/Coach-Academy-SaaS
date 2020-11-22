@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 export default function ClientItem({ onClick, surname, name, id }) {
   return (
+    
     <div onClick={onClick} data-id={id} className="clientItem rounded shadow">
       <div className="clientItem-container">
         <div className="clientItem-circle"></div>

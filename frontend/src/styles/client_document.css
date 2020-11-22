@@ -1,0 +1,145 @@
+.client .client-stats-information {
+  font-weight: 700;
+  color: var(--darkblue);
+}
+.client-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  grid-template-rows: 3.2fr 1fr;
+  height: 85vh;
+  margin: 2rem;
+  grid-gap: 2rem;
+  grid-template-areas:
+    "stats sidebar"
+    "buttons sidebar";
+}
+.client .button-viewPhotos {
+  background-color: var(--green);
+  color: white;
+  font-family: Poppins;
+  font-weight: 700;
+  width: 12rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-area: button;
+  float: right;
+  transition: all 0.3s ease-in-out;
+}
+.client .button-viewPhotos:hover {
+  background-color: var(--white);
+  color: var(--green);
+}
+.client .client-stats {
+  grid-area: stats;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 0.3fr 1fr 1fr;
+  background-color: var(--white);
+  grid-template-areas:
+    "title title button"
+    "stats stats stats"
+    "pics pics pics";
+}
+.client .client-stats-information {
+  grid-area: stats;
+}
+.client .client-sidebar {
+  grid-area: sidebar;
+  background-color: var(--white);
+}
+.client .client .client-buttons {
+  grid-area: buttons;
+}
+.client .padding {
+  padding: 2rem;
+}
+.client-buttons .client-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+  background-color: var(--white);
+  font-weight: 700;
+}
+.client-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1rem;
+}
+.workout-table-header {
+  display: grid;
+  grid-template-columns: 0.4fr 2fr 1fr 1fr 1fr 1fr;
+  margin-bottom: 1rem;
+  margin-top: 2rem;
+}
+.workout-table-header .smalltext {
+  text-transform: uppercase;
+}
+.client-workout .workout-plan-day {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  margin-top: 3rem;
+}
+.client-workout .workout-plan-day input {
+  font-family: Poppins;
+  outline: none;
+  border: none;
+  border-bottom: 0.1rem solid var(--darkblue);
+  color: var(--darkblue);
+  font-weight: 600;
+  font-size: 1.6rem;
+}
+.client-workout {
+  margin: 2rem;
+}
+.client-workout .workout-plan {
+  background-color: var(--white);
+  color: var(--darkblue);
+  padding: 2rem;
+}
+.client-workout .workout-plan-delete {
+  cursor: pointer;
+  font-weight: 700;
+  color: var(--red);
+}
+.client-workout .workout-exercise-memo {
+  background-color: var(--green);
+  color: var(--white);
+  font-weight: 600;
+  font-size: 600;
+  cursor: pointer;
+  transition: all 0.1s ease-in-out;
+}
+.client-workout .workout-exercise-memo:hover {
+  background-color: var(--ghost);
+  color: var(--darkblue);
+}
+.workout-plan-exercise-table {
+  display: grid;
+  grid-template-columns: 0.4fr 2fr 1fr 1fr 1fr 1fr;
+  margin-bottom: 2rem;
+}
+.workout-plan-exercise-table .workout-exercise-notes {
+  grid-column: 2 / 7;
+  margin-top: 2rem;
+}
+.workout-day-draganddrop {
+  width: 100%;
+  height: 4rem;
+  border: 0.2rem dashed var(--grey);
+  border-radius: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--grey);
+  cursor: pointer;
+  margin-top: 2rem;
+}

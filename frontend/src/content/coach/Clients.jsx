@@ -4,10 +4,9 @@ import AddButton from "../../components/AddButton/AddButton";
 import ClientItem from "../../components/ClientItem/ClientItem";
 import ClientOverview from "../../components/ClientOverview/ClientOverview";
 import { useSubscription, gql } from "@apollo/client";
-import { GRAPHQL_ENDPOINT } from "../../App";
 
 const CLIENT_QUERY = gql`
-  subscription GetData($id: Int!) {
+  query GetData($id: Int!) @cached(ttl: 120) {
     coach(where: { id: { _eq: $id } }) {
       clients {
         name

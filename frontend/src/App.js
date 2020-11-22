@@ -20,6 +20,8 @@ import Todos from "./content/coach/Todos";
 import Calendar from "./content/Calendar";
 import AuthenticatedView from "./components/AuthenticatedView/index";
 import Client from "./content/coach/Client";
+import Workout from "./content/coach/Workout";
+import Diet from "./content/coach/Diet";
 import ClientDashboard from "./content/client/dashboard";
 import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
@@ -123,13 +125,35 @@ function App() {
             </div>
           </Route>
 
-          <Route exact path="/client">
+          <Route exact path="/client/:id">
             <AuthenticatedView roles={["coach"]}>
               <div className="content-grid">
                 <Sidebar />
                 <div className="container-grid">
                   <Header title="Client overview" />
                   <Client />
+                </div>
+              </div>
+            </AuthenticatedView>
+          </Route>
+          <Route exact path="/client/:id/workout">
+            <AuthenticatedView roles={["coach"]}>
+              <div className="content-grid">
+                <Sidebar />
+                <div className="container-grid">
+                  <Header title="Client workout" />
+                  <Workout />
+                </div>
+              </div>
+            </AuthenticatedView>
+          </Route>
+          <Route exact path="/client/:id/diet">
+            <AuthenticatedView roles={["coach"]}>
+              <div className="content-grid">
+                <Sidebar />
+                <div className="container-grid">
+                  <Header title="Client diet" />
+                  <Diet />
                 </div>
               </div>
             </AuthenticatedView>

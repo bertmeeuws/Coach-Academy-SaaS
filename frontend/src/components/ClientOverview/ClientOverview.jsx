@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default function ClientOverview({ client }) {
   if (client === undefined) {
@@ -6,8 +7,6 @@ export default function ClientOverview({ client }) {
   } else {
     const { surname, name, dob, address, postal, city, email, phone } = client;
     console.log("Client: " + client);
-
-    
 
     return (
       <section className="client-overview rounded shadow">
@@ -38,6 +37,7 @@ export default function ClientOverview({ client }) {
           <span className="smalltext">CONTACT INFORMATION</span>
           <span className="normaltext">mail@gmail.com</span>
           <span className="normaltext">{phone}</span>
+          <Link to={`client/${client.id}`}>Go to doc</Link>
         </div>
       </section>
     );
