@@ -99,6 +99,34 @@
 .client-workout {
   margin: 2rem;
 }
+.client-workout .client-workout-grid {
+  display: grid;
+  grid-template-columns: 2.5fr 1fr;
+  grid-gap: 2rem;
+}
+.client-workout .workout-exercises {
+  background-color: var(--white);
+  padding: 2rem;
+}
+.client-workout .workout-exercises form {
+  width: 100%;
+}
+.client-workout .workout-exercises input {
+  font-family: Poppins;
+  font-weight: 600;
+  border-radius: 0.4rem;
+  outline: none;
+  border: none;
+  background-color: var(--green);
+  color: var(--white);
+  padding: 1rem;
+  display: flex;
+  width: 100%;
+  justify-content: center;
+}
+.client-workout .workout-exercises input::placeholder {
+  color: var(--white);
+}
 .client-workout .workout-plan {
   background-color: var(--white);
   color: var(--darkblue);
@@ -142,4 +170,20 @@
   color: var(--grey);
   cursor: pointer;
   margin-top: 2rem;
+}
+.client-workout-breadcrumbs-icon {
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+.client-workout-breadcrumbs--link {
+  color: var(--grey);
+  text-decoration: none;
+  transition: all 0.2s ease-in-out;
+}
+.client-workout-breadcrumbs--link:hover {
+  text-decoration: underline;
+}
+.client-workout-breadcrumbs {
+  margin-bottom: 2rem;
+  margin-left: 1rem;
 }

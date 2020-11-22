@@ -1,0 +1,33 @@
+.name {
+  font-weight: 600;
+  color: var(--darkblue);
+}
+.primary {
+  color: var(--grey);
+  margin-top: 1rem;
+  font-size: 1.4rem;
+}
+.secondary {
+  color: var(--grey);
+  font-size: 1.4rem;
+  margin-top: 0.3rem;
+}
+.exercise {
+  height: 8rem;
+  margin: 1rem;
+  background-color: var(--ghost);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  font-size: 1.6rem;
+  cursor: pointer;
+  transition: all 0.5s ease-in-out;
+}
+.exercise:hover {
+  transform: translateY(-1rem);
+  background-color: var(--green);
+}
+.exercise:hover .primary,
+.exercise:hover .secondary,
+.exercise:hover .name {
+  color: var(--white);
+}
