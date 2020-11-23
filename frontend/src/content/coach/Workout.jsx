@@ -4,6 +4,7 @@ import { useParams, Link, Redirect } from "react-router-dom";
 import WorkoutDayPlan from "../../components/WorkoutDayPlan/WorkoutDayPlan";
 import ExerciseItem from "../../components/ExerciseItem/ExerciseItem";
 import Breadcrumb from "../../assets/images/breadcrumbs.png";
+import { v4 as uuidv4 } from "uuid";
 
 const CLIENT_QUERY = gql`
   query GetClientData($id: Int!) @cached(ttl: 120) {
@@ -44,9 +45,76 @@ const EXERCISE_API = gql`
 export default function Workout() {
   const { id } = useParams();
 
+  const header = () => {
+    return {
+      day: "",
+      name: "",
+    };
+  };
+
+  const exercise = (
+    id,
+    name = "",
+    sets = 1,
+    reps = 10,
+    rpe = 8,
+    notes = "",
+    unique = uuidv4()
+  ) => {
+    return {
+      id: id,
+      name: name,
+      sets: sets,
+      reps: reps,
+      rpe: rpe,
+      notes: notes,
+    };
+  };
+
+  //Template
+  //console.log({ exercises: [exercise()], ...header });
+
+  let template = { exercises: [], ...header };
+
   const [search, setSearch] = useState("");
-  const [monday, setMonday] = useState([]);
   const [exercises, setExercises] = useState([]);
+
+  const [selectedDay, setSelectedDay] = useState("Monday");
+  const [monday, setMonday] = useState({
+    ...template,
+    day: "Monday",
+    name: "",
+  });
+  const [tuesday, setTuesday] = useState({
+    ...template,
+    day: "Tuesday",
+    name: "",
+  });
+  const [wednesday, setWednesday] = useState({
+    ...template,
+    day: "Wednesday",
+    name: "",
+  });
+  const [thursday, setThursday] = useState({
+    ...template,
+    day: "Thursday",
+    name: "",
+  });
+  const [friday, setFriday] = useState({
+    ...template,
+    day: "Friday",
+    name: "",
+  });
+  const [saturday, setSaturday] = useState({
+    ...template,
+    day: "Saturday",
+    name: "",
+  });
+  const [sunday, setSunday] = useState({
+    ...template,
+    day: "Sunday",
+    name: "",
+  });
 
   const clientQuery = useQuery(CLIENT_QUERY, {
     variables: {
@@ -59,16 +127,7 @@ export default function Workout() {
       name: search === "" ? `% %` : `%${search}%`,
     },
   });
-  /*
-  useEffect(async () => {
-    const { data, loading, errors } = await getExercises;
-    exercises = data.exercise;
-    if (errors) {
-      console.error(errors);
-    }
-    console.log(exercises);
-  }, []);
-*/
+
   const { data, loading, errors } = clientQuery;
 
   if (loading) {
@@ -90,8 +149,152 @@ export default function Workout() {
 
   const searchExercises = async () => {
     const { data, loading, errors } = await getExercises;
-    setExercises(data.exercise);
-    console.log(exercises);
+    if (data) {
+      setExercises(data.exercise);
+    }
+  };
+
+  const handleFormSubmit = (e) => {
+    e.preventDefault();
+  };
+  console.log(selectedDay);
+
+  const addExercise = (data) => {
+    let previous;
+
+    switch (selectedDay) {
+      case "Monday":
+        previous = monday;
+        setMonday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(monday);
+        break;
+
+      case "Tuesday":
+        previous = tuesday;
+        setTuesday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(tuesday);
+        break;
+
+      case "Wednesday":
+        previous = wednesday;
+        setWednesday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(wednesday);
+        break;
+
+      case "Thursday":
+        previous = thursday;
+        setThursday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(thursday);
+        break;
+
+      case "Friday":
+        previous = friday;
+        setFriday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(friday);
+        break;
+
+      case "Saturday":
+        previous = saturday;
+        setSaturday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(saturday);
+        break;
+
+      case "Sunday":
+        previous = sunday;
+        setSunday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(sunday);
+        break;
+    }
+  };
+
+  const setWorkoutTitle = (name, day) => {
+    //console.log(name, day);
+
+    let previous;
+
+    switch (day) {
+      case "Monday":
+        previous = monday;
+        previous.name = name;
+        setMonday(previous);
+        console.log(monday);
+        break;
+
+      case "Tuesday":
+        previous = tuesday;
+        setTuesday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(tuesday);
+        break;
+
+      case "Wednesday":
+        previous = wednesday;
+        setWednesday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(wednesday);
+        break;
+
+      case "Thursday":
+        previous = thursday;
+        setThursday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(thursday);
+        break;
+
+      case "Friday":
+        previous = friday;
+        setFriday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(friday);
+        break;
+
+      case "Saturday":
+        previous = saturday;
+        setSaturday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(saturday);
+        break;
+
+      case "Sunday":
+        previous = sunday;
+        setSunday(
+          previous,
+          previous.exercises.push(exercise(data.id, data.name))
+        );
+        console.log(sunday);
+        break;
+    }
   };
 
   return (
@@ -110,9 +313,24 @@ export default function Workout() {
       </div>
       <div className="client-workout-grid">
         <article className="workout-plan rounded shadow">
-          <h2 className="hidden">Weekly workout plan</h2>
-          <WorkoutDayPlan day="Monday" handleDelete={handleDelete} />
-          <WorkoutDayPlan day="Tuesday" handleDelete={handleDelete} />
+          <form onSubmit={handleFormSubmit}>
+            <h2 className="hidden">Weekly workout plan</h2>
+            <WorkoutDayPlan
+              setSelectedDay={(day) => setSelectedDay(day)}
+              selected={selectedDay}
+              day="Monday"
+              dayTitle={setWorkoutTitle}
+              handleDelete={handleDelete}
+            />
+            <WorkoutDayPlan
+              setSelectedDay={(day) => setSelectedDay(day)}
+              selected={selectedDay}
+              day="Tuesday"
+              dayTitle={setWorkoutTitle}
+              handleDelete={handleDelete}
+            />
+            <input type="submit" />
+          </form>
         </article>
         <article className="workout-exercises rounded shadow">
           <form>
@@ -127,8 +345,11 @@ export default function Workout() {
               type="text"
             />
           </form>
+
           {exercises ? (
-            exercises.map((item) => <ExerciseItem info={item} />)
+            exercises.map((item) => (
+              <ExerciseItem onClick={addExercise} info={item} />
+            ))
           ) : (
             <p>No items</p>
           )}

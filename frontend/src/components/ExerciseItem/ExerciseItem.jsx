@@ -1,11 +1,11 @@
 import React from "react";
 import style from "./ExerciseItem.module.css";
 
-export default function ExerciseItem({ info }) {
-  const { name, secondary_muscles, muscle } = info;
+export default function ExerciseItem({ info, onClick }) {
+  const { name, secondary_muscles, muscle, id } = info;
 
   return (
-    <div className={style.exercise}>
+    <div onClick={(e) => onClick(info)} className={style.exercise}>
       <p className={style.name}>{name}</p>
       <p className={style.primary}>Primary muscle: {muscle.name}</p>
       <p className={style.secondary}>

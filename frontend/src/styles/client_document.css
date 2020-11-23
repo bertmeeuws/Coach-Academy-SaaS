@@ -158,6 +158,13 @@
   grid-column: 2 / 7;
   margin-top: 2rem;
 }
+.workout-plan-exercise input {
+  font-family: Poppins;
+  border: none;
+  outline: none;
+  font-weight: 600;
+  color: var(--darklbue);
+}
 .workout-day-draganddrop {
   width: 100%;
   height: 4rem;
@@ -186,4 +193,9 @@
 .client-workout-breadcrumbs {
   margin-bottom: 2rem;
   margin-left: 1rem;
+}
+
+.workout-plan-day--selected {
+  border-color: var(--green);
+  color: var(--green);
 }
