@@ -58,8 +58,7 @@ export default function Workout() {
     sets = 1,
     reps = 10,
     rpe = 8,
-    notes = "",
-    unique = uuidv4()
+    notes = ""
   ) => {
     return {
       id: id,
@@ -68,6 +67,7 @@ export default function Workout() {
       reps: reps,
       rpe: rpe,
       notes: notes,
+      unique: uuidv4(),
     };
   };
 
@@ -157,142 +157,99 @@ export default function Workout() {
   const handleFormSubmit = (e) => {
     e.preventDefault();
   };
-  console.log(selectedDay);
 
   const addExercise = (data) => {
-    let previous;
-
     switch (selectedDay) {
       case "Monday":
-        previous = monday;
-        setMonday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(monday);
+        {
+          const clone = Object.assign({}, monday);
+          clone.exercises.push(exercise(data.id, data.name));
+          setMonday(clone);
+
+          console.log(monday);
+        }
         break;
 
       case "Tuesday":
-        previous = tuesday;
-        setTuesday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(tuesday);
+        {
+          const clone2 = Object.assign({}, tuesday);
+          clone2.exercises.push(exercise(data.id, data.name));
+          setTuesday(clone2);
+          console.log(tuesday);
+        }
         break;
 
       case "Wednesday":
-        previous = wednesday;
         setWednesday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
+          wednesday,
+          wednesday.exercises.push(exercise(data.id, data.name))
         );
         console.log(wednesday);
         break;
 
       case "Thursday":
-        previous = thursday;
         setThursday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
+          thursday,
+          thursday.exercises.push(exercise(data.id, data.name))
         );
         console.log(thursday);
         break;
 
       case "Friday":
-        previous = friday;
-        setFriday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
-        );
+        setFriday(friday, friday.exercises.push(exercise(data.id, data.name)));
         console.log(friday);
         break;
 
       case "Saturday":
-        previous = saturday;
         setSaturday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
+          saturday,
+          saturday.exercises.push(exercise(data.id, data.name))
         );
         console.log(saturday);
         break;
 
       case "Sunday":
-        previous = sunday;
-        setSunday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
-        );
+        setSunday(sunday, sunday.exercises.push(exercise(data.id, data.name)));
         console.log(sunday);
         break;
     }
   };
 
   const setWorkoutTitle = (name, day) => {
-    //console.log(name, day);
-
-    let previous;
-
     switch (day) {
       case "Monday":
-        previous = monday;
-        previous.name = name;
-        setMonday(previous);
-        console.log(monday);
+        setMonday(monday, (monday.name = name));
+
         break;
 
       case "Tuesday":
-        previous = tuesday;
-        setTuesday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(tuesday);
+        setTuesday(tuesday, (tuesday.name = name));
+
         break;
 
       case "Wednesday":
-        previous = wednesday;
-        setWednesday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(wednesday);
+        setWednesday(wednesday, (wednesday.name = name));
+
         break;
 
       case "Thursday":
-        previous = thursday;
-        setThursday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(thursday);
+        setThursday(thursday, (thursday.name = name));
+
         break;
 
       case "Friday":
-        previous = friday;
-        setFriday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(friday);
+        setFriday(friday, (friday.name = name));
+
         break;
 
       case "Saturday":
-        previous = saturday;
-        setSaturday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(saturday);
+        setSaturday(saturday, (saturday.name = name));
+
         break;
 
       case "Sunday":
-        previous = sunday;
-        setSunday(
-          previous,
-          previous.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(sunday);
+        setSunday(sunday, (sunday.name = name));
+
         break;
     }
   };
@@ -319,6 +276,7 @@ export default function Workout() {
               setSelectedDay={(day) => setSelectedDay(day)}
               selected={selectedDay}
               day="Monday"
+              data={monday}
               dayTitle={setWorkoutTitle}
               handleDelete={handleDelete}
             />
@@ -326,6 +284,47 @@ export default function Workout() {
               setSelectedDay={(day) => setSelectedDay(day)}
               selected={selectedDay}
               day="Tuesday"
+              data={tuesday}
+              dayTitle={setWorkoutTitle}
+              handleDelete={handleDelete}
+            />
+            <WorkoutDayPlan
+              setSelectedDay={(day) => setSelectedDay(day)}
+              selected={selectedDay}
+              day="Wednesday"
+              data={wednesday}
+              dayTitle={setWorkoutTitle}
+              handleDelete={handleDelete}
+            />
+            <WorkoutDayPlan
+              setSelectedDay={(day) => setSelectedDay(day)}
+              selected={selectedDay}
+              day="Thursday"
+              data={thursday}
+              dayTitle={setWorkoutTitle}
+              handleDelete={handleDelete}
+            />
+            <WorkoutDayPlan
+              setSelectedDay={(day) => setSelectedDay(day)}
+              selected={selectedDay}
+              day="Friday"
+              data={friday}
+              dayTitle={setWorkoutTitle}
+              handleDelete={handleDelete}
+            />
+            <WorkoutDayPlan
+              setSelectedDay={(day) => setSelectedDay(day)}
+              selected={selectedDay}
+              day="Saturday"
+              data={saturday}
+              dayTitle={setWorkoutTitle}
+              handleDelete={handleDelete}
+            />
+            <WorkoutDayPlan
+              setSelectedDay={(day) => setSelectedDay(day)}
+              selected={selectedDay}
+              day="Sunday"
+              data={sunday}
               dayTitle={setWorkoutTitle}
               handleDelete={handleDelete}
             />

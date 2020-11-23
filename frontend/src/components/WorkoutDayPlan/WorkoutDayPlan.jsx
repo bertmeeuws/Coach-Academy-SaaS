@@ -20,7 +20,7 @@ export default function WorkoutDayPlan({
           value={dayName}
           onChange={(e) => {
             setDayName(e.currentTarget.value);
-            dayTitle(dayName, day);
+            dayTitle(e.currentTarget.value, day);
           }}
           required
           type="text"
