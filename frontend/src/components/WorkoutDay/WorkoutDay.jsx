@@ -7,11 +7,10 @@ export default function WorkoutDay({
   reps,
   rpe,
   notes,
+  setRpe,
+  setSets,
+  setReps,
 }) {
-  const [setsInput, setSets] = useState(sets);
-  const [repsInput, setReps] = useState(reps);
-  const [RPEInput, setRPE] = useState(rpe);
-
   const maxLengthCheck = (object) => {
     if (object.target.value.length > object.target.maxLength) {
       object.target.value = object.target.value.slice(
@@ -34,7 +33,7 @@ export default function WorkoutDay({
         className="workout-exercise-sets"
         type="number"
         onChange={(e) => setSets(e.currentTarget.value)}
-        value={setsInput}
+        value={sets}
         maxLength="2"
         placeholder="..."
         onInput={maxLengthCheck}
@@ -44,30 +43,34 @@ export default function WorkoutDay({
         className="workout-exercise-reps"
         type="number"
         onChange={(e) => setReps(e.currentTarget.value)}
-        value={repsInput}
+        value={reps}
         maxLength="3"
         placeholder="..."
         onInput={maxLengthCheck}
         required
       />
       <input
-        onChange={(e) => setRPE(e.currentTarget.value)}
+        onChange={(e) => setRpe(e.currentTarget.value)}
         className="workout-exercise-rpe"
         type="number"
         maxLength="2"
         placeholder="..."
         onInput={maxLengthCheck}
-        value={RPEInput}
+        value={rpe}
         required
       />
       <button className="workout-exercise-memo">Record</button>
-      <p className="workout-exercise-notes smalltext">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus nec
-        ligula non sagittis. Fusce efficitur magna ligula. Vestibulum porttitor,
-        magna eu scelerisque malesuada, nibh augue egestas justo, et aliquam dui
-        mi at justo. Vestibulum at est posuere, venenatis neque a, commodo
-        nulla.
-      </p>
+      {notes === "" ? (
+        <p className="workout-exercise-notes smalltext">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus
+          nec ligula non sagittis. Fusce efficitur magna ligula. Vestibulum
+          porttitor, magna eu scelerisque malesuada, nibh augue egestas justo,
+          et aliquam dui mi at justo. Vestibulum at est posuere, venenatis neque
+          a, commodo nulla.
+        </p>
+      ) : (
+        ""
+      )}
     </div>
   );
 }

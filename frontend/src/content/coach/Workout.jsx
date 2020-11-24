@@ -5,6 +5,7 @@ import WorkoutDayPlan from "../../components/WorkoutDayPlan/WorkoutDayPlan";
 import ExerciseItem from "../../components/ExerciseItem/ExerciseItem";
 import Breadcrumb from "../../assets/images/breadcrumbs.png";
 import { v4 as uuidv4 } from "uuid";
+import { useLocalStore, action } from "easy-peasy";
 
 const CLIENT_QUERY = gql`
   query GetClientData($id: Int!) @cached(ttl: 120) {
@@ -45,13 +46,6 @@ const EXERCISE_API = gql`
 export default function Workout() {
   const { id } = useParams();
 
-  const header = () => {
-    return {
-      day: "",
-      name: "",
-    };
-  };
-
   const exercise = (
     id,
     name = "",
@@ -71,50 +65,78 @@ export default function Workout() {
     };
   };
 
-  //Template
-  //console.log({ exercises: [exercise()], ...header });
-
-  let template = { exercises: [], ...header };
+  const [state, actions] = useLocalStore(() => ({
+    selectedDay: "Monday",
+    setSelectedDay: action((_state, payload) => {
+      _state.selectedDay = payload;
+    }),
+    addExerciseToDay: action((_state, payload) => {
+      console.log(payload);
+      _state[_state.selectedDay].exercises.push(payload);
+    }),
+    setDayTitle: action((_state, payload) => {
+      _state[payload.day].name = payload.name;
+    }),
+    setReps: action((_state, payload) => {
+      //find item in array
+      console.log(payload);
+      _state[payload.day].exercises.map((item) =>
+        item.unique === payload.unique ? (item.reps = payload.value) : item
+      );
+    }),
+    setRpe: action((_state, payload) => {
+      //find item in array
+      console.log(payload);
+      _state[payload.day].exercises.map((item) =>
+        item.unique === payload.unique ? (item.rpe = payload.value) : item
+      );
+    }),
+    setSets: action((_state, payload) => {
+      //find item in array
+      console.log(payload);
+      _state[payload.day].exercises.map((item) =>
+        item.unique === payload.unique ? (item.sets = payload.value) : item
+      );
+    }),
+    Monday: {
+      day: "Monday",
+      name: "",
+      exercises: [],
+    },
+    Tuesday: {
+      day: "Tuesday",
+      name: "",
+      exercises: [],
+    },
+    Wednesday: {
+      day: "Wednesday",
+      name: "",
+      exercises: [],
+    },
+    Thursday: {
+      day: "Thursday",
+      name: "",
+      exercises: [],
+    },
+    Friday: {
+      day: "Friday",
+      name: "",
+      exercises: [],
+    },
+    Saturday: {
+      day: "Saturday",
+      name: "",
+      exercises: [],
+    },
+    Sunday: {
+      day: "Sunday",
+      name: "",
+      exercises: [],
+    },
+  }));
 
   const [search, setSearch] = useState("");
   const [exercises, setExercises] = useState([]);
-
-  const [selectedDay, setSelectedDay] = useState("Monday");
-  const [monday, setMonday] = useState({
-    ...template,
-    day: "Monday",
-    name: "",
-  });
-  const [tuesday, setTuesday] = useState({
-    ...template,
-    day: "Tuesday",
-    name: "",
-  });
-  const [wednesday, setWednesday] = useState({
-    ...template,
-    day: "Wednesday",
-    name: "",
-  });
-  const [thursday, setThursday] = useState({
-    ...template,
-    day: "Thursday",
-    name: "",
-  });
-  const [friday, setFriday] = useState({
-    ...template,
-    day: "Friday",
-    name: "",
-  });
-  const [saturday, setSaturday] = useState({
-    ...template,
-    day: "Saturday",
-    name: "",
-  });
-  const [sunday, setSunday] = useState({
-    ...template,
-    day: "Sunday",
-    name: "",
-  });
 
   const clientQuery = useQuery(CLIENT_QUERY, {
     variables: {
@@ -148,7 +170,7 @@ export default function Workout() {
   const handleDelete = () => {};
 
   const searchExercises = async () => {
-    const { data, loading, errors } = await getExercises;
+    const { data } = await getExercises;
     if (data) {
       setExercises(data.exercise);
     }
@@ -159,100 +181,11 @@ export default function Workout() {
   };
 
   const addExercise = (data) => {
-    switch (selectedDay) {
-      case "Monday":
-        {
-          const clone = Object.assign({}, monday);
-          clone.exercises.push(exercise(data.id, data.name));
-          setMonday(clone);
-
-          console.log(monday);
-        }
-        break;
-
-      case "Tuesday":
-        {
-          const clone2 = Object.assign({}, tuesday);
-          clone2.exercises.push(exercise(data.id, data.name));
-          setTuesday(clone2);
-          console.log(tuesday);
-        }
-        break;
-
-      case "Wednesday":
-        setWednesday(
-          wednesday,
-          wednesday.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(wednesday);
-        break;
-
-      case "Thursday":
-        setThursday(
-          thursday,
-          thursday.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(thursday);
-        break;
-
-      case "Friday":
-        setFriday(friday, friday.exercises.push(exercise(data.id, data.name)));
-        console.log(friday);
-        break;
-
-      case "Saturday":
-        setSaturday(
-          saturday,
-          saturday.exercises.push(exercise(data.id, data.name))
-        );
-        console.log(saturday);
-        break;
-
-      case "Sunday":
-        setSunday(sunday, sunday.exercises.push(exercise(data.id, data.name)));
-        console.log(sunday);
-        break;
-    }
+    actions.addExerciseToDay(exercise(data.id, data.name));
+    console.log("Exercise added");
   };
 
-  const setWorkoutTitle = (name, day) => {
-    switch (day) {
-      case "Monday":
-        setMonday(monday, (monday.name = name));
-
-        break;
-
-      case "Tuesday":
-        setTuesday(tuesday, (tuesday.name = name));
-
-        break;
-
-      case "Wednesday":
-        setWednesday(wednesday, (wednesday.name = name));
-
-        break;
-
-      case "Thursday":
-        setThursday(thursday, (thursday.name = name));
-
-        break;
-
-      case "Friday":
-        setFriday(friday, (friday.name = name));
-
-        break;
-
-      case "Saturday":
-        setSaturday(saturday, (saturday.name = name));
-
-        break;
-
-      case "Sunday":
-        setSunday(sunday, (sunday.name = name));
-
-        break;
-    }
-  };
+  console.log(state);
 
   return (
     <section className="client-workout">
@@ -273,60 +206,123 @@ export default function Workout() {
           <form onSubmit={handleFormSubmit}>
             <h2 className="hidden">Weekly workout plan</h2>
             <WorkoutDayPlan
-              setSelectedDay={(day) => setSelectedDay(day)}
-              selected={selectedDay}
+              setSelectedDay={(day) => actions.setSelectedDay(String(day))}
+              selected={state.selectedDay}
               day="Monday"
-              data={monday}
-              dayTitle={setWorkoutTitle}
+              data={state.Monday}
+              dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
+              setSets={(value, day, unique) =>
+                actions.setSets({ value, day, unique })
+              }
+              setReps={(value, day, unique) =>
+                actions.setReps({ value, day, unique })
+              }
+              setRpe={(value, day, unique) =>
+                actions.setRpe({ value, day, unique })
+              }
             />
             <WorkoutDayPlan
-              setSelectedDay={(day) => setSelectedDay(day)}
-              selected={selectedDay}
+              setSelectedDay={(day) => actions.setSelectedDay(String(day))}
+              selected={state.selectedDay}
               day="Tuesday"
-              data={tuesday}
-              dayTitle={setWorkoutTitle}
+              data={state.Tuesday}
+              dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
+              setSets={(value, day, unique) =>
+                actions.setSets({ value, day, unique })
+              }
+              setReps={(value, day, unique) =>
+                actions.setReps({ value, day, unique })
+              }
+              setRpe={(value, day, unique) =>
+                actions.setRpe({ value, day, unique })
+              }
             />
             <WorkoutDayPlan
-              setSelectedDay={(day) => setSelectedDay(day)}
-              selected={selectedDay}
+              setSelectedDay={(day) => actions.setSelectedDay(String(day))}
+              selected={state.selectedDay}
               day="Wednesday"
-              data={wednesday}
-              dayTitle={setWorkoutTitle}
+              data={state.Wednesday}
+              dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
+              setSets={(value, day, unique) =>
+                actions.setSets({ value, day, unique })
+              }
+              setReps={(value, day, unique) =>
+                actions.setReps({ value, day, unique })
+              }
+              setRpe={(value, day, unique) =>
+                actions.setRpe({ value, day, unique })
+              }
             />
             <WorkoutDayPlan
-              setSelectedDay={(day) => setSelectedDay(day)}
-              selected={selectedDay}
+              setSelectedDay={(day) => actions.setSelectedDay(String(day))}
+              selected={state.selectedDay}
               day="Thursday"
-              data={thursday}
-              dayTitle={setWorkoutTitle}
+              data={state.Thursday}
+              dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
+              setSets={(value, day, unique) =>
+                actions.setSets({ value, day, unique })
+              }
+              setReps={(value, day, unique) =>
+                actions.setReps({ value, day, unique })
+              }
+              setRpe={(value, day, unique) =>
+                actions.setRpe({ value, day, unique })
+              }
             />
             <WorkoutDayPlan
-              setSelectedDay={(day) => setSelectedDay(day)}
-              selected={selectedDay}
+              setSelectedDay={(day) => actions.setSelectedDay(String(day))}
+              selected={state.selectedDay}
               day="Friday"
-              data={friday}
-              dayTitle={setWorkoutTitle}
+              data={state.Friday}
+              dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
+              setSets={(value, day, unique) =>
+                actions.setSets({ value, day, unique })
+              }
+              setReps={(value, day, unique) =>
+                actions.setReps({ value, day, unique })
+              }
+              setRpe={(value, day, unique) =>
+                actions.setRpe({ value, day, unique })
+              }
             />
             <WorkoutDayPlan
-              setSelectedDay={(day) => setSelectedDay(day)}
-              selected={selectedDay}
+              setSelectedDay={(day) => actions.setSelectedDay(String(day))}
+              selected={state.selectedDay}
               day="Saturday"
-              data={saturday}
-              dayTitle={setWorkoutTitle}
+              data={state.Saturday}
+              dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
+              setSets={(value, day, unique) =>
+                actions.setSets({ value, day, unique })
+              }
+              setReps={(value, day, unique) =>
+                actions.setReps({ value, day, unique })
+              }
+              setRpe={(value, day, unique) =>
+                actions.setRpe({ value, day, unique })
+              }
             />
             <WorkoutDayPlan
-              setSelectedDay={(day) => setSelectedDay(day)}
-              selected={selectedDay}
+              setSelectedDay={(day) => actions.setSelectedDay(String(day))}
+              selected={state.selectedDay}
               day="Sunday"
-              data={sunday}
-              dayTitle={setWorkoutTitle}
+              data={state.Sunday}
+              dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
+              setSets={(value, day, unique) =>
+                actions.setSets({ value, day, unique })
+              }
+              setReps={(value, day, unique) =>
+                actions.setReps({ value, day, unique })
+              }
+              setRpe={(value, day, unique) =>
+                actions.setRpe({ value, day, unique })
+              }
             />
             <input type="submit" />
           </form>

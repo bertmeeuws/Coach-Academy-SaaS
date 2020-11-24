@@ -8,6 +8,10 @@ export default function WorkoutDayPlan({
   setSelectedDay,
   selected,
   dayTitle,
+  data,
+  setSets,
+  setReps,
+  setRpe,
 }) {
   const [dayName, setDayName] = useState("");
 
@@ -27,16 +31,21 @@ export default function WorkoutDayPlan({
         />
       </div>
       <WorkoutTableHeader />
-      <WorkoutDay
-        name="Bench press"
-        sets="5"
-        reps="5"
-        rpe="8"
-        handleDelete={handleDelete}
-      />
+      {data.exercises.map((exercise) => (
+        <WorkoutDay
+          name={exercise.name}
+          sets={exercise.sets}
+          setSets={(value) => setSets(value, day, exercise.unique)}
+          reps={exercise.reps}
+          setReps={(value) => setReps(value, day, exercise.unique)}
+          rpe={exercise.rpe}
+          setRpe={(value) => setRpe(value, day, exercise.unique)}
+          handleDelete={handleDelete(exercise.unique)}
+        />
+      ))}
 
       <div
-        onClick={(e) => setSelectedDay(day)}
+        onClick={() => setSelectedDay(day)}
         className={`workout-day-draganddrop ${
           selected === day ? "  workout-plan-day--selected" : ""
         }`}
