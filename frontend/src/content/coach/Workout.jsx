@@ -229,7 +229,7 @@ export default function Workout() {
       console.log("Error in workout plan");
     }
     //Start adding the days
-    Object.values(state.Workouts).forEach(async (day) => {
+    await Object.values(state.Workouts).forEach(async (day) => {
       let workoutId;
       try {
         const { data } = await insertWorkout({
@@ -246,7 +246,7 @@ export default function Workout() {
       } catch (errors) {
         console.log(errors);
       }
-      day.exercises.forEach(async (exercise) => {
+      await day.exercises.forEach(async (exercise) => {
         try {
           const { data } = await insertExerciseInWorkout({
             variables: {
@@ -266,13 +266,6 @@ export default function Workout() {
         }
       });
     });
-
-    //Value returned
-
-    //let workoutPlanId = returnedWorkoutPlanId.insert_workout_plan_one.id;
-    /*
-   
-    */
   };
 
   const addExercise = (data) => {
@@ -292,7 +285,9 @@ export default function Workout() {
           Maxime Vercruysse
         </Link>{" "}
         <img className="client-workout-breadcrumbs-icon" src={Breadcrumb}></img>
-        <Link className="client-workout-breadcrumbs--link">Workout plan</Link>
+        <Link className="client-workout-breadcrumbs--link">
+          Add workout plan
+        </Link>
       </div>
       <div className="client-workout-grid">
         <article className="workout-plan rounded shadow">
