@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery, gql, useMutation } from "@apollo/client";
 import { useParams, Link, Redirect } from "react-router-dom";
 import WorkoutDayPlan from "../../components/WorkoutDayPlan/WorkoutDayPlan";
 import ExerciseItem from "../../components/ExerciseItem/ExerciseItem";
@@ -43,6 +43,29 @@ const EXERCISE_API = gql`
   }
 `;
 
+const INSERT_WORKOUTPLAN = gql`
+  mutation InsertWorkoutPlan($object: workout_plan_insert_input!) {
+    insert_workout_plan_one(object: $object) {
+      id
+    }
+  }
+`;
+
+const INSERT_WORKOUT = gql`
+  mutation InsertWorkout($object: workout_insert_input!) {
+    insert_workout_one(object: $object) {
+      id
+    }
+  }
+`;
+const INSERT_EXERCISE_IN_WORKOUT = gql`
+  mutation InsertExerciseInWorkout($object: exercise_in_workout_insert_input!) {
+    insert_exercise_in_workout_one(object: $object) {
+      id
+    }
+  }
+`;
+
 export default function Workout() {
   const { id } = useParams();
 
@@ -67,71 +90,80 @@ export default function Workout() {
 
   const [state, actions] = useLocalStore(() => ({
     selectedDay: "Monday",
+
     setSelectedDay: action((_state, payload) => {
       _state.selectedDay = payload;
     }),
     addExerciseToDay: action((_state, payload) => {
       console.log(payload);
-      _state[_state.selectedDay].exercises.push(payload);
+      _state.Workouts[_state.selectedDay].exercises.push(payload);
     }),
     setDayTitle: action((_state, payload) => {
-      _state[payload.day].name = payload.name;
+      _state.Workouts[payload.day].name = payload.name;
     }),
     setReps: action((_state, payload) => {
       //find item in array
       console.log(payload);
-      _state[payload.day].exercises.map((item) =>
+      _state.Workouts[payload.day].exercises.map((item) =>
         item.unique === payload.unique ? (item.reps = payload.value) : item
       );
     }),
     setRpe: action((_state, payload) => {
       //find item in array
       console.log(payload);
-      _state[payload.day].exercises.map((item) =>
+      _state.Workouts[payload.day].exercises.map((item) =>
         item.unique === payload.unique ? (item.rpe = payload.value) : item
       );
     }),
     setSets: action((_state, payload) => {
       //find item in array
       console.log(payload);
-      _state[payload.day].exercises.map((item) =>
+      _state.Workouts[payload.day].exercises.map((item) =>
         item.unique === payload.unique ? (item.sets = payload.value) : item
       );
     }),
-    Monday: {
-      day: "Monday",
-      name: "",
-      exercises: [],
-    },
-    Tuesday: {
-      day: "Tuesday",
-      name: "",
-      exercises: [],
-    },
-    Wednesday: {
-      day: "Wednesday",
-      name: "",
-      exercises: [],
-    },
-    Thursday: {
-      day: "Thursday",
-      name: "",
-      exercises: [],
-    },
-    Friday: {
-      day: "Friday",
-      name: "",
-      exercises: [],
-    },
-    Saturday: {
-      day: "Saturday",
-      name: "",
-      exercises: [],
-    },
-    Sunday: {
-      day: "Sunday",
-      name: "",
-      exercises: [],
+    clearFields: action((_state, payload) => {
+      Object.values(_state.Workouts).forEach((day) => {
+        day.name = "";
+        day.exercises = [];
+      });
+    }),
+    Workouts: {
+      Monday: {
+        day: "Monday",
+        name: "",
+        exercises: [],
+      },
+      Tuesday: {
+        day: "Tuesday",
+        name: "",
+        exercises: [],
+      },
+      Wednesday: {
+        day: "Wednesday",
+        name: "",
+        exercises: [],
+      },
+      Thursday: {
+        day: "Thursday",
+        name: "",
+        exercises: [],
+      },
+      Friday: {
+        day: "Friday",
+        name: "",
+        exercises: [],
+      },
+      Saturday: {
+        day: "Saturday",
+        name: "",
+        exercises: [],
+      },
+      Sunday: {
+        day: "Sunday",
+        name: "",
+        exercises: [],
+      },
     },
   }));
 
@@ -152,11 +184,11 @@ export default function Workout() {
 
   const { data, loading, errors } = clientQuery;
 
-  if (loading) {
-    if (data) {
-      console.log(data);
-    }
-  }
+  const [insertWorkoutPlan] = useMutation(INSERT_WORKOUTPLAN);
+
+  const [insertWorkout] = useMutation(INSERT_WORKOUT);
+
+  const [insertExerciseInWorkout] = useMutation(INSERT_EXERCISE_IN_WORKOUT);
 
   if (errors) {
     console.error(errors);
@@ -176,16 +208,77 @@ export default function Workout() {
     }
   };
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
+    //Add to database
+    let idWorkoutplan;
+    try {
+      const { data } = await insertWorkoutPlan({
+        variables: {
+          object: {
+            client_id: id,
+            coach_id: 15,
+            expiry_date: "2020-11-25",
+          },
+        },
+      });
+      console.log("Workout plan inserted");
+      console.log(data.insert_workout_plan_one.id);
+      idWorkoutplan = data.insert_workout_plan_one.id;
+    } catch (errors) {
+      console.log("Error in workout plan");
+    }
+    //Start adding the days
+    Object.values(state.Workouts).forEach(async (day) => {
+      let workoutId;
+      try {
+        const { data } = await insertWorkout({
+          variables: {
+            object: {
+              day: day.day,
+              title: day.name,
+              workout_plan_id: idWorkoutplan,
+            },
+          },
+        });
+        console.log(data);
+        workoutId = data.insert_workout_one.id;
+      } catch (errors) {
+        console.log(errors);
+      }
+      day.exercises.forEach(async (exercise) => {
+        try {
+          const { data } = await insertExerciseInWorkout({
+            variables: {
+              object: {
+                rpe: exercise.rpe,
+                sets: exercise.sets,
+                reps: exercise.reps,
+                unique_id: exercise.unique,
+                exercise_id: exercise.id,
+                workout_id: workoutId,
+              },
+            },
+          });
+          console.log(data);
+        } catch (errors) {
+          console.log(errors);
+        }
+      });
+    });
+
+    //Value returned
+
+    //let workoutPlanId = returnedWorkoutPlanId.insert_workout_plan_one.id;
+    /*
+   
+    */
   };
 
   const addExercise = (data) => {
     actions.addExerciseToDay(exercise(data.id, data.name));
     console.log("Exercise added");
   };
-
-  console.log(state);
 
   return (
     <section className="client-workout">
@@ -209,7 +302,7 @@ export default function Workout() {
               setSelectedDay={(day) => actions.setSelectedDay(String(day))}
               selected={state.selectedDay}
               day="Monday"
-              data={state.Monday}
+              data={state.Workouts.Monday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
               setSets={(value, day, unique) =>
@@ -226,7 +319,7 @@ export default function Workout() {
               setSelectedDay={(day) => actions.setSelectedDay(String(day))}
               selected={state.selectedDay}
               day="Tuesday"
-              data={state.Tuesday}
+              data={state.Workouts.Tuesday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
               setSets={(value, day, unique) =>
@@ -243,7 +336,7 @@ export default function Workout() {
               setSelectedDay={(day) => actions.setSelectedDay(String(day))}
               selected={state.selectedDay}
               day="Wednesday"
-              data={state.Wednesday}
+              data={state.Workouts.Wednesday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
               setSets={(value, day, unique) =>
@@ -260,7 +353,7 @@ export default function Workout() {
               setSelectedDay={(day) => actions.setSelectedDay(String(day))}
               selected={state.selectedDay}
               day="Thursday"
-              data={state.Thursday}
+              data={state.Workouts.Thursday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
               setSets={(value, day, unique) =>
@@ -277,7 +370,7 @@ export default function Workout() {
               setSelectedDay={(day) => actions.setSelectedDay(String(day))}
               selected={state.selectedDay}
               day="Friday"
-              data={state.Friday}
+              data={state.Workouts.Friday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
               setSets={(value, day, unique) =>
@@ -294,7 +387,7 @@ export default function Workout() {
               setSelectedDay={(day) => actions.setSelectedDay(String(day))}
               selected={state.selectedDay}
               day="Saturday"
-              data={state.Saturday}
+              data={state.Workouts.Saturday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
               setSets={(value, day, unique) =>
@@ -311,7 +404,7 @@ export default function Workout() {
               setSelectedDay={(day) => actions.setSelectedDay(String(day))}
               selected={state.selectedDay}
               day="Sunday"
-              data={state.Sunday}
+              data={state.Workouts.Sunday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
               handleDelete={handleDelete}
               setSets={(value, day, unique) =>
