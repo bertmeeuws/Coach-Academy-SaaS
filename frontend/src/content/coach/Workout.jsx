@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useQuery, gql, useMutation } from "@apollo/client";
 import { useParams, Link, Redirect } from "react-router-dom";
 import WorkoutDayPlan from "../../components/WorkoutDayPlan/WorkoutDayPlan";
@@ -182,7 +182,7 @@ export default function Workout() {
     },
   });
 
-  const { data, loading, errors } = clientQuery;
+  const { loading, errors } = clientQuery;
 
   const [insertWorkoutPlan] = useMutation(INSERT_WORKOUTPLAN);
 

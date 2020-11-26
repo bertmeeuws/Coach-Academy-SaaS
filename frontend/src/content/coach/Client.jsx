@@ -32,7 +32,7 @@ export default function Client() {
     },
   });
 
-  const { data, errors, loading } = request;
+  const { data, loading } = request;
 
   let client = undefined;
 

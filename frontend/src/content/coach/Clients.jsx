@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import AddButton from "../../components/AddButton/AddButton";
 import ClientItem from "../../components/ClientItem/ClientItem";
@@ -35,7 +35,7 @@ export default function Clients() {
       id: 15,
     },
   });
-  const { data, errors } = clientsSubscription;
+  const { data } = clientsSubscription;
 
   const [selectedClient, setSelectedClient] = useState(undefined);
 

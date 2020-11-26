@@ -207,3 +207,21 @@
   border-color: var(--green);
   color: var(--green);
 }
+.client-diet .client_diet-days span {
+  margin-right: 2rem;
+  background-color: var(--white);
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  border-radius: 0.4rem;
+  font-weight: 500;
+  color: var(--grey);
+  transition: all 0.3s ease-in-out;
+}
+.client-diet .client_diet-days span:hover {
+  background-color: var(--green);
+  color: white;
+}
+.client-diet .client_diet-days {
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}

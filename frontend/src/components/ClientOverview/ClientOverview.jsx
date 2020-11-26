@@ -5,7 +5,7 @@ export default function ClientOverview({ client }) {
   if (client === undefined) {
     return <section className="client-overview rounded shadow"></section>;
   } else {
-    const { surname, name, dob, address, postal, city, email, phone } = client;
+    const { surname, name, dob, address, postal, city, phone } = client;
     console.log("Client: " + client);
 
     return (
