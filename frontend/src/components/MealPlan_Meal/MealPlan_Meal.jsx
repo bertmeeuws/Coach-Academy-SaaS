@@ -9,7 +9,6 @@ export default function MealPlan_Meal({
   selectedMeal,
 }) {
   const mealNumber = index + 1;
-  console.log(selectedMeal);
 
   return (
     <>

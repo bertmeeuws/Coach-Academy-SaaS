@@ -6,8 +6,7 @@ export default function MealPlan_Day({
   setSelectedMealState,
   selectedMeal,
 }) {
-  console.log(selectedMeal);
-  const { name, meals } = data;
+  const { meals } = data;
 
   return (
     <div>

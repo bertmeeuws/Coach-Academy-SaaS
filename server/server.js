@@ -247,6 +247,16 @@ app.post("/api/actions/coach-login", async (req, res) => {
   return res.json({ token });
 });
 
+app.post("/api/actions/getfood", async (req, res) => {
+  const search = req.body.input.food;
+  console.log(search);
+
+
+
+  
+  return res.json({ data: search });
+});
+
 // Bind to 0.0.0.0 host, so it'll work in Docker too
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`Server started on http://localhost:${PORT}`);

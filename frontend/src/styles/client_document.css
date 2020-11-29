@@ -212,7 +212,7 @@
   background-color: var(--white);
   padding: 0.5rem 1rem;
   cursor: pointer;
-  border-radius: 0.4rem;
+  border-radius: 0.8rem;
   font-weight: 500;
   color: var(--grey);
   transition: all 0.3s ease-in-out;
@@ -224,4 +224,21 @@
 .client-diet .client_diet-days {
   margin-bottom: 2rem;
   margin-top: 1rem;
+}
+.diet-foods-search-form {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 2rem;
+}
+.diet-foods-search-form input {
+  margin-right: 1rem;
+  color: var(--green);
+}
+.diet-search-button {
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+}
+.diet-search-button:hover {
+  background-color: var(--ghost);
+  color: var(--darklbue);
 }

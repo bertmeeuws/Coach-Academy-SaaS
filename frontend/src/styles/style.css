@@ -269,3 +269,36 @@ button {
   display: grid;
   grid-template-rows: 9rem 1fr;
 }
+.foodsearchitem-popup {
+  background-color: var(--white);
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  border-radius: 0.4rem;
+  padding: 0.5rem;
+}
+.foodsearchitem-popup input {
+  background-color: var(--ghost) !important;
+  color: var(--darkblue) !important;
+  width: 100% !important;
+  margin-right: 1rem;
+}
+.foodsearchitem-popup input::placeholder {
+  color: var(grey) !important;
+}
+
+.foodsearchitem-popup button,
+.diet-search-button {
+  background-color: var(--green);
+  color: var(--white);
+  font-family: Poppins;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  transition: all 0.1s ease-in-out;
+  cursor: pointer;
+}
+.foodsearchitem-popup button:hover {
+  background-color: var(--ghost);
+  color: var(--darkblue);
+}

@@ -1,0 +1,19 @@
+.item {
+  background-color: var(--lightgrey);
+  border-radius: 0.4rem;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.item p {
+  margin-bottom: 0.5rem;
+}
+.name {
+  font-weight: 600;
+  color: var(--darkblue);
+}
+.proteins,
+.carbs,
+.fats {
+  color: var(--darkblue);
+}
