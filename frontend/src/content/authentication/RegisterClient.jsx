@@ -3,9 +3,9 @@ import logo from "../../assets/images/logo.svg";
 import "../../styles/slider.css";
 import style from "../authentication/Login.module.css";
 import { Formik } from "formik";
-import { Link, Redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useMutation, gql } from "@apollo/client";
-import { useStoreActions, useStoreState } from "easy-peasy";
+import { useStoreActions } from "easy-peasy";
 import jwt_decode from "jwt-decode";
 
 const REGISTER_CLIENT = gql`
@@ -16,22 +16,12 @@ const REGISTER_CLIENT = gql`
   }
 `;
 
-export default function RegisterClient(props) {
+export default function RegisterClient() {
   const [REGISTER] = useMutation(REGISTER_CLIENT);
 
   const addToken = useStoreActions((actions) => actions.addToken);
   const addRoles = useStoreActions((actions) => actions.addRoles);
   const deleteToken = useStoreActions((actions) => actions.deleteToken);
-  const rolesInState = useStoreState((state) => state.roles);
-
-  if (rolesInState.includes("client")) {
-    return <Redirect to="/clientdashboard" />;
-  }
-  if (rolesInState.includes("coach")) {
-    return <Redirect to="/dashboard" />;
-  }
-
-  console.log(rolesInState);
 
   return (
     <section className="auth-section">
@@ -112,7 +102,6 @@ export default function RegisterClient(props) {
                   ];
                 addRoles(roles);
                 //console.log(roles);
-                this.props.history("/clientdashboard");
               }
               setTimeout(() => {
                 setSubmitting(false);

@@ -1,9 +1,7 @@
 import { useStoreState } from "easy-peasy";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 export default function AuthenticatedView({ roles, children }) {
-  let history = useHistory();
-
   const userRoles = useStoreState((state) => state.roles);
   console.log("Vooraf: " + userRoles);
   if (userRoles !== undefined) {
@@ -18,7 +16,7 @@ export default function AuthenticatedView({ roles, children }) {
       return children;
     } else {
       console.log(userRoles.some((it) => roles.includes(it)));
-      return history.goBack();
+      return <p>Unauthorized</p>;
     }
   } else {
     console.log("No roles found");

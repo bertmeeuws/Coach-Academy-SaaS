@@ -2,15 +2,8 @@ import React from "react";
 import "../../styles/mobilemenu.css";
 import Logo from "../../assets/images/logo.svg";
 import { Link } from "react-router-dom";
-import { useStoreActions, useStoreState } from "easy-peasy";
 
 export default function MobileMenu() {
-  const deleteToken = useStoreActions((actions) => actions.deleteToken);
-
-  const logout = (e) => {
-    deleteToken();
-  };
-
   return (
     <div className="mobile-menu shadow">
       <div className="mobile-menu-header">
@@ -53,7 +46,7 @@ export default function MobileMenu() {
             <span>Settings</span>
           </li>
         </Link>
-        <Link onClick={logout} className="link">
+        <Link className="link">
           <li className="menu-list-item rounded">
             <span>Logout</span>
           </li>

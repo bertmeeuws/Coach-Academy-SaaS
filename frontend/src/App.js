@@ -1,5 +1,5 @@
 import "./App.css";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import { BrowserRouter, Route } from "react-router-dom";
 import {
   ApolloProvider,
   ApolloClient,
@@ -81,9 +81,6 @@ function App() {
     <BrowserRouter>
       <StoreProvider store={store}>
         <ApolloProvider client={client}>
-          <Route exact path="/">
-            <Redirect to="login" />
-          </Route>
           <Route exact path="/login">
             <Login />
           </Route>
