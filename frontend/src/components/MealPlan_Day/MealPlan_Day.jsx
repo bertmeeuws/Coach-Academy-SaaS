@@ -5,6 +5,7 @@ export default function MealPlan_Day({
   data,
   setSelectedMealState,
   selectedMeal,
+  deleteFood,
 }) {
   const { meals } = data;
 
@@ -17,6 +18,7 @@ export default function MealPlan_Day({
             index={index}
             selectedMeal={selectedMeal}
             meal={meal}
+            deleteFood={deleteFood}
           />
         );
       })}

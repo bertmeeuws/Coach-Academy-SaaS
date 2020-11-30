@@ -44,6 +44,22 @@ export default function Diet() {
     setSelectedDay: action((_state, payload) => {
       _state.selectedDay = payload;
     }),
+    deletedFood: action((_state, payload) => {
+      console.log("In action");
+
+      console.log(_state.selectedDay);
+      console.log(_state.selectedMeal);
+      console.log(payload.meal);
+      console.log(payload);
+
+      _state.Days[_state.selectedDay].meals[payload.meal] = _state.Days[
+        _state.selectedDay
+      ].meals[payload.meal].filter(function (obj) {
+        return obj.unique_id !== payload.unique;
+      });
+
+      console.log(_state);
+    }),
     addFood: action((_state, payload) => {
       _state.Days[_state.selectedDay].meals[_state.selectedMeal].push({
         id: payload.id,
@@ -52,7 +68,7 @@ export default function Diet() {
         carbs: payload.carbs,
         fats: payload.fats,
         grams: payload.grams,
-        unique: uuidv4(),
+        unique_id: uuidv4(),
       });
     }),
     Days: {
@@ -335,6 +351,9 @@ export default function Diet() {
                 actions.setSelectedMeal(String(value));
               }}
               data={state.Days[state.selectedDay]}
+              deleteFood={(unique, meal) =>
+                actions.deletedFood({ unique: unique, meal: meal })
+              }
             />
           </form>
         </article>

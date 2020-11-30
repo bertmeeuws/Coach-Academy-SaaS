@@ -170,7 +170,7 @@
   border: none;
   outline: none;
   font-weight: 600;
-  color: var(--darklbue);
+  color: var(--darkblue);
   max-width: 5rem;
 }
 .workout-day-draganddrop {
@@ -185,6 +185,7 @@
   color: var(--grey);
   cursor: pointer;
   margin-top: 2rem;
+  margin-bottom: 3.5rem;
 }
 .client-workout-breadcrumbs-icon {
   margin-left: 0.5rem;
@@ -241,4 +242,13 @@
 .diet-search-button:hover {
   background-color: var(--ghost);
   color: var(--darklbue);
+}
+.mealplan-title {
+  font-weight: 600;
+  color: var(--green);
+}
+.workout-plan-delete {
+  font-weight: 600;
+  color: var(--red);
+  cursor: pointer;
 }

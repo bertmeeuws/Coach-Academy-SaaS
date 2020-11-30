@@ -12,8 +12,6 @@ export default function FoodSearchItem({ data, clickFood, addFood }) {
   const [carb, setCarb] = useState(carbs);
   const [fat, setFat] = useState(fats);
 
-  console.log(open);
-
   if (open) {
     TweenLite.to(".foodsearchitem-popup", 0.3, {
       height: "100%",

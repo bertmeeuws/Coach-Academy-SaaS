@@ -7,12 +7,13 @@ export default function MealPlan_Meal({
   meal,
   setSelectedMealState,
   selectedMeal,
+  deleteFood,
 }) {
   const mealNumber = index + 1;
 
   return (
     <>
-      <p>Meal {mealNumber}</p>
+      <p className="mealplan-title">Meal {mealNumber}</p>
       <div className="workout-table-header">
         <p></p>
         <p className="smalltext exercise">Food</p>
@@ -22,7 +23,12 @@ export default function MealPlan_Meal({
         <p className="smalltext notes">Notes</p>
       </div>
       {meal.map((item) => {
-        return <Meal_Item item={item} />;
+        return (
+          <Meal_Item
+            deleteFood={(unique) => deleteFood(unique, `meal${mealNumber}`)}
+            item={item}
+          />
+        );
       })}
       <div
         onClick={() => setSelectedMealState(`meal${mealNumber}`)}
