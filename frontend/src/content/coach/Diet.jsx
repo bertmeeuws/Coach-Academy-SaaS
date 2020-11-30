@@ -9,21 +9,48 @@ import MealPlan_Day from "../../components/MealPlan_Day/MealPlan_Day";
 import FoodSearchItem from "../../components/FoodSearchItem/FoodSearchItem";
 import FatSecret from "../../FatSecret.js";
 
+const INSERT_DIET_PLAN = gql`
+  mutation InsertDietPlan($object: diet_plan_insert_input!) {
+    insert_diet_plan_one(object: $object) {
+      id
+    }
+  }
+`;
+
+const INSERT_DIET_DAY_PLAN = gql`
+  mutation InsertDietDayPlan($object: diet_dayPlan_insert_input!) {
+    insert_diet_dayPlan_one(object: $object) {
+      id
+    }
+  }
+`;
+
+const INSERT_DIET_DAY_PLAN_MEAL = gql`
+  mutation MyMutation($object: diet_meal_insert_input!) {
+    insert_diet_meal_one(object: $object) {
+      id
+    }
+  }
+`;
+
+const INSERT_DIET_MEAL_ITEM = gql`
+  mutation InsertDietMealItem($object: diet_mealItem_insert_input!) {
+    insert_diet_mealItem_one(object: $object) {
+      id
+    }
+  }
+`;
+
 export default function Diet() {
   const { id } = useParams();
 
   const [search, setSearch] = useState("");
   const [foods, setFoods] = useState([]);
 
-  const createMealItem = (name, proteins, carbs, fats) => {
-    return {
-      name: name,
-      proteins: proteins,
-      carbs: carbs,
-      fats: fats,
-      unique_id: uuidv4(),
-    };
-  };
+  const [insertDietPlan] = useMutation(INSERT_DIET_PLAN);
+  const [insertDietDayPlan] = useMutation(INSERT_DIET_DAY_PLAN);
+  const [insertDietDayPlanMeal] = useMutation(INSERT_DIET_DAY_PLAN_MEAL);
+  const [insertDietMealitem] = useMutation(INSERT_DIET_MEAL_ITEM);
 
   const arrDays = [
     "Monday",
@@ -76,6 +103,13 @@ export default function Diet() {
         day: "Monday",
         meals: {
           meal1: [
+            {
+              name: "Egg",
+              proteins: "5",
+              carbs: "4",
+              fats: "6",
+              unique_id: uuidv4(),
+            },
             {
               name: "Egg",
               proteins: "5",
@@ -266,6 +300,75 @@ export default function Diet() {
     return foods.food;
   }
 
+  const addToDatabase = async (e) => {
+    e.preventDefault();
+    let dietPlanId;
+    let dietDayPlanId;
+    let dietMealId;
+    try {
+      const { data } = await insertDietPlan({
+        variables: {
+          object: {
+            coach_id: 15,
+            user_id: 50,
+          },
+        },
+      });
+      dietPlanId = data.insert_diet_plan_one.id;
+      console.log(data);
+    } catch (errors) {}
+    await Object.values(state.Days).forEach(async (day) => {
+      //Inserting days
+      try {
+        const { data } = await insertDietDayPlan({
+          variables: {
+            object: {
+              name: day.name,
+              diet_id: dietPlanId,
+            },
+          },
+        });
+        console.log(data);
+        dietDayPlanId = data.insert_diet_dayPlan_one.id;
+      } catch (errors) {}
+      //after inserting days we insert meals on that day
+      //Later we insert items into those meals
+      await Object.values(day.meals).forEach(async (meal, index) => {
+        //Looping over meals
+        try {
+          const { data } = await insertDietDayPlanMeal({
+            variables: {
+              object: {
+                dayPlan_id: dietDayPlanId,
+                order: index + 1,
+              },
+            },
+          });
+          console.log(data);
+          dietMealId = data.insert_diet_meal_one.id;
+        } catch (errors) {}
+        try {
+          await meal.forEach(async (item, index) => {
+            const { data } = insertDietMealitem({
+              variables: {
+                object: {
+                  diet_dayPlan_id: dietMealId,
+                  amount: item.grams,
+                  proteins: item.proteins,
+                  carbs: item.carbs,
+                  fats: item.fats,
+                  unique_id: item.unique_id,
+                  fatsecret_id: item.id,
+                },
+              },
+            });
+            console.log(data);
+          });
+        } catch (errors) {}
+      });
+    });
+  };
+
   const searchFoods = async (e) => {
     e.preventDefault();
     //Search in API
@@ -344,7 +447,7 @@ export default function Diet() {
       </div>
       <div className="client-diet-grid">
         <article className="diet-plan rounded shadow">
-          <form>
+          <form onSubmit={addToDatabase}>
             <MealPlan_Day
               selectedMeal={state.selectedMeal}
               setSelectedMealState={(value) => {
@@ -355,6 +458,7 @@ export default function Diet() {
                 actions.deletedFood({ unique: unique, meal: meal })
               }
             />
+            <input type="submit" />
           </form>
         </article>
         <article className="diet-foods rounded shadow">
