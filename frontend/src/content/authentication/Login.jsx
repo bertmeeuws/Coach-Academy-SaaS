@@ -1,10 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import logo from "../../assets/images/logo.svg";
 import "../../styles/slider.css";
 import style from "./Login.module.css";
 import { Formik } from "formik";
-import { Link } from "react-router-dom";
-import { useStoreActions } from "easy-peasy";
+import { Link, Redirect } from "react-router-dom";
+import { useStoreActions, useStoreState } from "easy-peasy";
 import jwt_decode from "jwt-decode";
 import { useMutation, gql } from "@apollo/client";
 
@@ -22,6 +22,15 @@ export default function Login() {
   const addToken = useStoreActions((actions) => actions.addToken);
   const addRoles = useStoreActions((actions) => actions.addRoles);
   const deleteToken = useStoreActions((actions) => actions.deleteToken);
+
+  const rolesInState = useStoreState((state) => state.roles);
+
+  if (rolesInState.includes("client")) {
+    return <Redirect to="/clientdashboard" />;
+  }
+  if (rolesInState.includes("coach")) {
+    return <Redirect to="/dashboard" />;
+  }
 
   return (
     <section className="auth-section">
