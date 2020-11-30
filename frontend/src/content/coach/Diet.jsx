@@ -315,26 +315,33 @@ export default function Diet() {
         },
       });
       dietPlanId = data.insert_diet_plan_one.id;
-      console.log(data);
-    } catch (errors) {}
-    await Object.values(state.Days).forEach(async (day) => {
+      console.log("Inserted diet plan");
+    } catch (errors) {
+      console.log(errors);
+    }
+    await Object.values(state.Days).forEach(async (day, index) => {
       //Inserting days
+      console.log(day);
       try {
         const { data } = await insertDietDayPlan({
           variables: {
             object: {
-              name: day.name,
+              name: day.day,
               diet_id: dietPlanId,
             },
           },
         });
-        console.log(data);
+        //Inserted day
+
         dietDayPlanId = data.insert_diet_dayPlan_one.id;
-      } catch (errors) {}
+      } catch (errors) {
+        console.log(errors);
+      }
       //after inserting days we insert meals on that day
       //Later we insert items into those meals
       await Object.values(day.meals).forEach(async (meal, index) => {
         //Looping over meals
+
         try {
           const { data } = await insertDietDayPlanMeal({
             variables: {
@@ -344,9 +351,12 @@ export default function Diet() {
               },
             },
           });
-          console.log(data);
+
           dietMealId = data.insert_diet_meal_one.id;
-        } catch (errors) {}
+        } catch (errors) {
+          console.log(errors);
+        }
+
         try {
           await meal.forEach(async (item, index) => {
             const { data } = insertDietMealitem({
@@ -354,6 +364,7 @@ export default function Diet() {
                 object: {
                   diet_dayPlan_id: dietMealId,
                   amount: item.grams,
+                  name: item.name,
                   proteins: item.proteins,
                   carbs: item.carbs,
                   fats: item.fats,
@@ -362,9 +373,10 @@ export default function Diet() {
                 },
               },
             });
-            console.log(data);
           });
-        } catch (errors) {}
+        } catch (errors) {
+          console.log(errors);
+        }
       });
     });
   };
