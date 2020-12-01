@@ -27,7 +27,7 @@
 }
 .menu-list-item {
   width: 95%;
-  background-color: var(--green);
+  background-color: var(--lightgrey);
   color: var(--darkblue);
   height: 5rem;
   display: flex;
@@ -36,6 +36,10 @@
   font-weight: 600;
   margin: 0 auto;
   margin-bottom: 1rem;
+  transition: all 0.3s ease-in-out;
+}
+.menu-list-item:hover {
+  background-color: var(--green);
 }
 .menu-list-item span {
   margin-left: 3rem;

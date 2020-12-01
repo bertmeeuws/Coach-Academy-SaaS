@@ -20,8 +20,8 @@ export default function RegisterCoach() {
 
   const addToken = useStoreActions((actions) => actions.addToken);
   const addRoles = useStoreActions((actions) => actions.addRoles);
-
   const deleteToken = useStoreActions((actions) => actions.deleteToken);
+  const addId = useStoreActions((actions) => actions.addId);
 
   const rolesInState = useStoreState((state) => state.roles);
 
@@ -77,10 +77,8 @@ export default function RegisterCoach() {
 
               console.log(errors);
               if (!errors) {
-                console.log("Received JWT token");
                 addToken(data.signUp.token);
-                console.log("Token has been added to store");
-                console.log(jwt_decode(data.signUp.token));
+
                 const decoded = jwt_decode(data.signUp.token);
 
                 console.log(
@@ -93,8 +91,12 @@ export default function RegisterCoach() {
                   decoded["https://hasura.io/jwt/claims"][
                     "x-hasura-allowed-roles"
                   ];
+
+                const id = Number(
+                  decoded["https://hasura.io/jwt/claims"]["x-hasura-client-id"]
+                );
                 addRoles(roles);
-                console.log(roles);
+                addId(id);
               }
 
               setTimeout(() => {

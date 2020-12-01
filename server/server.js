@@ -83,7 +83,9 @@ app.post("/api/actions/signup", async (req, res) => {
   });
 
   if (request.errors) return res.status(400).json({ errors: request.errors });
-  console.log("Signup user:", request);
+  console.log("Signup user: ", request);
+
+  let user_id = request.data.insert_user_one.id;
 
   if (coach) {
     //coach true
@@ -114,7 +116,7 @@ app.post("/api/actions/signup", async (req, res) => {
       defaultRole: "coach",
       allowedRoles: ["coach", "client"],
       otherClaims: {
-        "x-hasura-client-id": String(signUpCoach.data.insert_coach_one.id),
+        "x-hasura-client-id": String(user_id),
       },
     });
     console.log("Now returning token");
@@ -157,7 +159,7 @@ app.post("/api/actions/signup", async (req, res) => {
       defaultRole: "client",
       allowedRoles: ["client"],
       otherClaims: {
-        "x-hasura-client-id": String(signUpClient.data.insert_client_one.id),
+        "x-hasura-client-id": String(user_id),
       },
     });
     console.log("Now returning token");
@@ -175,6 +177,7 @@ app.post("/api/actions/login", async (req, res) => {
         email
         password
         coach
+        id
       }
     }`,
     variables: { email: client.email },
@@ -215,45 +218,10 @@ app.post("/api/actions/login", async (req, res) => {
   }
 });
 
-app.post("/api/actions/coach-login", async (req, res) => {
-  const coach = req.body.input;
-  const request = await sendQuery({
-    query: `
-      query FindCoachByEmail($email: String!){
-        coach(where: { email: { _eq: $email } }, limit: 1) {
-            id
-            password
-          }
-        }`,
-    variables: { email: coach.email },
-  });
-
-  const storedCoach = request.coach[0];
-  if (!storedCoach) return res.status(400).json({ error: "No client" });
-
-  const validPassword = bcrypt.compareSync(
-    coach.password,
-    storedCoach.password
-  );
-  if (!validPassword) return res.status(400).json({ error: "Invalid" });
-
-  const token = generateJWT({
-    defaultRole: "coach",
-    allowedRoles: ["coach", "client"],
-    otherClaims: {
-      "x-hasura-coach-id": storedCoach.id,
-    },
-  });
-  return res.json({ token });
-});
-
 app.post("/api/actions/getfood", async (req, res) => {
   const search = req.body.input.food;
   console.log(search);
 
-
-
-  
   return res.json({ data: search });
 });
 

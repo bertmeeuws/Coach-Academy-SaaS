@@ -107,7 +107,7 @@ function App() {
           </Route>
 
           <Route exact path="/clients">
-            <AuthenticatedView roles={["coach"]}>
+            <AuthenticatedView roles={["coach, client"]}>
               <div className="content-grid">
                 <Sidebar />
                 <div className="container-grid">

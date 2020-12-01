@@ -7,9 +7,31 @@ import { TweenLite, Power3 } from "gsap";
 export default function MobileHeader() {
   const [isOpen, setOpen] = useState(false);
 
+  const clicked = () => {
+    console.log("button-transparent");
+    setOpen(false);
+    if (isOpen === false) {
+      TweenLite.to(".mobile-menu", 0.2, {
+        left: "0",
+        ease: Power3.easeOut,
+      });
+      TweenLite.from(".menu-list-item", 0.2, {
+        opacity: "0",
+        translateX: "-200",
+        stagger: 0.1,
+        ease: Power3.easeOut,
+      });
+    } else {
+      TweenLite.to(".mobile-menu", 0.8, {
+        left: "-100vw",
+        ease: Power3.easeOut,
+      });
+    }
+  };
+
   return (
     <>
-      <MobileMenu />
+      <MobileMenu clicked={clicked} />
 
       <header className="client-header">
         <Hamburger
@@ -21,13 +43,13 @@ export default function MobileHeader() {
             if (toggled) {
               TweenLite.to(".mobile-menu", 0.8, {
                 left: "0",
-                ease: Power3.easeOut,
+                ease: Power3.easeIn,
               });
               TweenLite.from(".menu-list-item", 0.5, {
                 opacity: "0",
                 translateX: "-200",
                 stagger: 0.1,
-                ease: Power3.easeOut,
+                ease: Power3.easeIn,
               });
             } else {
               TweenLite.to(".mobile-menu", 0.8, {

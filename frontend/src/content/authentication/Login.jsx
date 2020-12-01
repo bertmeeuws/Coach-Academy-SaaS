@@ -22,6 +22,7 @@ export default function Login() {
   const addToken = useStoreActions((actions) => actions.addToken);
   const addRoles = useStoreActions((actions) => actions.addRoles);
   const deleteToken = useStoreActions((actions) => actions.deleteToken);
+  const addId = useStoreActions((actions) => actions.addId);
 
   const rolesInState = useStoreState((state) => state.roles);
 
@@ -81,7 +82,14 @@ export default function Login() {
                   decoded["https://hasura.io/jwt/claims"][
                     "x-hasura-allowed-roles"
                   ];
+                const id = Number(
+                  decoded["https://hasura.io/jwt/claims"]["x-hasura-client-id"]
+                );
+
+                //Adding roles and id to state
+
                 addRoles(roles);
+                addId(id);
               }
 
               setTimeout(() => {

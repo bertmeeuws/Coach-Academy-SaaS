@@ -4,8 +4,12 @@ const model = {
   todos: ["test", "hup"],
   apollotoken: undefined,
   roles: [],
+  user_id: undefined,
   addToken: action((state, payload) => {
     state.apollotoken = payload;
+  }),
+  addId: action((state, payload) => {
+    state.user_id = payload;
   }),
   deleteToken: action((state) => {
     state.apollotoken = undefined;

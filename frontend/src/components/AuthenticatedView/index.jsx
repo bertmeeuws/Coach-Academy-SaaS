@@ -4,24 +4,20 @@ import { Redirect, useHistory } from "react-router-dom";
 export default function AuthenticatedView({ roles, children }) {
   let history = useHistory();
 
-  const userRoles = useStoreState((state) => state.roles);
-  console.log("Vooraf: " + userRoles);
-  if (userRoles !== undefined) {
-    console.log("We have user roles!");
-    console.log("Userroles: " + userRoles[0]);
+  const token = useStoreState((state) => state.apollotoken);
 
+  const userRoles = useStoreState((state) => state.roles);
+  console.log("User roles: " + userRoles);
+  if (userRoles !== undefined) {
     if (userRoles.some((it) => roles.includes(it))) {
-      console.log(
-        "Does role match role of route? " +
-          userRoles.some((it) => roles.includes(it))
-      );
       return children;
     } else {
-      console.log(userRoles.some((it) => roles.includes(it)));
-      return history.goBack();
+      if (token === undefined) {
+        return <Redirect to="/login" />;
+      }
+      return <Redirect to="/login" />;
     }
   } else {
-    console.log("No roles found");
     return <Redirect to="/login" />;
   }
 }

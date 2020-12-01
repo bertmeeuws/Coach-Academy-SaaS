@@ -2,17 +2,59 @@ import React, { useState } from "react";
 import "../../styles/client.css";
 import Questionnaire from "../../components/Questionnaire/Questionnaire";
 import MobileHeader from "../../components/MobileHeader/MobileHeader";
+import { useStoreState } from "easy-peasy";
+import { useQuery, gql } from "@apollo/client";
+import { LoaderLarge } from "../../components/Loaders/Loaders";
+import CoachPopup from "../../components/AddCoach/Index";
+
+const GET_USER_DATA = gql`
+  query MyQuery($id: Int!) {
+    client(where: { user_id: { _eq: $id } }) {
+      name
+      weight
+      coach_id
+      surname
+    }
+  }
+`;
 
 export default function Dashboard() {
   const [craving, setCraving] = useState("");
   const [energyDay, setEnergyDay] = useState("");
   const [energyWorkout, setEnergyWorkout] = useState("");
+  const [inviter, setInviter] = useState(false);
+
+  const id = useStoreState((state) => state.user_id);
+
+  const { data, errors, loading } = useQuery(GET_USER_DATA, {
+    variables: {
+      id: id,
+    },
+  });
+
+  if (data) {
+    console.log(data.client[0].surname);
+  }
+
+  if (!data) {
+    return <LoaderLarge />;
+  }
 
   return (
     <>
       <MobileHeader />
       <section className="section client-dashboard">
-        <h1 className="client-dashboard-hero">Welcome Bert!</h1>
+        {data.client[0].coach_id === null ? (
+          <p onClick={(e) => setInviter(!inviter)} className="disclaimer-coach">
+            You don't have coach yet.
+          </p>
+        ) : (
+          ""
+        )}
+        {inviter ? <CoachPopup /> : ""}
+        <h1 className="client-dashboard-hero">
+          Welcome {data.client[0].surname}!
+        </h1>
         <p className="client-dashboard-subtext">
           Let's start achieving your goals.
         </p>

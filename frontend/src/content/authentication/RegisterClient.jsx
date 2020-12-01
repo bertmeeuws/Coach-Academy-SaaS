@@ -23,6 +23,7 @@ export default function RegisterClient(props) {
   const addRoles = useStoreActions((actions) => actions.addRoles);
   const deleteToken = useStoreActions((actions) => actions.deleteToken);
   const rolesInState = useStoreState((state) => state.roles);
+  const addId = useStoreActions((actions) => actions.addId);
 
   if (rolesInState.includes("client")) {
     return <Redirect to="/clientdashboard" />;
@@ -110,6 +111,13 @@ export default function RegisterClient(props) {
                   decoded["https://hasura.io/jwt/claims"][
                     "x-hasura-allowed-roles"
                   ];
+                const id = Number(
+                  decoded["https://hasura.io/jwt/claims"]["x-hasura-client-id"]
+                );
+
+                //Adding roles and id to state
+
+                addId(id);
                 addRoles(roles);
                 //console.log(roles);
                 this.props.history("/clientdashboard");

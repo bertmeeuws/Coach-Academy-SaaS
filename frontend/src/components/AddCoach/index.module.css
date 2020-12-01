@@ -1,0 +1,30 @@
+.box {
+  background-color: var(--white);
+  padding: 1.5rem;
+  border-radius: 0.8rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  color: var(--darkblue);
+}
+.box select {
+  padding: 0.5rem;
+
+  font-family: Poppins;
+  font-weight: 600;
+  border-color: var(--lightgrey);
+  color: var(--green);
+}
+.button {
+  padding: 0.5rem 1rem;
+  background-color: var(--green);
+  font-family: Poppins;
+  font-weight: 600;
+  color: white;
+}
+.form {
+  margin-top: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+}

@@ -112,16 +112,25 @@
   text-align: left;
   width: 100%;
 }
+.dashboard-workout {
+  border-collapse: separate;
+  border-spacing: 0.1rem 0.4rem;
+}
 
 .client-workout {
   margin-bottom: 4rem;
+}
+.client-workout {
+  margin-left: 0;
+  margin-right: 0;
+  margin-bottom: 2rem;
 }
 .dashboard-workout .workout-name {
   color: var(--green);
   font-weight: 500;
 }
-.dashboard-workout tr {
-  margin-bottom: 1.2rem;
+.dashboard-workout tr th {
+  margin-bottom: 2rem !important;
 }
 .mealplan-box {
   background-color: var(--green);
@@ -165,4 +174,9 @@
 }
 .mealplan-box-inactive .blue {
   color: var(--darkblue);
+}
+.disclaimer-coach {
+  margin-bottom: 1rem;
+  font-weight: 600;
+  color: var(--red);
 }
