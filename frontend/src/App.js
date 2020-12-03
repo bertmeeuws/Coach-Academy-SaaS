@@ -23,6 +23,7 @@ import Client from "./content/coach/Client";
 import Workout from "./content/coach/Workout";
 import Diet from "./content/coach/Diet";
 import ClientDashboard from "./content/client/dashboard";
+import Edit from "./content/client/Edit";
 import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
 
@@ -165,6 +166,12 @@ function App() {
           <Route exact path="/clientdashboard">
             <AuthenticatedView roles={["client"]}>
               <ClientDashboard />
+            </AuthenticatedView>
+          </Route>
+
+          <Route exact path="/clientedit">
+            <AuthenticatedView roles={["client"]}>
+              <Edit />
             </AuthenticatedView>
           </Route>
 

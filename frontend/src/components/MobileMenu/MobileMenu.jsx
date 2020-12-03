@@ -24,7 +24,7 @@ export default function MobileMenu({ clicked }) {
       </div>
       <p className="smalltext">Menu</p>
       <ul className="menu-list">
-        <Link onClick={clicked} className="link">
+        <Link to="/clientdashboard" onClick={clicked} className="link">
           <li className="menu-list-item rounded">
             <span>Dashboard</span>
           </li>
@@ -49,7 +49,7 @@ export default function MobileMenu({ clicked }) {
             <span>Calendar</span>
           </li>
         </Link>
-        <Link onClick={clicked} className="link">
+        <Link to="/clientedit" onClick={clicked} className="link">
           <li className="menu-list-item rounded">
             <span>Edit profile</span>
           </li>

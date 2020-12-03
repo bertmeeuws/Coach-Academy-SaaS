@@ -1,4 +1,5 @@
-.client-dashboard {
+.client-dashboard,
+.client-edit {
   background-color: var(--ghost);
   padding: 1.5rem;
 }
@@ -19,16 +20,20 @@
   justify-content: space-between;
   margin-bottom: 2rem;
 }
-.client-dashboard-hero {
+.client-dashboard-hero,
+.client-edit-hero {
   font-size: 3.6rem;
   color: var(--darkblue);
   font-weight: 600;
   margin-bottom: 0.4rem;
 }
-.client-dashboard-subtext {
+.client-dashboard-subtext,
+.client-edit-subtext {
   font-size: 1.8rem;
   font-weight: 500;
   color: var(--green);
+  margin-top: 1.4rem;
+  line-height: 2.7rem;
 }
 .client-weight {
   background-color: var(--green);

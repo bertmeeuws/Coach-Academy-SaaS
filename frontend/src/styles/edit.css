@@ -1,0 +1,42 @@
+.client-edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-row-gap: 1rem;
+  grid-column-gap: 1rem;
+  margin-top: 3rem;
+}
+.client-edit-form-input .smalltext {
+  font-size: 1.4rem;
+}
+.client-edit-form-input {
+  width: 100%;
+  overflow: hidden;
+}
+.client-edit-form-input input {
+  font-size: 1.6rem;
+  outline: none;
+  background: none;
+  font-family: Poppins;
+  font-weight: 500;
+  color: var(--darkblue);
+  border: none;
+  border-bottom: 0.1rem solid #e2e5f3;
+  width: 100%;
+}
+.client-edit-grid .last {
+  grid-column: 1/3 !important;
+}
+.client-edit-form-button {
+  background-color: var(--green);
+  color: var(--white);
+  padding: 0.5rem 1rem;
+  font-weight: 600;
+  font-family: Poppins;
+  font-size: 1.8rem;
+  border: none;
+  outline: none;
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  margin-top: 8.6rem;
+}
