@@ -1,5 +1,6 @@
 .client-dashboard,
-.client-edit {
+.client-edit,
+.client-mealplan {
   background-color: var(--ghost);
   padding: 1.5rem;
 }

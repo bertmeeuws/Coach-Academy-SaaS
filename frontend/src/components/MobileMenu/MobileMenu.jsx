@@ -39,7 +39,7 @@ export default function MobileMenu({ clicked }) {
             <span>Workout</span>
           </li>
         </Link>
-        <Link onClick={clicked} className="link">
+        <Link to="/clientdiet" onClick={clicked} className="link">
           <li className="menu-list-item rounded">
             <span>Diet</span>
           </li>

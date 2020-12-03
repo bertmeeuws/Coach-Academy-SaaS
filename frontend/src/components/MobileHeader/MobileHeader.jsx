@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { Cross as Hamburger } from "hamburger-react";
 import MobileMenu from "../../components/MobileMenu/MobileMenu";
 import { TweenLite, Power3 } from "gsap";
+import { format } from "date-fns";
+import { eoLocale } from "date-fns/locale/eo";
 
 export default function MobileHeader() {
   const [isOpen, setOpen] = useState(false);
@@ -28,6 +30,10 @@ export default function MobileHeader() {
       });
     }
   };
+
+  const date = format(new Date(), "dddd, DD MMMM YYYY", {
+    locale: eoLocale,
+  });
 
   return (
     <>
@@ -61,7 +67,7 @@ export default function MobileHeader() {
           rounded
         />
 
-        <p className="header-date">Tuesday, 10 November 2020</p>
+        <p className="header-date">{date}</p>
         <Link>
           <div className="header-profile"></div>
         </Link>

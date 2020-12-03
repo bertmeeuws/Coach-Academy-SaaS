@@ -24,6 +24,7 @@ import Workout from "./content/coach/Workout";
 import Diet from "./content/coach/Diet";
 import ClientDashboard from "./content/client/dashboard";
 import Edit from "./content/client/Edit";
+import ClientDiet from "./content/client/Diet";
 import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
 
@@ -172,6 +173,12 @@ function App() {
           <Route exact path="/clientedit">
             <AuthenticatedView roles={["client"]}>
               <Edit />
+            </AuthenticatedView>
+          </Route>
+
+          <Route exact path="/clientdiet">
+            <AuthenticatedView roles={["client"]}>
+              <ClientDiet />
             </AuthenticatedView>
           </Route>
 
