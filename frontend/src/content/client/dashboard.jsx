@@ -42,6 +42,25 @@ const GET_USER_DATA = gql`
         }
       }
     }
+    diet_plan(
+      where: { user_id: { _eq: $id } }
+      order_by: { created_at: desc }
+      limit: 1
+    ) {
+      diet_dayPlans {
+        name
+        diet_meals {
+          id
+          diet_mealItems {
+            name
+            proteins
+            fats
+            carbs
+            amount
+          }
+        }
+      }
+    }
   }
 `;
 
@@ -120,6 +139,8 @@ export default function Dashboard() {
 
   const today = new Date().toLocaleString("en-us", { weekday: "long" });
 
+  let indexOfTodayDiet;
+
   const [fetchForSurveys, { data: hasSurvey }] = useLazyQuery(
     CHECK_IF_USER_HAS_SURVEY,
     {
@@ -153,10 +174,12 @@ export default function Dashboard() {
     }
   }, [hasSurvey]);
 
+  let hasTodayRendered = false;
+
   if (!data) {
     return <LoaderLarge />;
   }
-  console.log(data.workout_plan[0].workouts);
+  console.log(data.diet_plan);
   const addAnswersToDatabase = async (e) => {
     e.preventDefault();
     //if there is no survey in the database for today, create one first.
@@ -194,6 +217,90 @@ export default function Dashboard() {
     }
 
     //if there is one for today, update with the values
+  };
+
+  const renderDiet = () => {
+    return data.diet_plan[0].diet_dayPlans.map((item, index) => {
+      if (item.name === "Monday") {
+        indexOfTodayDiet = index;
+        //console.log(item);
+        console.log(item);
+        let calories = 0;
+        let proteins = 0;
+        let carbs = 0;
+        let fats = 0;
+        item.diet_meals.map((meal) => {
+          meal.diet_mealItems.map((item) => {
+            let amount = item.amount === null ? 100 : item.amount;
+            //values are per 100 grams. Multiple to desired value
+            let multiplier = amount / 100;
+            console.log(amount);
+            proteins += item.proteins;
+            carbs += item.carbs;
+            fats += item.fats;
+            calories +=
+              item.carbs * 4 * multiplier +
+              item.proteins * 4 * multiplier +
+              item.fats * 9 * multiplier;
+          });
+        });
+        console.log(carbs);
+        hasTodayRendered = true;
+        return (
+          <div className="mealplan-box shadow rounded">
+            <p className="mealplan-calories">
+              {Math.round(calories, 0)} calories
+            </p>
+            <p className="mealplan-macros blue">{Math.round(proteins, 0)}g</p>
+            <p className="mealplan-macros">proteins</p>
+            <p className="mealplan-macros blue">{Math.round(carbs, 0)}g</p>
+            <p className="mealplan-macros">carbs</p>
+            <p className="mealplan-macros blue">{Math.round(fats, 0)}g</p>
+            <p className="mealplan-macros">fats</p>
+            <p className="mealplan-day">Today</p>
+          </div>
+        );
+      } else if (hasTodayRendered) {
+        console.log(item);
+        let calories = 0;
+        let proteins = 0;
+        let carbs = 0;
+        let fats = 0;
+        item.diet_meals.map((meal) => {
+          meal.diet_mealItems.map((item) => {
+            let amount = item.amount === null ? 100 : item.amount;
+            //values are per 100 grams. Multiple to desired value
+            let multiplier = amount / 100;
+            console.log(amount);
+            proteins += item.proteins;
+            carbs += item.carbs;
+            fats += item.fats;
+            calories +=
+              item.carbs * 4 * multiplier +
+              item.proteins * 4 * multiplier +
+              item.fats * 9 * multiplier;
+          });
+        });
+        console.log(carbs);
+        hasTodayRendered = true;
+        return (
+          <div className="mealplan-box mealplan-box-inactive shadow rounded">
+            <p className="mealplan-calories">
+              {Math.round(calories, 0)} calories
+            </p>
+            <p className="mealplan-macros blue">{Math.round(proteins, 0)}g</p>
+            <p className="mealplan-macros">proteins</p>
+            <p className="mealplan-macros blue">{Math.round(carbs, 0)}g</p>
+            <p className="mealplan-macros">carbs</p>
+            <p className="mealplan-macros blue">{Math.round(fats, 0)}g</p>
+            <p className="mealplan-macros">fats</p>
+            <p className="mealplan-day">
+              {index + 1 === indexOfTodayDiet ? "Tomorrow" : item.name}
+            </p>
+          </div>
+        );
+      }
+    });
   };
 
   return (
@@ -285,7 +392,6 @@ export default function Dashboard() {
                   item.day === today
                 ) {
                   if (item.exercise_in_workouts.length !== 0) {
-                    console.log(item.exercise_in_workouts);
                     return (
                       <>
                         <thead>
@@ -319,26 +425,13 @@ export default function Dashboard() {
         <article className="client-mealplan">
           <h1 className="client-mealplan-title">Your meal plan</h1>
           <div className="client-mealplan-carousel">
-            <div className="mealplan-box shadow rounded">
-              <p className="mealplan-calories">2630 calories</p>
-              <p className="mealplan-macros blue">200g</p>
-              <p className="mealplan-macros">proteins</p>
-              <p className="mealplan-macros blue">300g</p>
-              <p className="mealplan-macros">carbs</p>
-              <p className="mealplan-macros blue">70g</p>
-              <p className="mealplan-macros">fats</p>
-              <p className="mealplan-day">Today</p>
-            </div>
-            <div className="mealplan-box mealplan-box-inactive shadow rounded">
-              <p className="mealplan-calories">2630 calories</p>
-              <p className="mealplan-macros blue">200g</p>
-              <p className="mealplan-macros">proteins</p>
-              <p className="mealplan-macros blue">300g</p>
-              <p className="mealplan-macros">carbs</p>
-              <p className="mealplan-macros blue">70g</p>
-              <p className="mealplan-macros">fats</p>
-              <p className="mealplan-day">Tomorrow</p>
-            </div>
+            {data.diet_plan.length !== 0 ? (
+              renderDiet()
+            ) : (
+              <div className="dashboard-diet-404 shadow rounded">
+                <p>No diet plan has been assigned to you</p>
+              </div>
+            )}
           </div>
         </article>
       </section>

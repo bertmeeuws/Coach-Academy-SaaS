@@ -139,7 +139,7 @@
   display: grid;
   grid-template-columns: 0.5fr 1fr;
   grid-template-rows: 1fr 1fr 1fr 1fr 0.5fr;
-  width: 17.4rem;
+  width: 20rem;
   margin-right: 1rem;
 }
 .mealplan-calories {
@@ -159,12 +159,18 @@
   text-align: right;
   font-weight: 600;
 }
+.client-mealplan {
+  overflow-x: visible;
+}
 .client-mealplan-carousel {
   display: flex;
+  max-width: 800%;
+  overflow-x: scroll;
 }
 .mealplan-box-inactive {
   background-color: var(--white);
 }
+
 .mealplan-box-inactive .mealplan-calories {
   color: var(--green);
 }
@@ -179,4 +185,19 @@
   margin-bottom: 1rem;
   font-weight: 600;
   color: var(--red);
+}
+.dashboard-diet-404 {
+  background-color: var(--white);
+  padding: 1rem;
+  height: 10rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: var(--darkblue);
+}
+.dashboard-diet-404 p {
+  width: 70%;
+  text-align: center;
+  line-height: 2.4rem;
 }
