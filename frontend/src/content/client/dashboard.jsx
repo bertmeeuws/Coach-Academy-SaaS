@@ -6,6 +6,7 @@ import { useStoreState } from "easy-peasy";
 import { useQuery, gql, useMutation, useLazyQuery } from "@apollo/client";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
 import CoachPopup from "../../components/AddCoach/Index";
+import { Link } from "react-router-dom";
 
 const GET_USER_DATA = gql`
   query MyQuery($id: Int!, $date: date!) {
@@ -20,6 +21,24 @@ const GET_USER_DATA = gql`
           energy_workout
           energy_day
           craving
+        }
+      }
+    }
+    workout_plan(
+      where: { client: { user_id: { _eq: $id } } }
+      limit: 1
+      order_by: { created_at: desc }
+    ) {
+      id
+      workouts {
+        day
+        title
+        exercise_in_workouts {
+          sets
+          reps
+          exercise {
+            name
+          }
         }
       }
     }
@@ -79,10 +98,11 @@ const CHECK_IF_USER_HAS_SURVEY = gql`
 `;
 
 export default function Dashboard() {
-  const [craving, setCraving] = useState("");
-  const [energyDay, setEnergyDay] = useState("");
-  const [energyWorkout, setEnergyWorkout] = useState("");
+  const [craving, setCraving] = useState(3);
+  const [energyDay, setEnergyDay] = useState(3);
+  const [energyWorkout, setEnergyWorkout] = useState(3);
   const [inviter, setInviter] = useState(false);
+  const [injectedEmptyForm, setInjectedEmptyForm] = useState(false);
 
   const id = useStoreState((state) => state.user_id);
 
@@ -97,6 +117,8 @@ export default function Dashboard() {
 
     return (today = yyyy + "-" + mm + "-" + dd);
   };
+
+  const today = new Date().toLocaleString("en-us", { weekday: "long" });
 
   const [fetchForSurveys, { data: hasSurvey }] = useLazyQuery(
     CHECK_IF_USER_HAS_SURVEY,
@@ -120,9 +142,12 @@ export default function Dashboard() {
   useEffect(async () => {
     if (hasSurvey) {
       console.log(hasSurvey);
-      setEnergyWorkout(hasSurvey.survey[0].energy_workout);
-      setEnergyDay(hasSurvey.survey[0].energy_day);
-      setCraving(hasSurvey.survey[0].craving);
+      if (hasSurvey.survey.length === 1) {
+        console.log(hasSurvey.survey.lenght);
+        setEnergyWorkout(hasSurvey.survey[0].energy_workout);
+        setEnergyDay(hasSurvey.survey[0].energy_day);
+        setCraving(hasSurvey.survey[0].craving);
+      }
     } else {
       await fetchForSurveys();
     }
@@ -131,23 +156,26 @@ export default function Dashboard() {
   if (!data) {
     return <LoaderLarge />;
   }
-
+  console.log(data.workout_plan[0].workouts);
   const addAnswersToDatabase = async (e) => {
     e.preventDefault();
     //if there is no survey in the database for today, create one first.
 
-    if (hasSurvey.survey.length === 0) {
+    if (hasSurvey.survey.length === 0 && injectedEmptyForm === false) {
       console.log("No survey yet");
       const { data: created_item } = await INSERT_EMPTY_SURVEY_FOR_USER({
         variables: {
           object: {
             user_id: id,
-            energy_day: 3,
-            energy_workout: 3,
-            craving: 3,
+            energy_day: Number(energyDay),
+            energy_workout: Number(energyWorkout),
+            craving: Number(craving),
           },
         },
       });
+      await fetchForSurveys();
+      setInjectedEmptyForm(true);
+
       console.log(created_item);
     } else {
       //update survey from user
@@ -241,37 +269,52 @@ export default function Dashboard() {
               <p className="questionnaire-ratings">high</p>
             </div>
           </div>
-          <input type="submit" value="submit" />
+          <input
+            type="submit"
+            className="button button-submit-questions shadow"
+            value="Submit form"
+          />
         </form>
         <article className="client-workout">
           <h1 className="client-workout-title">Today's workout</h1>
-          <table className="dashboard-workout shadow rounded">
-            <tr>
-              <th className="workout-name">Pull day</th>
-              <th className="smalltext">SETS</th>
-              <th className="smalltext">REPS</th>
-            </tr>
-            <tr>
-              <td>Barbell rows</td>
-              <td>3</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>Barbell rows</td>
-              <td>3</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>Barbell rows</td>
-              <td>3</td>
-              <td>5</td>
-            </tr>
-            <tr>
-              <td>Barbell rows</td>
-              <td>3</td>
-              <td>5</td>
-            </tr>
-          </table>
+          <Link className="dashboard-workout-link">
+            <table className="dashboard-workout shadow rounded">
+              {data.workout_plan[0].workouts.map((item) => {
+                if (
+                  //Alleen dag renderen dat van toepassing is
+                  item.day === today
+                ) {
+                  if (item.exercise_in_workouts.length !== 0) {
+                    console.log(item.exercise_in_workouts);
+                    return (
+                      <>
+                        <thead>
+                          <tr>
+                            <th className="workout-name">{item.title}</th>
+                            <th className="smalltext">SETS</th>
+                            <th className="smalltext">REPS</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {item.exercise_in_workouts.map((exercise) => {
+                            return (
+                              <tr>
+                                <td>{exercise.exercise.name}</td>
+                                <td>{exercise.sets}</td>
+                                <td>{exercise.reps}</td>
+                              </tr>
+                            );
+                          })}
+                        </tbody>
+                      </>
+                    );
+                  } else {
+                    return <p>You have no exercises planned today.</p>;
+                  }
+                }
+              })}
+            </table>
+          </Link>
         </article>
         <article className="client-mealplan">
           <h1 className="client-mealplan-title">Your meal plan</h1>

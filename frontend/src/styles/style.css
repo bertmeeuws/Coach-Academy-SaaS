@@ -302,3 +302,21 @@ button {
   background-color: var(--ghost);
   color: var(--darkblue);
 }
+.button-submit-questions {
+  font-weight: 500;
+  font-family: Poppins;
+  color: var(--white);
+  background-color: var(--green);
+  outline: 0;
+  border: none;
+  border-radius: 0.5rem;
+  padding: 0.2rem 2rem;
+  font-size: 1.6rem;
+  display: flex;
+  margin: 0 auto;
+  margin-top: 3rem;
+}
+.dashboard-workout-link {
+  text-decoration: none;
+  color: var(--darkblue);
+}
