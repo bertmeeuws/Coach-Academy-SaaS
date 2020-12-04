@@ -109,7 +109,7 @@ export default function Edit() {
     } else {
       fetchUserData();
     }
-  }, userData);
+  }, [userData]);
 
   const submitEditProfile = async (e) => {
     e.preventDefault();

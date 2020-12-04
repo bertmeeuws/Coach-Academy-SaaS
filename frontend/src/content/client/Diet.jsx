@@ -3,7 +3,7 @@ import MobileHeader from "../../components/MobileHeader/MobileHeader";
 import ClientMealItem from "../../components/ClientMealItem/ClientMealItem";
 import ClientMealHeader from "../../components/ClientMealHeader/ClientMealHeader";
 import { useStoreState, useLocalStore } from "easy-peasy";
-import { gql, useLazyQuery } from "@apollo/client";
+import { gql, useLazyQuery, useQuery } from "@apollo/client";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
 import "../../styles/edit.css";
 import ArrowLeft from "../../assets/images/svg/ArrowLeft.svg";
@@ -38,29 +38,93 @@ const GET_MEALPLAN = gql`
 export default function ClientDiet() {
   const id = useStoreState((state) => state.user_id);
 
-  const [mealPlan, setMealPlan] = useState([]);
-  const [nav, setNav] = useState(null);
+  const [count, setCount] = useState(1);
 
-  const [FETCH_MEALPLAN, { data: mealPlanData }] = useLazyQuery(GET_MEALPLAN, {
+  let navIndex;
+
+  const { data: mealPlanData, loading, errors } = useQuery(GET_MEALPLAN, {
     variables: {
-      id: 73,
+      id: id,
     },
   });
 
   const today = new Date().toLocaleString("en-us", { weekday: "long" });
 
-  useEffect(() => {
-    if (mealPlanData) {
-      setMealPlan(mealPlanData.diet_plan[0].diet_dayPlans);
-      console.log(mealPlan);
-      let index = mealPlan.findIndex((x) => x.name === today);
-      setNav(index);
-    } else {
-      FETCH_MEALPLAN();
-    }
-  }, mealPlanData);
+  useEffect(async () => {
+    if (mealPlanData && mealPlanData.diet_plan[0] !== undefined) {
+      let i = mealPlanData.diet_plan[0].diet_dayPlans.findIndex(
+        (x) => x.name === today
+      );
 
-  console.log(nav);
+      navIndex = i;
+      setCount(i);
+    }
+  }, [mealPlanData]);
+
+  if (!mealPlanData && loading) {
+    return (
+      <>
+        <MobileHeader />
+        <LoaderLarge />
+      </>
+    );
+  }
+
+  const renderNavigation = () => {
+    if (mealPlanData !== undefined) {
+      if (count === navIndex - 1) {
+        return <p>Yesterday</p>;
+      } else if (count === navIndex + 1) {
+        return <p>Tomorrow</p>;
+      } else if (count === navIndex) {
+        return <p>Today</p>;
+      } else {
+        if (mealPlanData.diet_plan[0] !== undefined) {
+          return <p>{mealPlanData.diet_plan[0].diet_dayPlans[count].name}</p>;
+        }
+      }
+    }
+  };
+
+  const renderMeals = () => {
+    //console.log(mealPlanData.diet_plan[0].diet_dayPlans[count]);
+
+    if (mealPlanData !== undefined) {
+      console.log(mealPlanData);
+      if (mealPlanData.diet_plan.length !== 0) {
+        console.log(count);
+        console.log(mealPlanData.diet_plan[0].diet_dayPlans[count]);
+        return mealPlanData.diet_plan[0].diet_dayPlans[count].diet_meals.map(
+          (item, index) => {
+            return (
+              <>
+                <h2 className="mealplan-name">Meal {index + 1}</h2>
+
+                {item.diet_mealItems.length === 0 ? (
+                  <p className="client-diet-nomeals">No meals found</p>
+                ) : (
+                  <ClientMealHeader key={index} />
+                )}
+
+                {item.diet_mealItems.map((mealItem) => {
+                  return (
+                    <ClientMealItem
+                      key={mealItem.order}
+                      amount={mealItem.amount === null ? 100 : mealItem.amount}
+                      name={mealItem.name}
+                      proteins={mealItem.proteins}
+                      fats={mealItem.fats}
+                      carbs={mealItem.carbs}
+                    />
+                  );
+                })}
+              </>
+            );
+          }
+        );
+      }
+    }
+  };
 
   return (
     <div>
@@ -71,20 +135,21 @@ export default function ClientDiet() {
         <article className="mealplan">
           <div className="mealplan-navigation">
             <div
-              onClick={(e) => {
-                if (nav !== 0) {
-                  setNav(nav++);
+              onClick={() => {
+                if (count !== 0) {
+                  setCount(count - 1);
                 }
               }}
               className="mealplan-navigation-hitbox "
             >
               <img src={ArrowLeft} alt="" />
             </div>
-            <p>Today</p>
+            <p>{renderNavigation()}</p>
             <div
-              onClick={(e) => {
-                if (nav !== 6) {
-                  setNav(nav++);
+              onClick={() => {
+                if (count !== 6) {
+                  setCount(count + 1);
+                  console.log(count);
                 }
               }}
               className="mealplan-navigation-hitbox"
@@ -92,11 +157,7 @@ export default function ClientDiet() {
               <img src={ArrowRight} alt="" />
             </div>
           </div>
-          <section className="mealplan-meal">
-            <h2 className="mealplan-name">Meal 1</h2>
-            <ClientMealHeader />
-            <ClientMealItem />
-          </section>
+          <section className="mealplan-meal">{renderMeals()}</section>
         </article>
       </section>
     </div>

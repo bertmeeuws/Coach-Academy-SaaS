@@ -12,10 +12,12 @@ export default function ClientMealItem({
 
   return (
     <div className="mealplan-item-grid">
-      <p>100g Rauw kipfielt</p>
-      <p>1g</p>
-      <p>22g</p>
-      <p>0g</p>
+      <p>
+        {amount}g {name}
+      </p>
+      <p>{carbs}g</p>
+      <p>{proteins}g</p>
+      <p>{fats}g</p>
       {showNotes ? (
         <p className="mealplan-item-notes">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus
@@ -30,7 +32,7 @@ export default function ClientMealItem({
           className={showNotes ? "mealplan-meal-button-inactive" : ""}
           onClick={(e) => setShowNotes(!showNotes)}
         >
-          {showNotes && notes !== undefined ? "Close notes" : "View notes"}
+          {showNotes ? "Close notes" : "View notes"}
         </button>
       </div>
       <div className="mealplan-meal-memo">

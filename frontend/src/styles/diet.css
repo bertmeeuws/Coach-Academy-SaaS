@@ -4,7 +4,7 @@
   margin-top: 3.3rem;
 }
 .mealplan-navigation p {
-  width: 10rem;
+  text-align: center;
   font-weight: 600;
   font-size: 2.4rem;
   color: var(--darkblue);
@@ -35,6 +35,7 @@
 .mealplan-item-grid {
   margin-bottom: 3rem;
   font-weight: 500;
+  line-height: 2rem;
 }
 .mealplan-item-header {
   text-transform: uppercase;
@@ -71,4 +72,11 @@
 .client-mealplan .mealplan-meal-memo {
   grid-column: 2/5;
   text-align: right;
+}
+.client-diet-nomeals {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+  text-align: left;
+  color: var(--grey);
 }
