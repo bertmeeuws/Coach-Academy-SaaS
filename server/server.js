@@ -3,10 +3,25 @@ import fetch from "cross-fetch";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import bodyParser from "body-parser";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const { google } = require("googleapis");
+const request = require("request");
+const cors = require("cors");
+const urlParse = require("url-parse");
+const queryParse = require("query-string");
+const axios = require("axios");
+
+//const { google } = require("googleapis");
+//import google from "googleapis";
 
 const app = express();
+app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 3001;
+
+//const google = google;
 
 const HASURA_ENDPOINT = "http://localhost:8085/v1/graphql";
 const HASURA_ADMIN_SECRET = "my-secret";
@@ -219,10 +234,90 @@ app.post("/api/actions/login", async (req, res) => {
 });
 
 app.post("/api/actions/getfood", async (req, res) => {
-  const search = req.body.input.food;
-  console.log(search);
+  const oauth2Client = new google.auth.OAuth2(
+    "625672102570-t557djk99mu5emcutn8ks33gcohnmgon.apps.googleusercontent.com",
+    "y6hIEBLpM-zdJzDNy4ZmUs-S",
+    "http://localhost:3001/api/actions/callback"
+  );
 
-  return res.json({ data: search });
+  const scopes = [
+    "https://www.googleapis.com/auth/fitness.activity.read",
+    "https://www.googleapis.com/auth/fitness.body.read",
+    "https://www.googleapis.com/auth/fitness.reproductive_health.read",
+  ];
+
+  const url = oauth2Client.generateAuthUrl({
+    // 'online' (default) or 'offline' (gets refresh_token)
+    access_type: "offline",
+
+    // If you only need one scope you can pass it as a string
+    scope: scopes,
+  });
+
+  //console.log(url);
+
+  //const fit = google.fitness("v1");
+
+  return res.json({ url: url });
+});
+
+app.get("/api/actions/callback", async (req, res) => {
+  const queryURL = new urlParse(req.url);
+  const code = queryParse.parse(queryURL.query).code;
+
+  const oauth2Client = new google.auth.OAuth2(
+    "625672102570-t557djk99mu5emcutn8ks33gcohnmgon.apps.googleusercontent.com",
+    "y6hIEBLpM-zdJzDNy4ZmUs-S",
+    "http://localhost:3001/api/actions/callback"
+  );
+
+  console.log("This is the code: " + code);
+
+  const tokens = await oauth2Client.getToken(code);
+  //oauth2Client.setCredentials(tokens);
+  //console.log(tokens);
+
+  res.send("Hello");
+  console.log("Acces token: " + tokens.tokens.access_token);
+  let stepArray = [];
+
+  var previous = new Date();
+  previous.setDate(previous.getDate() - 3);
+  previous.setUTCHours(0, 0, 0, 0);
+
+  var tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setUTCHours(0, 0, 0, 0);
+
+  console.log(previous.getTime());
+  console.log(tomorrow.getTime());
+
+  try {
+    const result = await axios({
+      method: "POST",
+      headers: {
+        authorization: "Bearer " + tokens.tokens.access_token,
+      },
+      "Content-Type": "application/json",
+      url: "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
+      data: {
+        aggregateBy: [
+          {
+            dateTypeName: "com.google.step_count.delta",
+            dataSourceId:
+              "derived:com.google.step_count.delta:com.google.android.gms:merge_step_deltas",
+          },
+        ],
+        bucketByTime: { durationMillis: 86400000 },
+        startTimeMillis: previous.getTime(),
+        endTimeMillis: tomorrow.getTime(),
+      },
+    });
+    console.log(result);
+  } catch (e) {
+    //console.log(e);
+  }
+  //return res.json({ data: search });
 });
 
 // Bind to 0.0.0.0 host, so it'll work in Docker too

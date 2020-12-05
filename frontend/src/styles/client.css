@@ -1,8 +1,11 @@
 .client-dashboard,
 .client-edit,
-.client-mealplan {
+.client-mealplan,
+.client-progress {
   background-color: var(--ghost);
   padding: 1.5rem;
+
+  overflow-y: hidden;
 }
 .header-date {
   font-size: 1.4rem;

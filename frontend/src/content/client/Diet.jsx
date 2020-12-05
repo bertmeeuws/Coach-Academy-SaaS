@@ -11,7 +11,7 @@ import ArrowRight from "../../assets/images/svg/ArrowRight.svg";
 import "../../styles/diet.css";
 
 const GET_MEALPLAN = gql`
-  query MyQuery($id: Int!) {
+  query MyQuery($id: Int!) @cached(ttl: 120) {
     diet_plan(
       where: { client: { user: { id: { _eq: $id } } } }
       order_by: { created_at: desc }
