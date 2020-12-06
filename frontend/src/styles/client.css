@@ -58,6 +58,9 @@
   color: var(--white);
   width: 6rem;
 }
+.client-weight-input::placeholder {
+  color: var(--ghost);
+}
 .client-weight-button {
   float: right;
   color: var(--darkblue);

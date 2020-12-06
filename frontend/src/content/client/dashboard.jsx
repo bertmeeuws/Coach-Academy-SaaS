@@ -61,6 +61,15 @@ const GET_USER_DATA = gql`
         }
       }
     }
+    weight(
+      where: { user_id: { _eq: $id }, _and: { date: { _eq: $date } } }
+      limit: 1
+      order_by: { created_at: desc }
+    ) {
+      weight
+      user_id
+      date
+    }
   }
 `;
 
@@ -116,17 +125,27 @@ const CHECK_IF_USER_HAS_SURVEY = gql`
   }
 `;
 
+const ADD_WEIGHT = gql`
+  mutation MyMutation($object: weight_insert_input!) {
+    insert_weight_one(object: $object) {
+      id
+    }
+  }
+`;
+
 export default function Dashboard() {
   const [craving, setCraving] = useState(3);
   const [energyDay, setEnergyDay] = useState(3);
   const [energyWorkout, setEnergyWorkout] = useState(3);
   const [inviter, setInviter] = useState(false);
+  const [weight, setWeight] = useState("");
   const [injectedEmptyForm, setInjectedEmptyForm] = useState(false);
 
   const id = useStoreState((state) => state.user_id);
 
   const [INSERT_EMPTY_SURVEY_FOR_USER] = useMutation(INSERT_EMPTY_SURVEY);
   const [UPDATE_SURVEY_USER] = useMutation(UPDATE_SURVEY);
+  const [ADD_WEIGHT_DB] = useMutation(ADD_WEIGHT);
 
   const getDate = () => {
     var today = new Date();
@@ -179,7 +198,8 @@ export default function Dashboard() {
   if (!data) {
     return <LoaderLarge />;
   }
-  console.log(data.diet_plan);
+  console.log(data);
+
   const addAnswersToDatabase = async (e) => {
     e.preventDefault();
     //if there is no survey in the database for today, create one first.
@@ -217,6 +237,23 @@ export default function Dashboard() {
     }
 
     //if there is one for today, update with the values
+  };
+
+  const handleFormWeight = async () => {
+    if (weight !== "") {
+      const { data, error } = await ADD_WEIGHT_DB({
+        variables: {
+          object: {
+            weight: weight,
+            date: new Date(),
+            user_id: id,
+          },
+        },
+      });
+      console.log(data);
+    } else {
+      alert("Something is wrong with your weight");
+    }
   };
 
   const renderDiet = () => {
@@ -323,11 +360,26 @@ export default function Dashboard() {
         </p>
         <article className="client-weight rounded shadow">
           <h1 className="hidden">Weight</h1>
-          <p className="client-weight-title">
-            How much did you weigh this morning?
-          </p>
-          <input className="client-weight-input" type="text" />
-          <button className="client-weight-button">Confirm</button>
+          {data.weight.length !== 0 ? (
+            <p className="client-weight-title">
+              You already weighed yourself with Google Fit.
+            </p>
+          ) : (
+            <p className="client-weight-title">
+              How much did you weigh this morning?
+            </p>
+          )}
+          <input
+            className="client-weight-input"
+            value={weight}
+            type="number"
+            placeholder="kg"
+            step=".01"
+            onChange={(e) => setWeight(e.currentTarget.value)}
+          />
+          <button onClick={handleFormWeight} className="client-weight-button">
+            Confirm
+          </button>
         </article>
         <form
           onSubmit={addAnswersToDatabase}
