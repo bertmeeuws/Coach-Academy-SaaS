@@ -303,8 +303,109 @@ app.get("/api/actions/callback/", async (req, res) => {
   tomorrow.setDate(tomorrow.getDate() + 2);
   tomorrow.setUTCHours(0, 0, 0, 0);
 
+  var test = new Date();
+  test.setDate(test.getDate() + -1);
+  test.setUTCHours(0, 0, 0, 0);
+
+  var test1 = new Date();
+  test1.setDate(test1.getDate() + 2);
+  test1.setUTCHours(0, 0, 0, 0);
+
+  function formatDate(date) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+
+    return [year, month, day].join("-");
+  }
+
   //console.log(previous.getTime());
   //console.log(tomorrow.getTime());
+
+  let weightArray = [];
+
+  try {
+    const weightResult = await axios({
+      method: "POST",
+      headers: {
+        authorization: "Bearer " + tokens.tokens.access_token,
+      },
+      "Content-Type": "application/json",
+      url: "https://www.googleapis.com/fitness/v1/users/me/dataset:aggregate",
+      data: {
+        aggregateBy: [
+          {
+            dataTypeName: "com.google.weight.summary",
+            dataSourceId:
+              "derived:com.google.weight:com.google.android.gms:merge_weight",
+          },
+        ],
+        bucketByTime: { durationMillis: 86400000 },
+        startTimeMillis: test.getTime(),
+        endTimeMillis: test1.getTime(),
+      },
+    });
+    //console.log(result.data.bucket);
+    weightArray = weightResult.data.bucket;
+    //console.log(weightArray);
+  } catch (e) {
+    console.log(e);
+  }
+
+  const getDate = () => {
+    var today = new Date();
+    var dd = String(today.getDate()).padStart(2, "0");
+    var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
+    var yyyy = today.getFullYear();
+
+    return (today = yyyy + "-" + mm + "-" + dd);
+  };
+
+  try {
+    for (const dataSet of weightArray) {
+      for (const points of dataSet.dataset) {
+        for (const steps of points.point) {
+          console.log(steps);
+
+          const start = steps.startTimeNanos;
+          const end = steps.endTimeNanos;
+
+          //(start);
+          //const dateEnd = new PreciseDate(end);
+          //console.log(formatDate(dateStart.toISOString()));
+          //console.log(formatDate(dateEnd.toISOString()));
+
+          const addToDatabase = await sendQuery({
+            query: `
+          mutation MyMutation($object: weight_insert_input!) {
+            insert_weight_one(object: $object) {
+              id
+              
+            }
+          }
+          `,
+            variables: {
+              object: {
+                weight:
+                  Math.round(steps.value[1].fpVal * 100 + Number.EPSILON) / 100,
+                date: new Date(),
+                user_id: id,
+              },
+            },
+          });
+
+          if (addToDatabase.errors)
+            return res.status(400).json({ errors: addToDatabase.errors });
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e);
+  }
 
   try {
     const result = await axios({
@@ -327,7 +428,7 @@ app.get("/api/actions/callback/", async (req, res) => {
         endTimeMillis: tomorrow.getTime(),
       },
     });
-    //console.log(result);
+    //console.log(result.data.bucket);
     stepArray = result.data.bucket;
   } catch (e) {
     //console.log(e);
@@ -335,18 +436,6 @@ app.get("/api/actions/callback/", async (req, res) => {
 
   try {
     let array = [];
-
-    function formatDate(date) {
-      var d = new Date(date),
-        month = "" + (d.getMonth() + 1),
-        day = "" + d.getDate(),
-        year = d.getFullYear();
-
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-
-      return [year, month, day].join("-");
-    }
 
     for (const dataSet of stepArray) {
       for (const points of dataSet.dataset) {
@@ -392,13 +481,11 @@ app.get("/api/actions/callback/", async (req, res) => {
         }
       }
     }
-    console.log(array);
 
     //Write to Database
   } catch (e) {
     console.log(e);
   }
-  console.log(array);
 
   //return res.json({ data: "yes" });
 });
