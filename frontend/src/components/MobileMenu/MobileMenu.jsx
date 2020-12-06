@@ -54,7 +54,7 @@ export default function MobileMenu({ clicked }) {
             <span>Edit profile</span>
           </li>
         </Link>
-        <Link onClick={clicked} className="link">
+        <Link to="/clientsettings" onClick={clicked} className="link">
           <li className="menu-list-item rounded">
             <span>Settings</span>
           </li>

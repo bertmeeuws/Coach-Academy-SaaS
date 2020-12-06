@@ -25,6 +25,7 @@ import Diet from "./content/coach/Diet";
 import ClientDashboard from "./content/client/dashboard";
 import Edit from "./content/client/Edit";
 import Progress from "./content/client/Progress";
+import Settings from "./content/client/Settings";
 import ClientDiet from "./content/client/Diet";
 import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
@@ -186,6 +187,11 @@ function App() {
           <Route exact path="/clientprogress">
             <AuthenticatedView roles={["client"]}>
               <Progress />
+            </AuthenticatedView>
+          </Route>
+          <Route exact path="/clientsettings">
+            <AuthenticatedView roles={["client"]}>
+              <Settings />
             </AuthenticatedView>
           </Route>
 

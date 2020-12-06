@@ -11,6 +11,7 @@ const cors = require("cors");
 const urlParse = require("url-parse");
 const queryParse = require("query-string");
 const axios = require("axios");
+const { PreciseDate } = require("@google-cloud/precise-date");
 
 //const { google } = require("googleapis");
 //import google from "googleapis";
@@ -234,10 +235,12 @@ app.post("/api/actions/login", async (req, res) => {
 });
 
 app.post("/api/actions/getfood", async (req, res) => {
+  const id = req.body.input.id.id;
+  console.log(req.body);
   const oauth2Client = new google.auth.OAuth2(
     "625672102570-t557djk99mu5emcutn8ks33gcohnmgon.apps.googleusercontent.com",
     "y6hIEBLpM-zdJzDNy4ZmUs-S",
-    "http://localhost:3001/api/actions/callback"
+    "http://localhost:3001/api/actions/callback/"
   );
 
   const scopes = [
@@ -254,21 +257,30 @@ app.post("/api/actions/getfood", async (req, res) => {
     scope: scopes,
   });
 
+  //id inparsen
+
+  console.log(url + "&state=JEWEETZELF");
+
+  const redirect = url + "&state=" + id;
   //console.log(url);
 
   //const fit = google.fitness("v1");
 
-  return res.json({ url: url });
+  return res.json({ url: redirect });
 });
 
-app.get("/api/actions/callback", async (req, res) => {
+app.get("/api/actions/callback/", async (req, res) => {
   const queryURL = new urlParse(req.url);
   const code = queryParse.parse(queryURL.query).code;
+  const state = queryParse.parse(queryURL.query);
+  console.log(state.state);
+  const id = state.state;
+  //console.log(req.params);
 
   const oauth2Client = new google.auth.OAuth2(
     "625672102570-t557djk99mu5emcutn8ks33gcohnmgon.apps.googleusercontent.com",
     "y6hIEBLpM-zdJzDNy4ZmUs-S",
-    "http://localhost:3001/api/actions/callback"
+    "http://localhost:3001/api/actions/callback/"
   );
 
   console.log("This is the code: " + code);
@@ -276,8 +288,10 @@ app.get("/api/actions/callback", async (req, res) => {
   const tokens = await oauth2Client.getToken(code);
   //oauth2Client.setCredentials(tokens);
   //console.log(tokens);
+  //res.send(req.params);
 
-  res.send("Hello");
+  //res.send("You are authenticated");
+  res.redirect("http://localhost:3002/clientdashboard");
   console.log("Acces token: " + tokens.tokens.access_token);
   let stepArray = [];
 
@@ -286,11 +300,11 @@ app.get("/api/actions/callback", async (req, res) => {
   previous.setUTCHours(0, 0, 0, 0);
 
   var tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
+  tomorrow.setDate(tomorrow.getDate() + 2);
   tomorrow.setUTCHours(0, 0, 0, 0);
 
-  console.log(previous.getTime());
-  console.log(tomorrow.getTime());
+  //console.log(previous.getTime());
+  //console.log(tomorrow.getTime());
 
   try {
     const result = await axios({
@@ -313,11 +327,80 @@ app.get("/api/actions/callback", async (req, res) => {
         endTimeMillis: tomorrow.getTime(),
       },
     });
-    console.log(result);
+    //console.log(result);
+    stepArray = result.data.bucket;
   } catch (e) {
     //console.log(e);
   }
-  //return res.json({ data: search });
+
+  try {
+    let array = [];
+
+    function formatDate(date) {
+      var d = new Date(date),
+        month = "" + (d.getMonth() + 1),
+        day = "" + d.getDate(),
+        year = d.getFullYear();
+
+      if (month.length < 2) month = "0" + month;
+      if (day.length < 2) day = "0" + day;
+
+      return [year, month, day].join("-");
+    }
+
+    for (const dataSet of stepArray) {
+      for (const points of dataSet.dataset) {
+        for (const steps of points.point) {
+          //console.log(steps);
+          const start = steps.startTimeNanos;
+          const end = steps.endTimeNanos;
+
+          const dateStart = new PreciseDate(start);
+          const dateEnd = new PreciseDate(end);
+
+          //console.log(start.isValid());
+
+          const addToDatabase = await sendQuery({
+            query: `
+            mutation MyMutation($object: steps_insert_input!) {
+              insert_steps_one(object: $object) {
+                id
+                updated_at
+                steps
+                date
+              }
+            }
+            `,
+            variables: {
+              object: {
+                steps: steps.value[0].intVal,
+                date: formatDate(dateStart.toISOString()),
+                user_id: id,
+              },
+            },
+          });
+
+          if (addToDatabase.errors)
+            return res.status(400).json({ errors: addToDatabase.errors });
+
+          //console.log();
+          array.push({
+            start: formatDate(dateStart.toISOString()),
+            end: formatDate(dateEnd.toISOString()),
+            steps: steps.value[0].intVal,
+          });
+        }
+      }
+    }
+    console.log(array);
+
+    //Write to Database
+  } catch (e) {
+    console.log(e);
+  }
+  console.log(array);
+
+  //return res.json({ data: "yes" });
 });
 
 // Bind to 0.0.0.0 host, so it'll work in Docker too

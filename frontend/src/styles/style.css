@@ -320,3 +320,28 @@ button {
   text-decoration: none;
   color: var(--darkblue);
 }
+.synchronize-google-button {
+  background-color: var(--green);
+  color: white;
+  font-family: Poppins;
+  border-radius: 1rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  text-align: center;
+}
+.client-settings {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50vh;
+  flex-direction: column;
+  margin: 1.5rem;
+}
+.client-settings-title {
+  text-align: center;
+  margin-bottom: 10rem;
+  font-weight: 600;
+  line-height: 2.5rem;
+  color: var(--darkblue);
+}
