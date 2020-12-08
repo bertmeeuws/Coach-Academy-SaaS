@@ -1,0 +1,31 @@
+.client-workout-container {
+  margin-left: 2rem;
+  margin-right: 2rem;
+}
+.client-workout-table {
+  text-align: left;
+  min-width: 100%;
+  margin-top: 4rem;
+  font-size: 1.8rem;
+  color: var(--darkblue);
+}
+.client-workout-table .client-workout-table-header {
+  font-weight: 600;
+  color: var(--green);
+  display: grid;
+  grid-template-columns: 1fr 0.4fr 0.4fr 0.4fr;
+}
+.client-workout-table-grid {
+  margin-top: 2rem;
+  display: grid;
+  grid-template-columns: 1fr 0.4fr 0.4fr 0.4fr;
+}
+.client-workout-table-grid p {
+  margin-bottom: 1rem;
+}
+.client-workout-404 {
+  grid-column: 1/4 span;
+  text-align: center;
+  margin-top: 10rem;
+  font-weight: 600;
+}

@@ -1,7 +1,6 @@
 import { persist, createStore, action } from "easy-peasy";
 
 const model = {
-  todos: ["test", "hup"],
   apollotoken: undefined,
   roles: [],
   user_id: undefined,

@@ -26,20 +26,25 @@ export default function Login() {
 
   const rolesInState = useStoreState((state) => state.roles);
 
-  if (rolesInState.includes("client")) {
+  console.log(rolesInState[0]);
+
+  /*
+  if (rolesInState[0] === "client") {
     return <Redirect to="/clientdashboard" />;
   }
-  if (rolesInState.includes("coach")) {
+  if (rolesInState[0] === "coach") {
     return <Redirect to="/dashboard" />;
   }
+*/
 
   return (
     <section className="auth-section">
+      {rolesInState[0] === "coach" ? <Redirect to="/dashboard" /> : ""}
+      {rolesInState[0] === "client" ? <Redirect to="/clientdashboard" /> : ""}
       <div className="greenbox"></div>
       <div className="login shadow rounded">
         <div className="login-content padding">
           <img src={logo} width="222" height="26.21" alt="" />
-          <p className="bigtext">Login</p>
 
           <Formik
             initialValues={{ email: "", password: "" }}
@@ -55,7 +60,7 @@ export default function Login() {
               return errors;
             }}
             onSubmit={async (values, { setSubmitting }) => {
-              deleteToken();
+              //deleteToken();
               const { data, errors } = await LOGIN({
                 variables: {
                   user: {
@@ -70,6 +75,7 @@ export default function Login() {
               }
               if (!errors && data) {
                 console.log("Received JWT token");
+                console.log(data);
                 if (!data.login.token) {
                   console.log("Token problem");
                 }
@@ -87,7 +93,7 @@ export default function Login() {
                 );
 
                 //Adding roles and id to state
-
+                console.log(roles);
                 addRoles(roles);
                 addId(id);
               }

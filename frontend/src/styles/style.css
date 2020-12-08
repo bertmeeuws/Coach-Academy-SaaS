@@ -20,7 +20,7 @@ html {
 }
 .auth-section {
   position: relative;
-  height: 100vh;
+  min-height: 100vh;
   width: 100vw;
   display: flex;
 
@@ -49,18 +49,26 @@ html {
   justify-content: space-between;
   align-items: center;
   flex-direction: column;
-  width: 60%;
   min-height: 65%;
 }
-.login-content .bigtext {
+.login-content .login-content-title {
   font-weight: 600;
+  margin-top: 4rem;
+  margin-bottom: 4rem;
+  color: var(--darkblue);
+}
+.login-content img {
+  margin-top: 2rem;
+  width: 110%;
+  height: 110%;
+  margin-bottom: 1rem;
 }
 .greenbox {
   background-color: var(--green);
   position: absolute;
   left: 0;
   top: 0;
-  height: 100vh;
+  height: 100%;
   width: 35vw;
   z-index: -1;
 }

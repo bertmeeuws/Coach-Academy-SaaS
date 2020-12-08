@@ -25,11 +25,12 @@ export default function RegisterCoach() {
 
   const rolesInState = useStoreState((state) => state.roles);
 
-  if (rolesInState.includes("client")) {
-    return <Redirect to="/clientdashboard" />;
-  }
   if (rolesInState.includes("coach")) {
     return <Redirect to="/dashboard" />;
+  }
+  if (rolesInState.includes("client")) {
+    console.log(rolesInState);
+    return <Redirect to="/clientdashboard" />;
   }
 
   return (
@@ -115,62 +116,72 @@ export default function RegisterCoach() {
               /* and other goodies */
             }) => (
               <form className={style.form} onSubmit={handleSubmit}>
-                <label className="smalltext" htmlFor="surname">
-                  Surname
-                </label>
-                <input
-                  type="text"
-                  name="surname"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.surname}
-                />
-
-                <label className="smalltext" htmlFor="name">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.name}
-                />
-                <label className="smalltext" htmlFor="email">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                />
-                <p className={style.error}>
-                  {errors.email && touched.email && errors.email}
-                </p>
-
-                <label className="smalltext" htmlFor="password">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                />
-                <label className="smalltext" htmlFor="confirmPassword">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.confirmPassword}
-                />
-                {errors.password && touched.password && errors.password}
+                <div className="coach-register-container">
+                  <div className="coach-register-input">
+                    <label className="smalltext" htmlFor="surname">
+                      Surname
+                    </label>
+                    <input
+                      type="text"
+                      name="surname"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.surname}
+                    />
+                  </div>
+                  <div className="coach-register-input">
+                    <label className="smalltext" htmlFor="name">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.name}
+                    />
+                  </div>
+                  <div className="coach-register-input email">
+                    <label className="smalltext" htmlFor="email">
+                      Email address
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                    />
+                    <p className={style.error}>
+                      {errors.email && touched.email && errors.email}
+                    </p>
+                  </div>
+                  <div className="coach-register-input">
+                    <label className="smalltext" htmlFor="password">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      name="password"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                    />
+                  </div>
+                  <div className="coach-register-input">
+                    <label className="smalltext" htmlFor="confirmPassword">
+                      Confirm Password
+                    </label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.confirmPassword}
+                    />
+                    {errors.password && touched.password && errors.password}
+                  </div>
+                </div>
                 <div className="login-buttons">
                   <button type="submit" className="button-login">
                     Register

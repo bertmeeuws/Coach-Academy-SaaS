@@ -126,9 +126,12 @@
 }
 .dashboard-workout {
   border-collapse: separate;
-  border-spacing: 0.1rem 0.4rem;
+  border-spacing: 0.2rem 1rem;
 }
-
+.dashboard-workout .workout-name,
+.dashboard-workout .smalltext {
+  margin-bottom: 1rem;
+}
 .client-workout {
   margin-bottom: 4rem;
 }
@@ -212,4 +215,46 @@
   width: 70%;
   text-align: center;
   line-height: 2.4rem;
+}
+.client-stats-information {
+  display: grid;
+  grid-template-columns: 0.2fr 1fr;
+  width: 60%;
+  grid-column-gap: 4rem;
+}
+.client-stats-information .weight,
+.client-stats-information .totalcalories,
+.client-stats-information .avgcals {
+  color: var(--orange);
+}
+.client-stats-information .lastweight {
+  color: var(--green);
+}
+.client-stats-information .lostgained {
+  color: var(--red);
+}
+.client .client-stats-pics {
+  grid-area: pics;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+}
+.client-weighins-pic {
+  background-color: var(--lightgrey);
+  width: 33%;
+  height: 20rem;
+}
+.client .client-stats-pics .middle {
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+.client-button-workout {
+  background-image: url("../assets/images/workout.png") !important;
+  color: var(--white);
+  background-size: cover;
+}
+.client-button-diet {
+  background-image: url("../assets/images/diet.png") !important;
+  color: var(--white);
+  background-size: cover;
 }

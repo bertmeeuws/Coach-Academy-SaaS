@@ -2,6 +2,9 @@ import React from "react";
 import { useParams, Link } from "react-router-dom";
 import { useSubscription, gql } from "@apollo/client";
 import "../../styles/client_document.css";
+import Image from "../../assets/images/profile.png";
+import Email from "../../assets/images/email.png";
+import Phone from "../../assets/images/phone.png";
 
 const GET_CLIENT_DATA = gql`
   query GetClientData($id: Int!) @cached(ttl: 120) {
@@ -50,22 +53,26 @@ export default function Client() {
         <h1 className="client-stats-title subtitle">Client stats</h1>
         <button className="button-viewPhotos shadow">View photos</button>
         <div className="client-stats-information">
-          <p>92.1kg</p>
-          <p>Starting weight</p>
-          <p>90.1kg</p>
-          <p>Last weigh in</p>
-          <p>-0.08kg</p>
-          <p>Avg. weight lost/gained per week</p>
-          <p>2800</p>
-          <p>Calories per day</p>
-          <p>5604</p>
-          <p>Avg. steps per day</p>
+          <p className="weight">92.1kg</p>
+          <p className="title">Starting weight</p>
+          <p className="lastweight">90.1kg</p>
+          <p className="title">Last weigh in</p>
+          <p className="lostgained">-0.08kg</p>
+          <p className="title">Avg. weight lost/gained per week</p>
+          <p className="totalcalories">2800</p>
+          <p className="title">Calories per day</p>
+          <p className="avgcals">5604</p>
+          <p className="title">Avg. steps per day</p>
         </div>
-        <div className="client-stats-pics"></div>
+        <div className="client-stats-pics">
+          <div className="client-weighins-pic shadow rounded"></div>
+          <div className="client-weighins-pic shadow rounded middle"></div>
+          <div className="client-weighins-pic shadow rounded"></div>
+        </div>
       </article>
       <div className="client-buttons">
         <Link
-          className="client-button rounded shadow"
+          className="client-button client-button-workout rounded shadow"
           to={`${data.client[0].id}/workout`}
         >
           <article className="client-workoutplan">
@@ -73,7 +80,7 @@ export default function Client() {
           </article>
         </Link>
         <Link
-          className="client-button rounded shadow"
+          className="client-button client-button-diet rounded shadow"
           to={`${data.client[0].id}/diet`}
         >
           <article className="client-diet-button">
@@ -83,29 +90,57 @@ export default function Client() {
       </div>
       <article className="client-sidebar padding rounded shadow">
         <h1 className="hidden">Client information</h1>
-        <div className="client-img"></div>
-        <p className="client-name">
-          {client.surname} {client.name}
-        </p>
-        <p>{client.dob}</p>
+        <div className="client-sidebar-top rounded">
+          <img width="100" height="100" src={Image}></img>
+          <div>
+            <p className="client-name">
+              {client.surname} {client.name}
+            </p>
+            <p className="client-dob">{client.dob}</p>
+          </div>
+        </div>
         <button>More button</button>
-        <p className="smalltext">Address</p>
-        <p>{client.address}</p>
-        <p className="smalltext">Postcode</p>
-        <p>{client.postal}</p>
-        <p className="smalltext">Gemeente</p>
-        <p>{client.city}</p>
-        <p className="smalltext">Leeftijd</p>
-        <p>20 Jaar</p>
-        <p className="smalltext">Height</p>
-        <p>{client.height}cm</p>
-        <p className="smalltext">Profession</p>
-        <p>{client.profession}</p>
-        <p className="smalltext">BMI</p>
-        <p>24.1</p>
-        <p className="smalltext">Contact gegevens</p>
-        <p>{client.email}</p>
-        <p>{client.phone}</p>
+        <div className="client-sidebar-information">
+          <div className="sidebar-container-address">
+            <p className="smalltext address">Address</p>
+            <p className="client-sidebar-input">{client.address}</p>
+          </div>
+          <div>
+            <p className="smalltext postcode">Postal</p>
+            <p className="client-sidebar-input">{client.postal}</p>
+          </div>
+          <div>
+            <p className="smalltext city">City</p>
+            <p className="client-sidebar-input">{client.city}</p>
+          </div>
+          <div>
+            <p className="smalltext dob">Age</p>
+            <p className="client-sidebar-input">20 Jaar</p>
+          </div>
+          <div>
+            <p className="smalltext height">Height</p>
+            <p className="client-sidebar-input">{client.height}cm</p>
+          </div>
+          <div>
+            <p className="smalltext profession">Profession</p>
+            <p className="client-sidebar-input">{client.profession}</p>
+          </div>
+          <div>
+            <p className="smalltext bmi">BMI</p>
+            <p className="client-sidebar-input">24.1</p>
+          </div>
+          <div className="contact">
+            <p className="smalltext">Contact information</p>
+            <div className="contact-item">
+              <img width="21" height="16" src={Email} alt="" />
+              <p className="client-sidebar-input">{client.email}</p>
+            </div>
+            <div className="contact-item">
+              <img width="16" height="16" src={Phone} alt="" />
+              <p className="client-sidebar-input">{client.phone}</p>
+            </div>
+          </div>
+        </div>
       </article>
     </section>
   );

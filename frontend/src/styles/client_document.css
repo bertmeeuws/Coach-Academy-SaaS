@@ -18,11 +18,12 @@
   color: white;
   font-family: Poppins;
   font-weight: 700;
-  width: 12rem;
-  height: 3rem;
+
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem 2rem;
+
   grid-area: button;
   float: right;
   transition: all 0.3s ease-in-out;
@@ -34,8 +35,9 @@
 .client .client-stats {
   grid-area: stats;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  grid-template-rows: 0.3fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 15rem;
+  grid-template-rows: 4rem 1fr 1fr;
+  grid-row-gap: 4rem;
   background-color: var(--white);
   grid-template-areas:
     "title title button"
@@ -48,6 +50,7 @@
 .client .client-sidebar {
   grid-area: sidebar;
   background-color: var(--white);
+  position: relative;
 }
 .client .client .client-buttons {
   grid-area: buttons;
@@ -251,4 +254,84 @@
   font-weight: 600;
   color: var(--red);
   cursor: pointer;
+}
+.client-sidebar-top {
+  background: var(--green);
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 14rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.client-sidebar-top .client-name {
+  font-weight: 600;
+  color: var(--white);
+  margin-bottom: 1rem;
+  font-size: 2.2rem;
+}
+.client-sidebar-top div {
+  margin-left: 2rem;
+}
+.client-sidebar-top .client-dob {
+  font-weight: 500;
+  color: var(--white);
+  font-size: 1.8rem;
+}
+
+.client .client-sidebar-information {
+  margin-top: 14rem;
+  display: grid;
+  grid-template-columns: 0.8fr 1fr 1fr;
+  width: 100%;
+  grid-row-gap: 3rem;
+  grid-column-gap: 2rem;
+}
+.client .sidebar-container-address {
+  grid-column: 1 / 4;
+}
+.client .client-sidebar-information .contact {
+  grid-column: 1 / 4;
+}
+.client .client-sidebar-information .contact div {
+  display: flex;
+  flex-direction: row;
+}
+.client .client-sidebar-information .contact img {
+  margin-right: 1rem;
+}
+.client .client-sidebar-information .smalltext {
+  text-transform: uppercase;
+}
+.client .client-sidebar-information .client-sidebar-input {
+  font-weight: 500;
+  color: var(--darkblue);
+  margin-top: 0.5rem;
+}
+.client .client-sidebar-information .contact-item {
+  display: flex;
+  align-items: center;
+  margin-top: 1rem;
+}
+.client-workout .client-workout-button,
+.client-diet .client-diet-button {
+  background-color: var(--green);
+  color: var(--white);
+  font-weight: 600;
+  outline: none;
+  font-family: Poppins;
+  border: none;
+  padding: 1rem 3rem;
+  border-radius: 0.8rem;
+  float: right;
+  font-size: 1.8rem;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+.client-workout .client-workout-button:hover,
+.client-diet .client-diet-button:hover {
+  background-color: var(--ghost);
+  color: var(--darklbue);
 }

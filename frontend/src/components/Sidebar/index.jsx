@@ -194,7 +194,7 @@ export default function Sidebar() {
                 <span>Settings</span>
               </li>
             </Link>
-            <Link onClick={logout()} className="link" to="/login">
+            <Link onClick={logout} className="link" to="/login">
               <li
                 style={{
                   color: "var(--darkblue)",

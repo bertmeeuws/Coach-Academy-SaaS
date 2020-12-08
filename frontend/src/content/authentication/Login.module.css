@@ -9,17 +9,20 @@
 .form {
   display: flex;
   flex-direction: column;
-  width: 27.6rem;
+  width: 100%;
+  margin-bottom: 4rem;
+  margin-top: 3rem;
 }
 .form input {
   padding-bottom: 0.5rem;
   font-size: 1.6rem;
-  font-size: Poppins;
+  font-family: Poppins;
   border: none;
   border-bottom: 0.1rem solid var(--grey);
   color: var(--grey);
   outline: none;
-  margin-bottom: 2rem;
+  font-weight: 500;
+  margin-bottom: 3rem;
 }
 .error {
   color: var(--red);

@@ -3,11 +3,12 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import AddButton from "../../components/AddButton/AddButton";
 import ClientItem from "../../components/ClientItem/ClientItem";
 import ClientOverview from "../../components/ClientOverview/ClientOverview";
-import { useSubscription, gql } from "@apollo/client";
+import { useSubscription, gql, useQuery } from "@apollo/client";
+import { useStoreState } from "easy-peasy";
 
 const CLIENT_QUERY = gql`
-  query GetData($id: Int!) @cached(ttl: 120) {
-    coach(where: { id: { _eq: $id } }) {
+  query GetData($id: Int!) {
+    coach(where: { user_id: { _eq: $id } }) {
       clients {
         name
         id
@@ -30,12 +31,13 @@ const CLIENT_QUERY = gql`
 `;
 
 export default function Clients() {
-  const clientsSubscription = useSubscription(CLIENT_QUERY, {
+  const id = useStoreState((state) => state.user_id);
+
+  const { data, error } = useQuery(CLIENT_QUERY, {
     variables: {
-      id: 15,
+      id: id,
     },
   });
-  const { data } = clientsSubscription;
 
   const [selectedClient, setSelectedClient] = useState(undefined);
 
@@ -44,6 +46,12 @@ export default function Clients() {
     const client = data.coach[0].clients.find((item) => item.id === id);
     setSelectedClient(client);
   };
+
+  if (data) {
+    console.log(data);
+  }
+  console.log(error);
+
   return (
     <section className="clients">
       <h1 className="hidden">Clients</h1>
@@ -70,11 +78,10 @@ export default function Clients() {
               ))}
         </div>
       </div>
-      <div className="clients-right">
-        <ClientOverview
-          client={data === undefined ? undefined : selectedClient}
-        />
-      </div>
+
+      <ClientOverview
+        client={data === undefined ? undefined : selectedClient}
+      />
     </section>
   );
 }

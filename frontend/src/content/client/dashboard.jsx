@@ -7,6 +7,7 @@ import { useQuery, gql, useMutation, useLazyQuery } from "@apollo/client";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
 import CoachPopup from "../../components/AddCoach/Index";
 import { Link } from "react-router-dom";
+import getDay from "date-fns/get_day";
 
 const GET_USER_DATA = gql`
   query MyQuery($id: Int!, $date: date!) {
@@ -30,7 +31,7 @@ const GET_USER_DATA = gql`
       order_by: { created_at: desc }
     ) {
       id
-      workouts {
+      workouts(order_by: { order: asc }) {
         day
         title
         exercise_in_workouts {
@@ -43,7 +44,7 @@ const GET_USER_DATA = gql`
       }
     }
     diet_plan(
-      where: { user_id: { _eq: $id } }
+      where: { client: { user_id: { _eq: $id } } }
       order_by: { created_at: desc }
       limit: 1
     ) {
@@ -134,6 +135,8 @@ const ADD_WEIGHT = gql`
 `;
 
 export default function Dashboard() {
+  var day = getDay(new Date());
+
   const [craving, setCraving] = useState(3);
   const [energyDay, setEnergyDay] = useState(3);
   const [energyWorkout, setEnergyWorkout] = useState(3);
@@ -340,6 +343,40 @@ export default function Dashboard() {
     });
   };
 
+  const renderWorkout = () => {
+    const { title, exercise_in_workouts } = data.workout_plan[0].workouts[
+      day - 1
+    ];
+    if (data.workout_plan[0].workouts[day - 1].length !== 0) {
+      if (exercise_in_workouts.length !== 0) {
+        return (
+          <>
+            <thead>
+              <tr>
+                <th className="workout-name">{title}</th>
+                <th className="smalltext">SETS</th>
+                <th className="smalltext">REPS</th>
+              </tr>
+            </thead>
+            <tbody>
+              {exercise_in_workouts.map((exercise) => {
+                return (
+                  <tr>
+                    <td>{exercise.exercise.name}</td>
+                    <td>{exercise.sets}</td>
+                    <td>{exercise.reps}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </>
+        );
+      } else {
+        return <p>You have no exercises planned today.</p>;
+      }
+    }
+  };
+
   return (
     <>
       <MobileHeader />
@@ -436,41 +473,13 @@ export default function Dashboard() {
         </form>
         <article className="client-workout">
           <h1 className="client-workout-title">Today's workout</h1>
-          <Link className="dashboard-workout-link">
+          <Link to="/clientworkout" className="dashboard-workout-link">
             <table className="dashboard-workout shadow rounded">
-              {data.workout_plan[0].workouts.map((item) => {
-                if (
-                  //Alleen dag renderen dat van toepassing is
-                  item.day === today
-                ) {
-                  if (item.exercise_in_workouts.length !== 0) {
-                    return (
-                      <>
-                        <thead>
-                          <tr>
-                            <th className="workout-name">{item.title}</th>
-                            <th className="smalltext">SETS</th>
-                            <th className="smalltext">REPS</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {item.exercise_in_workouts.map((exercise) => {
-                            return (
-                              <tr>
-                                <td>{exercise.exercise.name}</td>
-                                <td>{exercise.sets}</td>
-                                <td>{exercise.reps}</td>
-                              </tr>
-                            );
-                          })}
-                        </tbody>
-                      </>
-                    );
-                  } else {
-                    return <p>You have no exercises planned today.</p>;
-                  }
-                }
-              })}
+              {data.workout_plan.length !== 0 ? (
+                renderWorkout()
+              ) : (
+                <p>You have no exercises planned today.</p>
+              )}
             </table>
           </Link>
         </article>

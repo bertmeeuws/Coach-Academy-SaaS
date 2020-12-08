@@ -130,7 +130,7 @@ app.post("/api/actions/signup", async (req, res) => {
     console.log("Creating token");
     const token = generateJWT({
       defaultRole: "coach",
-      allowedRoles: ["coach", "client"],
+      allowedRoles: ["coach"],
       otherClaims: {
         "x-hasura-client-id": String(user_id),
       },
@@ -215,7 +215,7 @@ app.post("/api/actions/login", async (req, res) => {
     console.log("It's a coach");
     const token = generateJWT({
       defaultRole: "coach",
-      allowedRoles: ["coach", "client"],
+      allowedRoles: ["coach"],
       otherClaims: {
         "x-hasura-client-id": String(storedClient.id),
       },

@@ -1,7 +1,7 @@
 import React from "react";
 import logo from "../../assets/images/logo.svg";
 import "../../styles/slider.css";
-import style from "../authentication/Login.module.css";
+import "../../styles/authentication.css";
 import { Formik } from "formik";
 import { Link, Redirect } from "react-router-dom";
 import { useMutation, gql } from "@apollo/client";
@@ -37,7 +37,7 @@ export default function RegisterClient(props) {
   return (
     <section className="auth-section">
       <div className="greenbox"></div>
-      <div className="login shadow rounded">
+      <div className="register shadow rounded">
         <div className="login-content padding">
           <img src={logo} width="222" height="26.21" alt="" />
 
@@ -137,147 +137,171 @@ export default function RegisterClient(props) {
               isSubmitting,
               /* and other goodies */
             }) => (
-              <form className={style.form} onSubmit={handleSubmit}>
-                <label className="smalltext" htmlFor="surname">
-                  Surname
-                </label>
-                <input
-                  type="text"
-                  name="surname"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.surname}
-                />
+              <form className="client-register-form" onSubmit={handleSubmit}>
+                <div className="client-register-container">
+                  <div className="client-register-input surname">
+                    <label className="smalltext" htmlFor="surname">
+                      Surname
+                    </label>
+                    <input
+                      type="text"
+                      name="surname"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.surname}
+                    />
+                  </div>
+                  <div className="client-register-input name">
+                    <label className="smalltext" htmlFor="name">
+                      Name
+                    </label>
+                    <input
+                      type="text"
+                      name="name"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.name}
+                    />
+                  </div>
+                  <div className="client-register-input email">
+                    <label className="smalltext" htmlFor="email">
+                      Email address
+                    </label>
+                    <input
+                      type="email"
+                      name="email"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.email}
+                    />
+                    <p className="register-client-error">
+                      {errors.email && touched.email && errors.email}
+                    </p>
+                  </div>
+                  <div className="client-register-input address">
+                    <label className="smalltext" htmlFor="address">
+                      Address
+                    </label>
+                    <input
+                      type="text"
+                      name="address"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.address}
+                    />
+                  </div>
+                  <div className="client-register-input dpb">
+                    <label className="smalltext" htmlFor="dob">
+                      DOB
+                    </label>
+                    <input
+                      type="date"
+                      name="dob"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.dob}
+                    />
+                  </div>
+                  <div className="client-register-input postal">
+                    <label className="smalltext" htmlFor="postal">
+                      Postal
+                    </label>
+                    <input
+                      type="number"
+                      name="postal"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.postal}
+                    />
+                  </div>
 
-                <label className="smalltext" htmlFor="name">
-                  Name
-                </label>
-                <input
-                  type="text"
-                  name="name"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.name}
-                />
-                <label className="smalltext" htmlFor="email">
-                  Email address
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.email}
-                />
-                <p className={style.error}>
-                  {errors.email && touched.email && errors.email}
-                </p>
+                  <div className="client-register-input city">
+                    <label className="smalltext" htmlFor="city">
+                      City
+                    </label>
+                    <input
+                      type="text"
+                      name="city"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.city}
+                    />
+                  </div>
+                  <div className="client-register-input profession">
+                    <label className="smalltext" htmlFor="profession">
+                      Profession
+                    </label>
+                    <input
+                      type="text"
+                      name="profession"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.profession}
+                    />
+                  </div>
+                  <div className="client-register-input weight">
+                    <label className="smalltext" htmlFor="weight">
+                      Weight
+                    </label>
+                    <input
+                      type="number"
+                      name="weight"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.weight}
+                    />
+                  </div>
+                  <div className="client-register-input length">
+                    <label className="smalltext" htmlFor="length">
+                      Length
+                    </label>
+                    <input
+                      type="number"
+                      name="height"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.height}
+                    />
+                  </div>
+                  <div className="client-register-input phone">
+                    <label className="smalltext" htmlFor="phone">
+                      Phone
+                    </label>
+                    <input
+                      type="text"
+                      name="phone"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.phone}
+                    />
+                  </div>
+                  <div className="client-register-input password">
+                    <label className="smalltext" htmlFor="password">
+                      Password
+                    </label>
+                    <input
+                      type="password"
+                      name="password"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.password}
+                    />
+                  </div>
+                  <div className="client-register-input passwordConfirm">
+                    <label className="smalltext" htmlFor="confirmPassword">
+                      Confirm Password
+                    </label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      onChange={handleChange}
+                      onBlur={handleBlur}
+                      value={values.confirmPassword}
+                    />
 
-                <label className="smalltext" htmlFor="address">
-                  Address
-                </label>
-                <input
-                  type="text"
-                  name="address"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.address}
-                />
-                <label className="smalltext" htmlFor="dob">
-                  DOB
-                </label>
-                <input
-                  type="date"
-                  name="dob"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.dob}
-                />
-                <label className="smalltext" htmlFor="postal">
-                  Postal
-                </label>
-                <input
-                  type="number"
-                  name="postal"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.postal}
-                />
-
-                <label className="smalltext" htmlFor="city">
-                  City
-                </label>
-                <input
-                  type="text"
-                  name="city"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.city}
-                />
-
-                <label className="smalltext" htmlFor="profession">
-                  Profession
-                </label>
-                <input
-                  type="text"
-                  name="profession"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.profession}
-                />
-
-                <label className="smalltext" htmlFor="weight">
-                  Weight
-                </label>
-                <input
-                  type="number"
-                  name="weight"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.weight}
-                />
-
-                <label className="smalltext" htmlFor="length">
-                  Length
-                </label>
-                <input
-                  type="number"
-                  name="height"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.height}
-                />
-                <label className="smalltext" htmlFor="phone">
-                  Phone
-                </label>
-                <input
-                  type="text"
-                  name="phone"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.phone}
-                />
-                <label className="smalltext" htmlFor="password">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.password}
-                />
-                <label className="smalltext" htmlFor="confirmPassword">
-                  Confirm Password
-                </label>
-                <input
-                  type="password"
-                  name="confirmPassword"
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  value={values.confirmPassword}
-                />
-                {errors.password && touched.password && errors.password}
+                    {errors.password && touched.password && errors.password}
+                  </div>
+                </div>
                 <div className="login-buttons">
                   <button type="submit" className="button-login">
                     Register

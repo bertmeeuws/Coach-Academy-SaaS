@@ -309,8 +309,8 @@ export default function Diet() {
       const { data } = await insertDietPlan({
         variables: {
           object: {
-            coach_id: 15,
-            user_id: 50,
+            coach_id: 18,
+            user_id: 61,
           },
         },
       });
@@ -470,7 +470,7 @@ export default function Diet() {
                 actions.deletedFood({ unique: unique, meal: meal })
               }
             />
-            <input type="submit" />
+            <input className="client-diet-button" type="submit" />
           </form>
         </article>
         <article className="diet-foods rounded shadow">

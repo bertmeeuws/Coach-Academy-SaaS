@@ -229,7 +229,7 @@ export default function Workout() {
       console.log("Error in workout plan");
     }
     //Start adding the days
-    await Object.values(state.Workouts).forEach(async (day) => {
+    await Object.values(state.Workouts).forEach(async (day, index) => {
       let workoutId;
       try {
         const { data } = await insertWorkout({
@@ -238,6 +238,7 @@ export default function Workout() {
               day: day.day,
               title: day.name,
               workout_plan_id: idWorkoutplan,
+              order: index,
             },
           },
         });
@@ -257,6 +258,7 @@ export default function Workout() {
                 unique_id: exercise.unique,
                 exercise_id: exercise.id,
                 workout_id: workoutId,
+                
               },
             },
           });
@@ -412,7 +414,7 @@ export default function Workout() {
                 actions.setRpe({ value, day, unique })
               }
             />
-            <input type="submit" />
+            <input className="client-workout-button shadow" type="submit" />
           </form>
         </article>
         <article className="workout-exercises rounded shadow">

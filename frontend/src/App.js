@@ -13,7 +13,7 @@ import Login from "./content/authentication/Login";
 import RegisterClient from "./content/authentication/RegisterClient";
 import RegisterCoach from "./content/authentication/RegisterCoach";
 import Header from "./components/Header/";
-import Sidebar from "./components/Sidebar/";
+import Sidebar from "./components/Sidebar/index";
 import Dashboard from "./content/coach/Dashboard";
 import Clients from "./content/coach/Clients";
 import Todos from "./content/coach/Todos";
@@ -27,6 +27,7 @@ import Edit from "./content/client/Edit";
 import Progress from "./content/client/Progress";
 import Settings from "./content/client/Settings";
 import ClientDiet from "./content/client/Diet";
+import ClientWorkout from "./content/client/Workout";
 import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
 
@@ -86,7 +87,7 @@ function App() {
       <StoreProvider store={store}>
         <ApolloProvider client={client}>
           <Route exact path="/">
-            <Redirect to="login" />
+            <Redirect to="/login" />
           </Route>
           <Route exact path="/login">
             <Login />
@@ -111,7 +112,7 @@ function App() {
           </Route>
 
           <Route exact path="/clients">
-            <AuthenticatedView roles={["coach, client"]}>
+            <AuthenticatedView roles={["coach"]}>
               <div className="content-grid">
                 <Sidebar />
                 <div className="container-grid">
@@ -181,6 +182,11 @@ function App() {
           <Route exact path="/clientdiet">
             <AuthenticatedView roles={["client"]}>
               <ClientDiet />
+            </AuthenticatedView>
+          </Route>
+          <Route exact path="/clientworkout">
+            <AuthenticatedView roles={["client"]}>
+              <ClientWorkout />
             </AuthenticatedView>
           </Route>
 

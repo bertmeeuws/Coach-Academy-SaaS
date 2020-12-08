@@ -8,9 +8,7 @@
 .clients-left {
   grid-area: left;
 }
-.clients-right {
-  grid-area: right;
-}
+
 .clients-search {
   height: 6rem;
   width: 100%;
@@ -107,16 +105,66 @@
 }
 .client-overview-circle {
   width: 20rem;
+
   height: 20rem;
   z-index: 10;
   border-radius: 50%;
   margin: 0 auto;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
 
   background-color: rgb(255, 0, 157);
 }
 .client-overview-block {
   display: flex;
   flex-direction: column;
+}
+.client-overview-block img {
+  margin-right: 1rem;
+}
+.client-overview-block .normaltext {
+  margin-bottom: 1rem;
+}
+.client-overview-block .smalltext {
+  margin-bottom: 0.5rem;
+}
+.client-overview-button {
+  background-color: var(--green);
+  color: var(--white);
+  font-weight: 600;
+  text-decoration: none;
+  padding: 1rem 1rem;
+  text-align: center;
+  border-radius: 0.8rem;
+  margin-top: 3rem;
+  transition: all 0.2s ease-in;
+}
+.client-overview-button:hover {
+  background-color: var(--ghost);
+  color: var(--darkblue);
+}
+.client-overview-background {
+  border-radius: 1rem;
+  left: 0;
+  top: 0;
+  position: absolute;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  height: 18rem;
+}
+.client-overview-right .dob {
+  text-align: left !important;
+  color: white;
+}
+.client-overview-right .subtitle {
+  font-weight: 600;
+  color: var(--white);
+}
+
+.client-overview-right {
+  margin-left: 3rem;
 }
 .client-overview .dob,
 .client-overview .name {
@@ -136,7 +184,7 @@
   grid-area: age;
 }
 .client-overview-grid {
-  margin-top: 5rem;
+  margin-top: 25rem;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 8rem 8rem 8rem;
@@ -144,4 +192,7 @@
     "address address"
     "postal city"
     "age age";
+}
+.client-workout-grid {
+  margin-left: 2rem;
 }
