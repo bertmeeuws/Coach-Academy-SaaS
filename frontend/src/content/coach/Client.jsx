@@ -1,13 +1,15 @@
 import React from "react";
 import { useParams, Link } from "react-router-dom";
-import { useSubscription, gql } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import "../../styles/client_document.css";
 import Image from "../../assets/images/profile.png";
 import Email from "../../assets/images/email.png";
 import Phone from "../../assets/images/phone.png";
+import { Line } from "react-chartjs-2";
+import { LoaderLarge } from "../../components/Loaders/Loaders";
 
 const GET_CLIENT_DATA = gql`
-  query GetClientData($id: Int!) @cached(ttl: 120) {
+  query GetClientData($id: Int!) {
     client(limit: 1, where: { id: { _eq: $id } }) {
       weight
       user_id
@@ -23,13 +25,23 @@ const GET_CLIENT_DATA = gql`
       city
       address
     }
+    weight(
+      distinct_on: date
+      where: { user: { clients: { id: { _eq: $id } } } }
+      order_by: { date: asc, created_at: desc }
+    ) {
+      id
+      created_at
+      date
+      weight
+    }
   }
 `;
 
 export default function Client() {
   const { id } = useParams();
 
-  const request = useSubscription(GET_CLIENT_DATA, {
+  const request = useQuery(GET_CLIENT_DATA, {
     variables: {
       id: id,
     },
@@ -37,14 +49,39 @@ export default function Client() {
 
   const { data, loading } = request;
 
+  let dataSet = [];
+  let labelsSet = [];
   let client = undefined;
 
   if (loading) {
-    return <p>Loading data</p>;
+    return <LoaderLarge />;
   }
   if (data) {
     client = data.client[0];
+    if (data.weight) {
+      data.weight.map((item) => {
+        dataSet.push(item.weight);
+        labelsSet.push(item.date);
+      });
+    }
   }
+
+  console.log(data);
+
+  const state = {
+    labels: labelsSet,
+    datasets: [
+      {
+        label: "Weight",
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: "#f0f4f7",
+        borderColor: "#00c49a",
+        borderWidth: 4,
+        data: dataSet,
+      },
+    ],
+  };
 
   return (
     <section className="client client-grid">
@@ -61,13 +98,50 @@ export default function Client() {
           <p className="title">Avg. weight lost/gained per week</p>
           <p className="totalcalories">2800</p>
           <p className="title">Calories per day</p>
-          <p className="avgcals">5604</p>
+          <p className="avgcals">5654</p>
           <p className="title">Avg. steps per day</p>
         </div>
         <div className="client-stats-pics">
-          <div className="client-weighins-pic shadow rounded"></div>
-          <div className="client-weighins-pic shadow rounded middle"></div>
-          <div className="client-weighins-pic shadow rounded"></div>
+          <Line
+            data={state}
+            height="80"
+            options={{
+              scales: {
+                xAxes: [
+                  {
+                    type: "time",
+                    time: {
+                      unit: "day",
+                      displayFormats: {
+                        millisecond: "MMM D",
+                        second: "MMM D",
+                        minute: "MMM D",
+                        hour: "MMM D",
+                        day: "MMM D",
+                        week: "MMM D",
+                        month: "MMM D",
+                        quarter: "MMM D",
+                        year: "MMM D",
+                      },
+                    },
+                  },
+                ],
+              },
+              maintainAspectRatio: false,
+              title: {
+                display: true,
+                text: "Weight",
+                fontSize: 20,
+
+                fontWeight: 600,
+                fontFamily: "Poppins",
+              },
+              legend: {
+                display: false,
+                position: "right",
+              },
+            }}
+          />
         </div>
       </article>
       <div className="client-buttons">

@@ -38,15 +38,20 @@
   font-family: Poppins;
   font-weight: 600;
 }
+.client-weighins-form {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 2rem;
+}
 .client-weighins-form .button {
   background-color: var(--green);
   color: var(--white);
   outline: none;
   border: none;
-  padding: 0.5rem;
+  padding: 0.5rem 1.5rem;
   font-family: Poppins;
   font-weight: 600;
-  border-radius: 2rem;
+  border-radius: 0.8rem;
   margin: 0 auto;
   text-align: center;
   margin-top: 1rem;
@@ -58,7 +63,7 @@
 }
 .client-progress .client-progress-previousweighins {
   display: flex;
-  overflow-x: auto;
+  overflow-x: scroll;
   flex-direction: row;
   width: 100%;
   white-space: nowrap;

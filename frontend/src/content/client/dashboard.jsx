@@ -159,8 +159,6 @@ export default function Dashboard() {
     return (today = yyyy + "-" + mm + "-" + dd);
   };
 
-  const today = new Date().toLocaleString("en-us", { weekday: "long" });
-
   let indexOfTodayDiet;
 
   const [fetchForSurveys, { data: hasSurvey }] = useLazyQuery(
@@ -236,7 +234,6 @@ export default function Dashboard() {
           craving: Number(craving),
         },
       });
-      console.log(data);
     }
 
     //if there is one for today, update with the values
@@ -253,7 +250,7 @@ export default function Dashboard() {
           },
         },
       });
-      console.log(data);
+      setWeight("");
     } else {
       alert("Something is wrong with your weight");
     }
@@ -274,7 +271,7 @@ export default function Dashboard() {
             let amount = item.amount === null ? 100 : item.amount;
             //values are per 100 grams. Multiple to desired value
             let multiplier = amount / 100;
-            console.log(amount);
+
             proteins += item.proteins;
             carbs += item.carbs;
             fats += item.fats;
@@ -284,7 +281,7 @@ export default function Dashboard() {
               item.fats * 9 * multiplier;
           });
         });
-        console.log(carbs);
+
         hasTodayRendered = true;
         return (
           <div className="mealplan-box shadow rounded">
@@ -301,7 +298,6 @@ export default function Dashboard() {
           </div>
         );
       } else if (hasTodayRendered) {
-        console.log(item);
         let calories = 0;
         let proteins = 0;
         let carbs = 0;
@@ -311,7 +307,7 @@ export default function Dashboard() {
             let amount = item.amount === null ? 100 : item.amount;
             //values are per 100 grams. Multiple to desired value
             let multiplier = amount / 100;
-            console.log(amount);
+
             proteins += item.proteins;
             carbs += item.carbs;
             fats += item.fats;
@@ -321,7 +317,7 @@ export default function Dashboard() {
               item.fats * 9 * multiplier;
           });
         });
-        console.log(carbs);
+
         hasTodayRendered = true;
         return (
           <div className="mealplan-box mealplan-box-inactive shadow rounded">
@@ -399,7 +395,8 @@ export default function Dashboard() {
           <h1 className="hidden">Weight</h1>
           {data.weight.length !== 0 ? (
             <p className="client-weight-title">
-              You already weighed yourself with Google Fit.
+              You already weighed yourself today:{" "}
+              {data.weight[0].weight.toFixed(1)} kg
             </p>
           ) : (
             <p className="client-weight-title">
@@ -410,7 +407,7 @@ export default function Dashboard() {
             className="client-weight-input"
             value={weight}
             type="number"
-            placeholder="kg"
+            placeholder="Weight"
             step=".01"
             onChange={(e) => setWeight(e.currentTarget.value)}
           />

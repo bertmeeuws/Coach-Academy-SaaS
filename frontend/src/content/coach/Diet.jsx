@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Breadcrumb from "../../assets/images/breadcrumbs.png";
 import { v4 as uuidv4 } from "uuid";
 import { useLocalStore, action } from "easy-peasy";
-import { useQuery, gql, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import MealPlan_Day from "../../components/MealPlan_Day/MealPlan_Day";
 import FoodSearchItem from "../../components/FoodSearchItem/FoodSearchItem";
 import FatSecret from "../../FatSecret.js";

@@ -51,15 +51,17 @@
 .client-weight-input {
   outline: none;
   border: none;
-  background: none;
+  border-radius: 0.5rem;
+  background-color: var(--ghost);
   border-bottom: 0.2rem solid var(--white);
   font-size: 1.8rem;
+  padding: 0.5rem 1rem;
   font-weight: 600;
-  color: var(--white);
+  color: var(--green);
   width: 6rem;
 }
 .client-weight-input::placeholder {
-  color: var(--ghost);
+  color: var(--green);
 }
 .client-weight-button {
   float: right;
