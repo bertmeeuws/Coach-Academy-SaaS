@@ -1,10 +1,8 @@
-import express from "express";
-import fetch from "cross-fetch";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcryptjs";
-import bodyParser from "body-parser";
-import { createRequire } from "module";
-const require = createRequire(import.meta.url);
+const express = require("express");
+const fetch = require("cross-fetch");
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const bodyParser = require("body-parser");
 const { google } = require("googleapis");
 const request = require("request");
 const cors = require("cors");
@@ -12,12 +10,23 @@ const urlParse = require("url-parse");
 const queryParse = require("query-string");
 const axios = require("axios");
 const { PreciseDate } = require("@google-cloud/precise-date");
+const morgan = require("morgan");
+const storage = require("./storage");
+//const routeList = require("express-routes-catalogue").default;
 
 //const { google } = require("googleapis");
 //import google from "googleapis";
 
 const app = express();
-app.use(cors());
+app.use(
+  cors({
+    credentials: true,
+    origin: true,
+  })
+);
+app.use(morgan("tiny"));
+app.disable("x-powered-by");
+app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 const PORT = 3001;
@@ -32,6 +41,9 @@ const HASURA_GRAPHQL_JWT_SECRET =
 
 // This is a function which takes the URL and headers for Hasura queries
 // and returns a function which sends GraphQL requests to the Hasura instance
+
+app.use("/storage", storage);
+
 const makeGraphQLClient = ({ url, headers }) => async ({
   query,
   variables,
@@ -259,8 +271,6 @@ app.post("/api/actions/getfood", async (req, res) => {
 
   //id inparsen
 
-  console.log(url + "&state=JEWEETZELF");
-
   const redirect = url + "&state=" + id;
   //console.log(url);
 
@@ -276,6 +286,7 @@ app.get("/api/actions/callback/", async (req, res) => {
   console.log(state.state);
   const id = state.state;
   //console.log(req.params);
+  console.log("Call back received with id: " + id);
 
   const oauth2Client = new google.auth.OAuth2(
     "625672102570-t557djk99mu5emcutn8ks33gcohnmgon.apps.googleusercontent.com",
@@ -398,6 +409,7 @@ app.get("/api/actions/callback/", async (req, res) => {
             },
           });
 
+          console.log("Weight injected into DB");
           if (addToDatabase.errors)
             return res.status(400).json({ errors: addToDatabase.errors });
         }
@@ -429,6 +441,7 @@ app.get("/api/actions/callback/", async (req, res) => {
       },
     });
     //console.log(result.data.bucket);
+
     stepArray = result.data.bucket;
   } catch (e) {
     //console.log(e);
@@ -446,6 +459,8 @@ app.get("/api/actions/callback/", async (req, res) => {
 
           const dateStart = new PreciseDate(start);
           const dateEnd = new PreciseDate(end);
+
+          console.log(steps);
 
           //console.log(start.isValid());
 
@@ -472,7 +487,7 @@ app.get("/api/actions/callback/", async (req, res) => {
           if (addToDatabase.errors)
             return res.status(400).json({ errors: addToDatabase.errors });
 
-          //console.log();
+          console.log("Steps injected into database");
           array.push({
             start: formatDate(dateStart.toISOString()),
             end: formatDate(dateEnd.toISOString()),
@@ -489,6 +504,8 @@ app.get("/api/actions/callback/", async (req, res) => {
 
   //return res.json({ data: "yes" });
 });
+
+//routeList.terminal(app);
 
 // Bind to 0.0.0.0 host, so it'll work in Docker too
 app.listen(PORT, "0.0.0.0", () => {
