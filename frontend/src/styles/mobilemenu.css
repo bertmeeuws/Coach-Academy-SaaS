@@ -4,11 +4,16 @@
   position: fixed;
   left: -100vw;
   top: 0;
+  z-index: 0;
   background-color: var(--white);
   overflow: hidden;
 }
 .client-header {
   padding: 1.5rem;
+  z-index: 3;
+}
+.client-header img {
+  border-radius: 50%;
 }
 .mobile-menu-logo {
   margin: 0 auto;

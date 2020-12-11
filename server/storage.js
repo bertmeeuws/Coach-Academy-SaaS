@@ -42,6 +42,7 @@ const upload = multer({
       //generate unique file names for the server
       const uuid = uuidv4();
       const key = `${req.s3_key_prefix}${uuid}`;
+      console.log(key);
       req.saved_files.push({
         originalname: file.originalname,
         mimetype: file.mimetype,
@@ -75,7 +76,7 @@ router.get("/file/:fileName", (req, res, next) => {
   const params = {
     Bucket: S3_BUCKET,
     Key: "/" + req.params.fileName,
-    Expires: 20,
+    Expires: 60,
   };
   try {
     const viewingLink = s3.getSignedUrl("getObject", params);
@@ -83,29 +84,6 @@ router.get("/file/:fileName", (req, res, next) => {
   } catch (err) {
     res.status(500).json({ err });
   }
-
-  /*
-  const stream = s3.getObject(params).createReadStream();
-  stream.on("error", (err) => {
-    console.log(err);
-    //logger.log({ level: "error", messsage: "stream error", error: `${err}` });
-  });
-  stream.pipe(res);
-
-  /*
-  console.log("Received parameters", req.params);
-  const params = {
-    Bucket: S3_BUCKET,
-    Key: "/" + req.params.fileName,
-    Expires: 20,
-  };
-  try {
-    const viewingLink = s3.getSignedUrl("getObject", params);
-    res.json({ viewingLink });
-  } catch (err) {
-    res.status(500).json({ err });
-  }
-  */
 });
 
 router.post(

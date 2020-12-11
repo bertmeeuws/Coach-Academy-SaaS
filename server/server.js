@@ -360,7 +360,8 @@ app.get("/api/actions/callback/", async (req, res) => {
         endTimeMillis: test1.getTime(),
       },
     });
-    //console.log(result.data.bucket);
+    console.log(weightResult.data.bucket);
+    console.log(weightResult.data.bucket[1].dataset);
     weightArray = weightResult.data.bucket;
     //console.log(weightArray);
   } catch (e) {
@@ -381,14 +382,11 @@ app.get("/api/actions/callback/", async (req, res) => {
       for (const points of dataSet.dataset) {
         for (const steps of points.point) {
           console.log(steps);
-
+          console.log("Inside steps");
           const start = steps.startTimeNanos;
           const end = steps.endTimeNanos;
 
-          //(start);
-          //const dateEnd = new PreciseDate(end);
-          //console.log(formatDate(dateStart.toISOString()));
-          //console.log(formatDate(dateEnd.toISOString()));
+          console.log(steps.dataset);
 
           const addToDatabase = await sendQuery({
             query: `
@@ -444,7 +442,7 @@ app.get("/api/actions/callback/", async (req, res) => {
 
     stepArray = result.data.bucket;
   } catch (e) {
-    //console.log(e);
+    console.log(e);
   }
 
   try {
@@ -460,7 +458,7 @@ app.get("/api/actions/callback/", async (req, res) => {
           const dateStart = new PreciseDate(start);
           const dateEnd = new PreciseDate(end);
 
-          console.log(steps);
+          // console.log(steps);
 
           //console.log(start.isValid());
 

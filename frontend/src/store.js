@@ -4,6 +4,7 @@ const model = {
   apollotoken: undefined,
   roles: [],
   user_id: undefined,
+  profile_pic: null,
   addToken: action((state, payload) => {
     state.apollotoken = payload;
   }),
@@ -18,6 +19,9 @@ const model = {
     state.roles = payload;
     console.log("Roles in store: " + state.roles);
     console.log("Roles type in store: " + typeof state.roles);
+  }),
+  addProfilePic: action((state, payload) => {
+    state.profile_pic = payload;
   }),
 };
 

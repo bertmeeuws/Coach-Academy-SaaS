@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
 import MobileHeader from "../../components/MobileHeader/MobileHeader";
-import { useStoreState } from "easy-peasy";
+import { useStoreState, useStoreActions } from "easy-peasy";
 import { useQuery, gql, useMutation, useLazyQuery } from "@apollo/client";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
 import "../../styles/edit.css";
+import Upload from "../../assets/images/svg/upload.svg";
+import Dummy from "../../assets/images/profile1.jpg";
+
+import axios from "axios";
 
 const GET_USER_DATA = gql`
   query GetDataUser($id: Int!) {
@@ -19,6 +23,14 @@ const GET_USER_DATA = gql`
       dob
       address
       city
+      user {
+        avatars(limit: 1, order_by: { id: desc }) {
+          key
+          mimetype
+          originalName
+          id
+        }
+      }
     }
   }
 `;
@@ -41,8 +53,33 @@ const CHANGE_USER_DATA = gql`
   }
 `;
 
+const IMAGES = gql`
+  query getImages($id: Int!) {
+    avatars(where: { user_id: { _eq: $id } }) {
+      originalName
+      mimetype
+      key
+      id
+    }
+  }
+`;
+
+const UPLOAD_FILE = gql`
+  mutation insert_avatars($file: avatars_insert_input!) {
+    insert_avatars(objects: [$file]) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
 export default function Edit() {
   const id = useStoreState((state) => state.user_id);
+
+  const profile_pic = useStoreState((state) => state.profile_pic);
+
+  const ADD_AVATAR_STORE = useStoreActions((actions) => actions.addProfilePic);
 
   const [surname, setSurname] = useState("");
   const [name, setName] = useState("");
@@ -53,6 +90,10 @@ export default function Edit() {
   const [profession, setProfession] = useState("");
   const [height, setHeight] = useState("");
   const [phone, setPhone] = useState("");
+  const [file, setFile] = useState(profile_pic);
+  const [filePath, setFilePath] = useState(null);
+
+  const [INSERT_FILE] = useMutation(UPLOAD_FILE);
 
   const [fetchUserData, { data: userData }] = useLazyQuery(GET_USER_DATA, {
     variables: {
@@ -79,6 +120,21 @@ export default function Edit() {
     },
   });
 
+  const fetchURL = async (data) => {
+    console.log(data);
+    //console.log(item);
+    axios
+      .get("http://host.docker.internal:3001/storage/file" + data.key)
+      .then((response) => {
+        setFile(response.data.viewingLink);
+        console.log(response.data.viewingLink);
+        ADD_AVATAR_STORE(response.data.viewingLink);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   useEffect(() => {
     if (userData) {
       if (userData.client.length !== 0) {
@@ -93,6 +149,7 @@ export default function Edit() {
           height,
           profession,
           phone,
+          user,
         } = userData.client[0];
         setSurname(surname);
         setName(name);
@@ -103,6 +160,9 @@ export default function Edit() {
         setHeight(height);
         setProfession(profession);
         setPhone(phone);
+        if (user.avatars.length !== 0) {
+          fetchURL(user.avatars[0]);
+        }
       } else {
         console.log("Client was fetched but no data has been found");
       }
@@ -141,6 +201,42 @@ export default function Edit() {
     } else {
       console.log("No returned data after mutation");
     }
+
+    if (filePath !== null) {
+      const form_data = new FormData();
+      form_data.append("files", filePath);
+
+      console.log(form_data);
+
+      const response = await axios.post(
+        `http://host.docker.internal:3001/storage/upload`,
+        form_data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "x-path": "/upload-folder",
+          },
+          withCredentials: true,
+        }
+      );
+      //console.log({ response });
+
+      const inserted_file = response.data[0];
+      console.log(inserted_file);
+
+      const { data, errors } = await INSERT_FILE({
+        variables: {
+          file: {
+            key: inserted_file.key,
+            mimetype: inserted_file.mimetype,
+            originalName: inserted_file.originalname,
+            user_id: id,
+          },
+        },
+      });
+      console.log(data);
+      ADD_AVATAR_STORE(file);
+    }
   };
 
   return (
@@ -148,10 +244,35 @@ export default function Edit() {
       <MobileHeader />
       <section className="section client-edit">
         <h1 className="client-edit-hero">Edit your profile</h1>
-        <p className="client-edit-subtext">
-          Has some of your information changed? Let the coach know.
-        </p>
         <form onSubmit={submitEditProfile} className="client-edit-form">
+          <div className="client-edit-form-avatar">
+            <img
+              className="profilePic shadow"
+              src={file === null ? Dummy : file}
+              alt=""
+              height="88"
+              width="88"
+            />
+            <input
+              type="file"
+              id="file"
+              onChange={(e) => {
+                setFile(URL.createObjectURL(e.target.files[0]));
+                setFilePath(e.target.files[0]);
+              }}
+              style={{ display: "none" }}
+            />
+            <label htmlFor="file">
+              <img
+                id="file"
+                src={Upload}
+                className="shadow button"
+                width="23"
+                height="23"
+                alt=""
+              />
+            </label>
+          </div>
           <div className="client-edit-grid">
             <div className="client-edit-form-input">
               <p className="smalltext">Surname</p>

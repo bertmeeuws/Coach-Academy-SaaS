@@ -38,5 +38,23 @@
   display: flex;
   margin: 0 auto;
   justify-content: center;
-  margin-top: 8.6rem;
+  margin-top: 2.5rem;
+}
+.client-edit-form-avatar {
+  height: 8.8rem;
+  width: 8.8rem;
+
+  position: relative;
+  margin: 0 auto;
+  margin-top: 3rem;
+  margin-bottom: 4rem;
+}
+.client-edit-form-avatar .profilePic {
+  border-radius: 50%;
+  z-index: -1;
+}
+.client-edit-form-avatar .button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
 }

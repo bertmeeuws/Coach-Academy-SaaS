@@ -7,7 +7,7 @@ html {
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
 .shadow {
   box-shadow: 0 0 1.5rem 1rem rgba(0, 0, 0, 0.015);

@@ -1,12 +1,13 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { gql, useQuery } from "@apollo/client";
 import "../../styles/client_document.css";
 import Image from "../../assets/images/profile.png";
 import Email from "../../assets/images/email.png";
 import Phone from "../../assets/images/phone.png";
-import { Line } from "react-chartjs-2";
+import { Line, Bar } from "react-chartjs-2";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
+import { isNonEmptyArray } from "@apollo/client/utilities";
 
 const GET_CLIENT_DATA = gql`
   query GetClientData($id: Int!) {
@@ -35,6 +36,25 @@ const GET_CLIENT_DATA = gql`
       date
       weight
     }
+    steps(
+      where: { user: { clients: { id: { _eq: $id } } } }
+      distinct_on: date
+      order_by: { date: asc, created_at: desc }
+    ) {
+      steps
+      date
+    }
+    survey(
+      distinct_on: created_at
+      where: { user: { clients: { id: { _eq: $id } } } }
+      order_by: { created_at: desc }
+      limit: 7
+    ) {
+      energy_workout
+      energy_day
+      craving
+      created_at
+    }
   }
 `;
 
@@ -47,10 +67,19 @@ export default function Client() {
     },
   });
 
+  const [chart, setChart] = useState("Weight");
+
   const { data, loading } = request;
 
   let dataSet = [];
   let labelsSet = [];
+  let stepsSet = [];
+  let stepsLabel = [];
+  let surveySetCravings = [];
+  let surveySetEnergyDay = [];
+  let surveySetEnergyWorkout = [];
+  let surveyLabels = [];
+
   let client = undefined;
 
   if (loading) {
@@ -64,11 +93,25 @@ export default function Client() {
         labelsSet.push(item.date);
       });
     }
+    if (data.steps) {
+      data.steps.map((item) => {
+        stepsSet.push(item.steps);
+        stepsLabel.push(item.date);
+      });
+    }
+    if (data.survey) {
+      data.survey.map((item) => {
+        surveySetCravings.push(item.craving);
+        surveySetEnergyDay.push(item.energy_day);
+        surveySetEnergyWorkout.push(item.energy_workout);
+        surveyLabels.push(item.created_at);
+      });
+    }
   }
 
   console.log(data);
-
-  const state = {
+  console.log(chart);
+  const WEIGHT_DATA = {
     labels: labelsSet,
     datasets: [
       {
@@ -78,7 +121,45 @@ export default function Client() {
         backgroundColor: "#f0f4f7",
         borderColor: "#00c49a",
         borderWidth: 4,
+
         data: dataSet,
+      },
+    ],
+  };
+
+  const STEPS_DATA = {
+    labels: stepsLabel,
+    datasets: [
+      {
+        label: "Weight",
+        fill: false,
+        lineTension: 0.5,
+        backgroundColor: "#f0f4f7",
+        borderColor: "#00c49a",
+        borderWidth: 4,
+
+        data: stepsSet,
+      },
+    ],
+  };
+
+  const SURVEY_DATA = {
+    labels: surveyLabels,
+    datasets: [
+      {
+        label: "Cravings",
+        data: surveySetCravings,
+        backgroundColor: "rgb(0,196,154)",
+      },
+      {
+        label: "Energy during workout",
+        data: surveySetEnergyWorkout,
+        backgroundColor: "rgb(0, 255, 229)",
+      },
+      {
+        label: "Energy during day",
+        data: surveySetEnergyDay,
+        backgroundColor: "rgb(79, 255, 190)",
       },
     ],
   };
@@ -102,46 +183,157 @@ export default function Client() {
           <p className="title">Avg. steps per day</p>
         </div>
         <div className="client-stats-pics">
-          <Line
-            data={state}
-            height="80"
-            options={{
-              scales: {
-                xAxes: [
-                  {
-                    type: "time",
-                    time: {
-                      unit: "day",
-                      displayFormats: {
-                        millisecond: "MMM D",
-                        second: "MMM D",
-                        minute: "MMM D",
-                        hour: "MMM D",
-                        day: "MMM D",
-                        week: "MMM D",
-                        month: "MMM D",
-                        quarter: "MMM D",
-                        year: "MMM D",
+          <div className="client-stats-nav">
+            <p
+              onClick={() => setChart("Weight")}
+              className={`client-chart-button ${
+                chart === "Weight" ? " p-active" : ""
+              }`}
+            >
+              Weight
+            </p>
+            <p
+              onClick={() => setChart("Steps")}
+              className={`client-chart-button ${
+                chart === "Steps" ? " p-active" : ""
+              }`}
+            >
+              Steps
+            </p>
+            <p
+              onClick={() => setChart("Survey")}
+              className={`client-chart-button ${
+                chart === "Survey" ? " p-active" : ""
+              }`}
+            >
+              Survey
+            </p>
+          </div>
+          <div
+            className={`client-graph-container ${
+              chart === "Weight" ? "" : "hidden"
+            }`}
+          >
+            <Line
+              data={WEIGHT_DATA}
+              height="80"
+              options={{
+                responsive: true,
+                scales: {
+                  xAxes: [
+                    {
+                      type: "time",
+                      time: {
+                        unit: "day",
+                        displayFormats: {
+                          millisecond: "MMM D",
+                          second: "MMM D",
+                          minute: "MMM D",
+                          hour: "MMM D",
+                          day: "MMM D",
+                          week: "MMM D",
+                          month: "MMM D",
+                          quarter: "MMM D",
+                          year: "MMM D",
+                        },
                       },
                     },
-                  },
-                ],
-              },
-              maintainAspectRatio: false,
-              title: {
-                display: true,
-                text: "Weight",
-                fontSize: 20,
-
-                fontWeight: 600,
-                fontFamily: "Poppins",
-              },
-              legend: {
-                display: false,
-                position: "right",
-              },
-            }}
-          />
+                  ],
+                },
+                maintainAspectRatio: false,
+                legend: {
+                  display: false,
+                  position: "right",
+                },
+              }}
+            />
+          </div>
+          <div
+            className={`client-graph-container ${
+              chart === "Steps" ? "" : "hidden"
+            }`}
+          >
+            <Line
+              data={STEPS_DATA}
+              height="80"
+              options={{
+                responsive: true,
+                scales: {
+                  xAxes: [
+                    {
+                      type: "time",
+                      time: {
+                        unit: "day",
+                        displayFormats: {
+                          millisecond: "MMM D",
+                          second: "MMM D",
+                          minute: "MMM D",
+                          hour: "MMM D",
+                          day: "MMM D",
+                          week: "MMM D",
+                          month: "MMM D",
+                          quarter: "MMM D",
+                          year: "MMM D",
+                        },
+                      },
+                    },
+                  ],
+                },
+                maintainAspectRatio: false,
+                legend: {
+                  display: false,
+                  position: "right",
+                },
+              }}
+            />
+          </div>
+          <div
+            className={`client-graph-container ${
+              chart === "Survey" ? "" : "hidden"
+            }`}
+          >
+            <Bar
+              height="80"
+              data={SURVEY_DATA}
+              options={{
+                responsive: true,
+                scales: {
+                  yAxes: [
+                    {
+                      stacked: false,
+                      ticks: {
+                        beginAtZero: true,
+                      },
+                    },
+                  ],
+                  xAxes: [
+                    {
+                      type: "time",
+                      time: {
+                        unit: "day",
+                        displayFormats: {
+                          millisecond: "MMM D",
+                          second: "MMM D",
+                          minute: "MMM D",
+                          hour: "MMM D",
+                          day: "MMM D",
+                          week: "MMM D",
+                          month: "MMM D",
+                          quarter: "MMM D",
+                          year: "MMM D",
+                        },
+                      },
+                    },
+                  ],
+                },
+                maintainAspectRatio: false,
+                legend: {
+                  display: false,
+                  position: "right",
+                },
+              }}
+            />
+          </div>
         </div>
       </article>
       <div className="client-buttons">

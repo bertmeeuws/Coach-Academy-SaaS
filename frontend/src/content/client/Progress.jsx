@@ -1,12 +1,19 @@
-import React from "react";
+import React, { useState, useEffect, useReducer } from "react";
 import MobileHeader from "../../components/MobileHeader/MobileHeader";
 import { useStoreState, useLocalStore } from "easy-peasy";
-import { gql, useQuery } from "@apollo/client";
+import {
+  gql,
+  useLazyQuery,
+  useMutation,
+  useQuery,
+  useSubscription,
+} from "@apollo/client";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
 import "../../styles/progress.css";
+import axios from "axios";
 
 const GET_PROGRESS = gql`
-  subscription GetProgress($id: Int!, $date: date!) {
+  query GetProgress($id: Int!, $date: date!) {
     weight(
       where: { user_id: { _eq: $id } }
       order_by: { date: desc, created_at: desc }
@@ -62,8 +69,71 @@ const GET_PROGRESS = gql`
   }
 `;
 
+const UPLOAD_FILE = gql`
+  mutation insert_weighins($file: weighins_insert_input!) {
+    insert_weighins(objects: [$file]) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
+const IMAGES = gql`
+  query getImages($id: Int!) {
+    weighins(where: { user_id: { _eq: $id } }) {
+      originalName
+      mimetype
+      key
+      id
+    }
+  }
+`;
+
 export default function Progress() {
   const id = useStoreState((state) => state.user_id);
+
+  const [file, setFile] = useState(null);
+  const [pictures, setPictures] = useState([]);
+  const [submitted, setSubmitted] = useState(true);
+  const [popUp, setPopUp] = useState("");
+
+  //let pictures = [];
+
+  const [INSERT_FILE] = useMutation(UPLOAD_FILE);
+
+  const [GET_IMAGES, { data: images, loading }] = useLazyQuery(IMAGES, {
+    variables: {
+      id: id,
+    },
+  });
+
+  const fetchURL = async () => {
+    let pics = [];
+    images.weighins.map((item) => {
+      //console.log(item);
+      axios
+        .get("http://host.docker.internal:3001/storage/file" + item.key)
+        .then((response) => {
+          pics.push(response.data.viewingLink);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    });
+
+    setPictures(pics);
+    console.log(pictures);
+  };
+
+  useEffect(async () => {
+    console.log("In use effect");
+    if (images) {
+      fetchURL();
+    } else {
+      await GET_IMAGES();
+    }
+  }, [images, submitted]);
 
   const getDate = () => {
     var today = new Date();
@@ -81,10 +151,45 @@ export default function Progress() {
     },
   });
 
-  if (!data) {
+  const handleUpload = async (e) => {
+    e.preventDefault();
+    if (file !== null) {
+      const form_data = new FormData();
+      form_data.append("files", file);
+
+      const response = await axios.post(
+        `http://host.docker.internal:3001/storage/upload`,
+        form_data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            "x-path": "/upload-folder",
+          },
+          withCredentials: true,
+        }
+      );
+      console.log({ response });
+
+      const inserted_file = response.data[0];
+
+      const { data } = await INSERT_FILE({
+        variables: {
+          file: {
+            key: inserted_file.key,
+            mimetype: inserted_file.mimetype,
+            originalName: inserted_file.originalname,
+            user_id: id,
+          },
+        },
+      });
+      console.log("File has been inserted");
+      setSubmitted(!submitted);
+    }
+  };
+
+  if (!data || loading) {
     return <LoaderLarge />;
   }
-  console.log(data);
 
   return (
     <div>
@@ -119,9 +224,13 @@ export default function Progress() {
         </article>
         <h1 className="client-progress-title">View your weigh-ins</h1>
         <p className="client-progress-subtext">View your progress here.</p>
-        <form className="client-weighins-form">
+        <form onSubmit={handleUpload} className="client-weighins-form">
           <div className="client-weighins-browse">
-            <input required type="file" />
+            <input
+              required
+              onChange={(e) => setFile(e.target.files[0])}
+              type="file"
+            />
           </div>
           <input type="submit" className="button" value="Submit video" />
         </form>
@@ -129,12 +238,13 @@ export default function Progress() {
           Your previous weigh-ins
         </p>
         <div className="client-progress-previousweighins">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
+          {pictures.map((link, index) => {
+            return (
+              <div key={index}>
+                <img src={link} width="100" height="100" alt="" />
+              </div>
+            );
+          })}
         </div>
       </section>
     </div>
