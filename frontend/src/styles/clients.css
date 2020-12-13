@@ -60,13 +60,15 @@
   grid-row-gap: 2rem;
 }
 .clientItem-circle {
-  background-color: var(--red);
   height: 4rem;
   width: 4rem;
   border-radius: 50%;
   margin-left: 2rem;
 
   margin-right: 2rem;
+}
+.clientItem-circle img {
+  border-radius: 50%;
 }
 .clientItem {
   width: 100%;
@@ -153,6 +155,9 @@
   align-items: center;
   justify-content: center;
   height: 18rem;
+}
+.client-overview-background img {
+  border-radius: 50%;
 }
 .client-overview-right .dob {
   text-align: left !important;

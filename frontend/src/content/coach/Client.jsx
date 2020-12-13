@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
-import { gql, useQuery } from "@apollo/client";
+import { gql, useQuery, useMutation } from "@apollo/client";
 import "../../styles/client_document.css";
-import Image from "../../assets/images/profile.png";
+import Dummy from "../../assets/images/profile1.jpg";
 import Email from "../../assets/images/email.png";
 import Phone from "../../assets/images/phone.png";
 import { Line, Bar } from "react-chartjs-2";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
-import { isNonEmptyArray } from "@apollo/client/utilities";
 
 const GET_CLIENT_DATA = gql`
   query GetClientData($id: Int!) {
@@ -25,6 +24,12 @@ const GET_CLIENT_DATA = gql`
       dob
       city
       address
+      user {
+        avatars(order_by: { id: desc }, limit: 1) {
+          key
+          id
+        }
+      }
     }
     weight(
       distinct_on: date
@@ -58,10 +63,20 @@ const GET_CLIENT_DATA = gql`
   }
 `;
 
+const GENERATE_LINK = gql`
+  mutation MyQuery($key: String!) {
+    getS3ImageUrl(key: $key) {
+      viewingLink
+    }
+  }
+`;
+
 export default function Client() {
   const { id } = useParams();
 
-  const request = useQuery(GET_CLIENT_DATA, {
+  const [pic, setPic] = useState(undefined);
+
+  const { data, loading } = useQuery(GET_CLIENT_DATA, {
     variables: {
       id: id,
     },
@@ -69,7 +84,29 @@ export default function Client() {
 
   const [chart, setChart] = useState("Weight");
 
-  const { data, loading } = request;
+  const [GET_IMAGES] = useMutation(GENERATE_LINK);
+
+  useEffect(async () => {
+    if (data) {
+      if (data.client[0].user.avatars.length !== 0) {
+        console.log(data.client[0].user);
+
+        const { data: response, errors } = await GET_IMAGES({
+          variables: {
+            key: data.client[0].user.avatars[0].key,
+          },
+        });
+        console.log(response);
+        if (!errors) {
+          setPic(response.getS3ImageUrl.viewingLink);
+        } else {
+          setPic(null);
+        }
+      } else {
+        setPic(null);
+      }
+    }
+  }, [data]);
 
   let dataSet = [];
   let labelsSet = [];
@@ -82,7 +119,7 @@ export default function Client() {
 
   let client = undefined;
 
-  if (loading) {
+  if (!data) {
     return <LoaderLarge />;
   }
   if (data) {
@@ -109,8 +146,6 @@ export default function Client() {
     }
   }
 
-  console.log(data);
-  console.log(chart);
   const WEIGHT_DATA = {
     labels: labelsSet,
     datasets: [
@@ -164,12 +199,18 @@ export default function Client() {
     ],
   };
 
+  if (pic === undefined) {
+    return <></>;
+  }
+
   return (
     <section className="client client-grid">
       <h1 className="hidden">Client document</h1>
       <article className="client-stats padding  rounded shadow">
         <h1 className="client-stats-title subtitle">Client stats</h1>
-        <button className="button-viewPhotos shadow">View photos</button>
+        <Link to={id + `/photos`} className="button-viewPhotos shadow">
+          View photos
+        </Link>
         <div className="client-stats-information">
           <p className="weight">92.1kg</p>
           <p className="title">Starting weight</p>
@@ -357,7 +398,12 @@ export default function Client() {
       <article className="client-sidebar padding rounded shadow">
         <h1 className="hidden">Client information</h1>
         <div className="client-sidebar-top rounded">
-          <img width="100" height="100" src={Image}></img>
+          <img
+            height="100"
+            width="100"
+            src={pic === null ? Dummy : pic}
+            alt=""
+          ></img>
           <div>
             <p className="client-name">
               {client.surname} {client.name}

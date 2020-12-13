@@ -22,10 +22,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 2rem;
 
+  width: 15rem;
+  border-radius: 0.8rem;
+  text-decoration: none;
   grid-area: button;
   float: right;
+
+  margin-right: 2rem;
   transition: all 0.3s ease-in-out;
 }
 .client .button-viewPhotos:hover {
@@ -204,7 +208,7 @@
 }
 .client-workout-breadcrumbs {
   margin-bottom: 2rem;
-  margin-left: 1rem;
+  margin-left: 2rem;
 }
 
 .workout-plan-day--selected {
@@ -265,6 +269,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.client-sidebar-top img {
+  border-radius: 50%;
 }
 .client-sidebar-top .client-name {
   font-weight: 600;

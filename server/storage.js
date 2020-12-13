@@ -69,6 +69,7 @@ const upload_auth = (req, res, next) => {
 };
 
 router.get("/file/:fileName", (req, res, next) => {
+  console.log("In router");
   res.set("Content-Type", "image/jpeg");
   res.set("Content-Type", "image/jpg");
   res.set("Content-Type", "image/png");
@@ -84,6 +85,33 @@ router.get("/file/:fileName", (req, res, next) => {
   } catch (err) {
     res.status(500).json({ err });
   }
+});
+
+router.post("/getS3ImageUrl", async (req, res) => {
+  // get request input
+  const { key } = req.body.input;
+  console.log("Generating url");
+  console.log(key);
+  res.set("Content-Type", "image/jpeg");
+  res.set("Content-Type", "image/jpg");
+  res.set("Content-Type", "image/png");
+
+  const params = {
+    Bucket: S3_BUCKET,
+    Key: key,
+    Expires: 60,
+  };
+  try {
+    const viewingLink = s3.getSignedUrl("getObject", params);
+    //res.json({ viewingLink });
+    return res.json({
+      viewingLink: viewingLink,
+    });
+  } catch (err) {
+    res.status(500).json({ err });
+  }
+
+  // success
 });
 
 router.post(

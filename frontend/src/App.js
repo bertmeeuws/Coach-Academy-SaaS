@@ -25,6 +25,7 @@ import Diet from "./content/coach/Diet";
 import ClientDashboard from "./content/client/dashboard";
 import Edit from "./content/client/Edit";
 import Progress from "./content/client/Progress";
+import Photos from "./content/coach/Photos";
 import Settings from "./content/client/Settings";
 import ClientDiet from "./content/client/Diet";
 import ClientWorkout from "./content/client/Workout";
@@ -162,6 +163,17 @@ function App() {
                 <div className="container-grid">
                   <Header title="Client diet" />
                   <Diet />
+                </div>
+              </div>
+            </AuthenticatedView>
+          </Route>
+          <Route exact path="/client/:id/photos">
+            <AuthenticatedView roles={["coach"]}>
+              <div className="content-grid">
+                <Sidebar />
+                <div className="container-grid">
+                  <Header title="Client photos" />
+                  <Photos />
                 </div>
               </div>
             </AuthenticatedView>

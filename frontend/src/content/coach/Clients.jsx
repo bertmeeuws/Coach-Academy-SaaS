@@ -25,6 +25,14 @@ const CLIENT_QUERY = gql`
         coach_id
         city
         address
+        user {
+          avatars(order_by: { id: desc }, limit: 1) {
+            key
+            id
+            originalName
+            mimetype
+          }
+        }
       }
     }
   }
@@ -73,6 +81,7 @@ export default function Clients() {
                   id={item.id}
                   surname={item.surname}
                   name={item.name}
+                  avatar={item.user.avatars[0]}
                   onClick={onClickItem}
                 />
               ))}

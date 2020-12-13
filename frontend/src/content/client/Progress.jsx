@@ -90,6 +90,14 @@ const IMAGES = gql`
   }
 `;
 
+const GENERATE_LINK = gql`
+  mutation MyQuery($key: String!) {
+    getS3ImageUrl(key: $key) {
+      viewingLink
+    }
+  }
+`;
+
 export default function Progress() {
   const id = useStoreState((state) => state.user_id);
 
@@ -101,39 +109,45 @@ export default function Progress() {
   //let pictures = [];
 
   const [INSERT_FILE] = useMutation(UPLOAD_FILE);
+  const [GET_IMAGES] = useMutation(GENERATE_LINK);
 
-  const [GET_IMAGES, { data: images, loading }] = useLazyQuery(IMAGES, {
+  /*
+  const [FETCH, { data: images, loading }] = useLazyQuery(IMAGES, {
+    variables: {
+      id: id,
+    },
+  });
+  */
+  const { data: images, loading } = useQuery(IMAGES, {
     variables: {
       id: id,
     },
   });
 
   const fetchURL = async () => {
-    let pics = [];
-    images.weighins.map((item) => {
-      //console.log(item);
-      axios
-        .get("http://host.docker.internal:3001/storage/file" + item.key)
-        .then((response) => {
-          pics.push(response.data.viewingLink);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+    let array = [];
+    images.weighins.map(async (item) => {
+      const { data, errors } = await GET_IMAGES({
+        variables: {
+          key: item.key,
+        },
+      });
+      array.push(data.getS3ImageUrl.viewingLink);
+
+      //console.log(data.getS3ImageUrl.viewingLink);
     });
 
-    setPictures(pics);
-    console.log(pictures);
+    setPictures(array);
   };
+  console.log(pictures.length);
 
   useEffect(async () => {
-    console.log("In use effect");
     if (images) {
-      fetchURL();
+      await fetchURL();
     } else {
-      await GET_IMAGES();
+      //FETCH();
     }
-  }, [images, submitted]);
+  }, [images]);
 
   const getDate = () => {
     var today = new Date();
@@ -182,12 +196,31 @@ export default function Progress() {
           },
         },
       });
-      console.log("File has been inserted");
+      console.log(data);
+      //setPictures(pictures.push(String(URL.createObjectURL(file))));
       setSubmitted(!submitted);
+      fetchURL();
     }
   };
 
-  if (!data || loading) {
+  if (images) {
+    console.log(images);
+  }
+
+  const renderPictures = () => {
+    return pictures.map((link, index) => {
+      return (
+        <div key={index}>
+          <img src={link} width="100" height="100" alt="" />
+        </div>
+      );
+    });
+  };
+
+  if (!data) {
+    return <LoaderLarge />;
+  }
+  if (loading) {
     return <LoaderLarge />;
   }
 
@@ -238,13 +271,7 @@ export default function Progress() {
           Your previous weigh-ins
         </p>
         <div className="client-progress-previousweighins">
-          {pictures.map((link, index) => {
-            return (
-              <div key={index}>
-                <img src={link} width="100" height="100" alt="" />
-              </div>
-            );
-          })}
+          {pictures === undefined ? <p>Nothing found</p> : renderPictures()}
         </div>
       </section>
     </div>
