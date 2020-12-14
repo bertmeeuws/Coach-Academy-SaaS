@@ -55,7 +55,7 @@ const httpLink = new HttpLink({
 });
 
 const wsLink = new WebSocketLink({
-  uri: `ws://${GRAPHQL_ENDPOINT}`,
+  uri: `wss://${GRAPHQL_ENDPOINT}`,
   options: {
     reconnect: true,
     timeout: 30000,
