@@ -177,7 +177,7 @@ export default function Progress() {
       });
 
       //setPictures(pictures.push(String(URL.createObjectURL(file))));
-      setSubmitted(!submitted);
+
       fetchURL();
     }
   };
