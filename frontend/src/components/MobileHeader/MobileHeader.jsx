@@ -27,6 +27,8 @@ const GET_AVATAR = gql`
 `;
 
 export default function MobileHeader() {
+  gsap.registerPlugin(TweenLite, Power3);
+
   const id = useStoreState((state) => state.user_id);
   const profilePic = useStoreState((state) => state.profile_pic);
 
