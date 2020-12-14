@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import WorkoutTableHeader from "../WorkoutTableHeader/WorkoutTableHeader";
 import WorkoutDay from "../WorkoutDay/WorkoutDay";
-import { ReactMic } from "react-mic";
-import axios from "axios";
-import { v4 as uuidv4 } from "uuid";
 
 export default function WorkoutDayPlan({
   handleDelete,
