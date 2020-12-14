@@ -142,14 +142,13 @@ export default function Progress() {
   });
 
   const handleUpload = async (e) => {
-    /*
     e.preventDefault();
     if (file !== null) {
       const form_data = new FormData();
       form_data.append("files", file);
 
       const response = await axios.post(
-        `http://host.docker.internal:3001/storage/upload`,
+        `http://174.138.12.116:5000/storage/upload`,
         form_data,
         {
           headers: {
@@ -163,7 +162,7 @@ export default function Progress() {
 
       const inserted_file = response.data[0];
 
-      const { data } = await INSERT_FILE({
+      await INSERT_FILE({
         variables: {
           file: {
             key: inserted_file.key,
@@ -178,7 +177,6 @@ export default function Progress() {
       setSubmitted(!submitted);
       fetchURL();
     }
-    */
   };
 
   const renderPictures = () => {
