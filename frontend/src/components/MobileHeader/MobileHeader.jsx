@@ -46,7 +46,7 @@ export default function MobileHeader() {
     console.log(data);
     //console.log(item);
     axios
-      .get("http://host.docker.internal:3001/storage/file" + data.key)
+      .get("http://174.138.12.116:5000/storage/file" + data.key)
       .then((response) => {
         //setAvatar(response.data.viewingLink);
         console.log(response.data.viewingLink);
