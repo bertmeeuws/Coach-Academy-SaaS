@@ -1,16 +1,9 @@
-import React, { useState, useEffect, useReducer } from "react";
+import React, { useState, useEffect } from "react";
 import MobileHeader from "../../components/MobileHeader/MobileHeader";
-import { useStoreState, useLocalStore } from "easy-peasy";
-import {
-  gql,
-  useLazyQuery,
-  useMutation,
-  useQuery,
-  useSubscription,
-} from "@apollo/client";
+import { useStoreState } from "easy-peasy";
+import { gql, useMutation, useQuery } from "@apollo/client";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
 import "../../styles/progress.css";
-import axios from "axios";
 
 const GET_PROGRESS = gql`
   query GetProgress($id: Int!, $date: date!) {
@@ -103,50 +96,40 @@ export default function Progress() {
 
   const [file, setFile] = useState(null);
   const [pictures, setPictures] = useState([]);
-  const [submitted, setSubmitted] = useState(true);
-  const [popUp, setPopUp] = useState("");
 
-  //let pictures = [];
-
-  const [INSERT_FILE] = useMutation(UPLOAD_FILE);
+  //const [INSERT_FILE] = useMutation(UPLOAD_FILE);
   const [GET_IMAGES] = useMutation(GENERATE_LINK);
 
-  /*
-  const [FETCH, { data: images, loading }] = useLazyQuery(IMAGES, {
-    variables: {
-      id: id,
-    },
-  });
-  */
   const { data: images, loading } = useQuery(IMAGES, {
     variables: {
       id: id,
     },
   });
 
+  console.log(file);
+
   const fetchURL = async () => {
     let array = [];
     images.weighins.map(async (item) => {
-      const { data, errors } = await GET_IMAGES({
+      const { data } = await GET_IMAGES({
         variables: {
           key: item.key,
         },
       });
       array.push(data.getS3ImageUrl.viewingLink);
-
-      //console.log(data.getS3ImageUrl.viewingLink);
     });
 
     setPictures(array);
   };
-  console.log(pictures.length);
 
   useEffect(async () => {
-    if (images) {
-      await fetchURL();
-    } else {
-      //FETCH();
+    async function fetchData() {
+      if (images) {
+        await fetchURL();
+      } else {
+      }
     }
+    fetchData();
   }, [images]);
 
   const getDate = () => {
@@ -166,6 +149,7 @@ export default function Progress() {
   });
 
   const handleUpload = async (e) => {
+    /*
     e.preventDefault();
     if (file !== null) {
       const form_data = new FormData();
@@ -196,16 +180,13 @@ export default function Progress() {
           },
         },
       });
-      console.log(data);
+
       //setPictures(pictures.push(String(URL.createObjectURL(file))));
       setSubmitted(!submitted);
       fetchURL();
     }
+    */
   };
-
-  if (images) {
-    console.log(images);
-  }
 
   const renderPictures = () => {
     return pictures.map((link, index) => {
@@ -265,7 +246,7 @@ export default function Progress() {
               type="file"
             />
           </div>
-          <input type="submit" className="button" value="Submit video" />
+          <input type="submit" className="button" value="Submit photo" />
         </form>
         <p className="client-dashboard-subtext client-progress-smalltitle">
           Your previous weigh-ins

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 export default function WorkoutDay({
   handleDelete,
@@ -10,6 +10,7 @@ export default function WorkoutDay({
   setRpe,
   setSets,
   setReps,
+  setNotes,
 }) {
   const maxLengthCheck = (object) => {
     if (object.target.value.length > object.target.maxLength) {
@@ -20,9 +21,13 @@ export default function WorkoutDay({
     }
   };
 
+  const [edit, setEdit] = useState(false);
+
+  console.log(edit);
+
   return (
     <div className="workout-plan-exercise workout-plan-exercise-table">
-      <p className="workout-plan-delete" onClick={handleDelete}>
+      <p className="workout-plan-delete" onClick={(e) => handleDelete()}>
         X
       </p>
       <div className="workout-exercise">
@@ -59,15 +64,23 @@ export default function WorkoutDay({
         value={rpe}
         required
       />
-      <button className="workout-exercise-memo">Record</button>
-      {notes === "" ? (
-        <p className="workout-exercise-notes smalltext">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed cursus
-          nec ligula non sagittis. Fusce efficitur magna ligula. Vestibulum
-          porttitor, magna eu scelerisque malesuada, nibh augue egestas justo,
-          et aliquam dui mi at justo. Vestibulum at est posuere, venenatis neque
-          a, commodo nulla.
-        </p>
+      <div className="workout-plan-notes">
+        <button
+          onClick={() => setEdit(!edit)}
+          className="workout-exercise-memo"
+        >
+          Notes
+        </button>
+        <button className="workout-exercise-memo">Record</button>
+      </div>
+      {edit === true ? (
+        <input
+          type="text"
+          value={notes}
+          onChange={(e) => setNotes(e.currentTarget.value)}
+          className="workout-exercise-notes smalltext"
+          placeholder="Type here..."
+        />
       ) : (
         ""
       )}

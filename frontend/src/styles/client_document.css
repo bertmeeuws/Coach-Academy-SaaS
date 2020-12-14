@@ -72,6 +72,13 @@
   background-color: var(--white);
   font-weight: 700;
 }
+.workout-plan-notes {
+  display: flex;
+  flex-direction: row;
+}
+.workout-plan-notes button {
+  margin-right: 0.5rem;
+}
 .client-buttons {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -169,8 +176,9 @@
   margin-bottom: 2rem;
 }
 .workout-plan-exercise-table .workout-exercise-notes {
-  grid-column: 2 / 7;
+  grid-column: 2/7 span;
   margin-top: 2rem;
+  color: var(--grey);
 }
 .workout-plan-exercise input {
   font-family: Poppins;
@@ -178,7 +186,6 @@
   outline: none;
   font-weight: 600;
   color: var(--darkblue);
-  max-width: 5rem;
 }
 .workout-day-draganddrop {
   width: 100%;

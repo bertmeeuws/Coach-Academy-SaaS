@@ -36,7 +36,7 @@ export default function Sidebar() {
       />
       <div>
         <div className={style.list}>
-          <p className={style.smalltext}>Personal</p>
+          <p className={style.smalltext}>Menu</p>
           <ul className={style.grid}>
             <Link className="link" to="/dashboard">
               <li
@@ -57,7 +57,7 @@ export default function Sidebar() {
                 <span>Dashboard</span>
               </li>
             </Link>
-            <Link className="link" to="/inbox">
+            <Link style={{ display: "none" }} className="link" to="/inbox">
               <li
                 style={
                   location.pathname.includes("inbox")
@@ -93,7 +93,7 @@ export default function Sidebar() {
                 <span>Calendar</span>
               </li>
             </Link>
-            <Link className="link" to="/todos">
+            <Link style={{ display: "none" }} className="link" to="/todos">
               <li
                 style={
                   location.pathname.includes("todos")
@@ -111,11 +111,6 @@ export default function Sidebar() {
                 <span>To do's</span>
               </li>
             </Link>
-          </ul>
-        </div>
-        <div className={style.list}>
-          <p className={style.smalltext}>Clients</p>
-          <ul className={style.grid}>
             <Link className="link" to="/clients">
               <li
                 style={
@@ -134,7 +129,7 @@ export default function Sidebar() {
                 <span>Clients</span>
               </li>
             </Link>
-            <Link className="link" to="/chat">
+            <Link style={{ display: "none" }} className="link" to="/chat">
               <li
                 style={
                   location.pathname.includes("chat")
@@ -153,7 +148,7 @@ export default function Sidebar() {
                 <span>Chat</span>
               </li>
             </Link>
-            <Link className="link" to="/documents">
+            <Link style={{ display: "none" }} className="link" to="/documents">
               {" "}
               <li
                 style={

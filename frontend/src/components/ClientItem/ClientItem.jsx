@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { gql, useQuery, useMutation } from "@apollo/client";
+import { gql, useMutation } from "@apollo/client";
 import Dummy from "../../assets/images/profile1.jpg";
 
 const GENERATE_LINK = gql`
@@ -17,19 +17,22 @@ export default function ClientItem({ onClick, surname, name, id, avatar }) {
 
   console.log(avatar.key);
 
-  useEffect(async () => {
-    const { data, errors } = await GET_IMAGES({
-      variables: {
-        key: avatar.key,
-      },
-    });
-    console.log(data);
-    if (!errors) {
-      setPic(data.getS3ImageUrl.viewingLink);
-    } else {
-      setPic(null);
+  useEffect(() => {
+    async function fetchData() {
+      const { data, errors } = await GET_IMAGES({
+        variables: {
+          key: avatar.key,
+        },
+      });
+      console.log(data);
+      if (!errors) {
+        setPic(data.getS3ImageUrl.viewingLink);
+      } else {
+        setPic(null);
+      }
     }
-  }, []);
+    fetchData();
+  }, [GET_IMAGES(), avatar.key]);
 
   console.log(pic);
 
@@ -41,7 +44,12 @@ export default function ClientItem({ onClick, surname, name, id, avatar }) {
     <div onClick={onClick} data-id={id} className="clientItem rounded shadow">
       <div className="clientItem-container">
         <div className="clientItem-circle">
-          <img height="40" width="40" src={pic === null ? Dummy : pic} alt="" />
+          <img
+            height="40"
+            width="40"
+            src={pic === null ? Dummy : pic}
+            alt="Profile"
+          />
         </div>
         <p className="normaltext">
           {surname} {name}

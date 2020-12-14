@@ -173,7 +173,7 @@ export default function Dashboard() {
 
   //const { data: survey } = useQuery(CHECK_IF_USER_HAS_SURVEY);
 
-  const { data, errors, loading } = useQuery(GET_USER_DATA, {
+  const { data } = useQuery(GET_USER_DATA, {
     variables: {
       id: id,
       date: getDate(),
@@ -181,6 +181,9 @@ export default function Dashboard() {
   });
 
   useEffect(async () => {
+    async function fetchData() {
+      await fetchForSurveys();
+    }
     if (hasSurvey) {
       console.log(hasSurvey);
       if (hasSurvey.survey.length === 1) {
@@ -190,9 +193,9 @@ export default function Dashboard() {
         setCraving(hasSurvey.survey[0].craving);
       }
     } else {
-      await fetchForSurveys();
+      fetchData();
     }
-  }, [hasSurvey]);
+  }, [hasSurvey, fetchForSurveys()]);
 
   let hasTodayRendered = false;
 
@@ -225,7 +228,7 @@ export default function Dashboard() {
       //update survey from user
       console.log("Updating survey");
       console.log(craving + " " + energyWorkout + " " + energyDay);
-      const { data, errors } = await UPDATE_SURVEY_USER({
+      await UPDATE_SURVEY_USER({
         variables: {
           user_id: { _eq: id },
           date: getDate(),
@@ -241,7 +244,7 @@ export default function Dashboard() {
 
   const handleFormWeight = async () => {
     if (weight !== "") {
-      const { data, error } = await ADD_WEIGHT_DB({
+      await ADD_WEIGHT_DB({
         variables: {
           object: {
             weight: weight,
@@ -267,7 +270,7 @@ export default function Dashboard() {
         let carbs = 0;
         let fats = 0;
         item.diet_meals.map((meal) => {
-          meal.diet_mealItems.map((item) => {
+          return meal.diet_mealItems.map((item) => {
             let amount = item.amount === null ? 100 : item.amount;
             //values are per 100 grams. Multiple to desired value
             let multiplier = amount / 100;

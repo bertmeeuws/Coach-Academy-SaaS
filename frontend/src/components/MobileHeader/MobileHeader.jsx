@@ -34,7 +34,7 @@ export default function MobileHeader() {
 
   const ADD_AVATAR_STORE = useStoreActions((actions) => actions.addProfilePic);
 
-  const [FETCH_AVATAR, { data, loading }] = useLazyQuery(GET_AVATAR, {
+  const [FETCH_AVATAR, { data }] = useLazyQuery(GET_AVATAR, {
     variables: {
       id: id,
     },

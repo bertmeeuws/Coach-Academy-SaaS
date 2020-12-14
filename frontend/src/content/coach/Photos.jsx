@@ -57,32 +57,40 @@ export default function Photos() {
     },
   });
 
-  useEffect(() => {
-    FETCH_DATA();
-    if (data) {
-      let dataSet = [];
-      console.log(data);
-      data.weighins.map((image) => {
-        data.weight.map((weight) => {
-          //console.log(image.date + " " + weight.date);
+  const runFetch = async () => {
+    await FETCH_DATA();
+  };
 
-          if (image.date === weight.date) {
-            dataSet.push({
-              key: image.key,
-              date: image.date,
-              weight: weight.weight,
-            });
-          }
+  useEffect(async () => {
+    async function effect() {
+      if (data) {
+        let dataSet = [];
+        console.log(data);
+        data.weighins.map((image) => {
+          data.weight.map((weight) => {
+            if (image.date === weight.date) {
+              dataSet.push({
+                key: image.key,
+                date: image.date,
+                weight: weight.weight,
+              });
+            }
+          });
         });
-      });
-      console.log(dataSet);
-      setMatches(dataSet);
+        console.log(dataSet);
+        setMatches(dataSet);
+      } else {
+        runFetch();
+      }
     }
+    effect();
   }, [data]);
 
   if (!data) {
     return <LoaderLarge />;
   }
+
+  console.log(nav);
 
   const changeData = async (index) => {
     const { data } = await GET_IMAGES({
@@ -120,6 +128,7 @@ export default function Photos() {
           <img
             className="client-workout-breadcrumbs-icon"
             src={Breadcrumb}
+            alt="photo of client"
           ></img>
           <Link
             className="client-workout-breadcrumbs--link"
@@ -130,6 +139,7 @@ export default function Photos() {
           <img
             className="client-workout-breadcrumbs-icon"
             src={Breadcrumb}
+            alt="photo of client"
           ></img>
           <Link className="client-workout-breadcrumbs--link">
             Weigh in photos
@@ -137,7 +147,7 @@ export default function Photos() {
         </div>
         <div className="rounded shadow client-photos">
           <div className="client-photos-header">
-            <h1>Client weigh-ins</h1>
+            <h1>Client weigh ins</h1>
             <Link
               to={"/client/" + id}
               className="client-photos-exit-button shadow"
@@ -145,16 +155,19 @@ export default function Photos() {
               Close photos
             </Link>
           </div>
-          <div className="client-photos-buttons rounded shadow">
+          <div className="client-photos-buttons">
             {matches === undefined ? "" : renderButtons()}
           </div>
           <div className="client-photos-preview">
-            <div className="client-photos-nav">
-              <img className="nav-arrow" src={ArrowLeft} alt="" />
+            <div className="hidden client-photos-nav">
+              <img className="nav-arrow" alt="Arrow" src={ArrowLeft} />
               <p>1/1</p>
-              <img className="nav-arrow" src={ArrowRight} alt="" />
+              <img className="nav-arrow" alt="Arrow" src={ArrowRight} />
             </div>
-            <img src={image !== null ? image : ""} alt="" />
+            <img
+              src={image !== null ? image : ""}
+              alt="Picture of weighin client"
+            />
           </div>
         </div>
       </section>

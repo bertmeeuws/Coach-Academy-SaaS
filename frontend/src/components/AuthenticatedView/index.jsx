@@ -1,5 +1,5 @@
 import { useStoreState } from "easy-peasy";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 export default function AuthenticatedView({ roles, children }) {
   const token = useStoreState((state) => state.apollotoken);

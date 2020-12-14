@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import style from "./index.module.css";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { LoaderSmall } from "./../Loaders/Loaders";
-import { useStore, useStoreState } from "easy-peasy";
+import { useStoreState } from "easy-peasy";
 
 const GET_ALL_COACHES = gql`
   query MyQuery {

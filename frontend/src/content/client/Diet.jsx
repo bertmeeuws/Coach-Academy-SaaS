@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import MobileHeader from "../../components/MobileHeader/MobileHeader";
 import ClientMealItem from "../../components/ClientMealItem/ClientMealItem";
 import ClientMealHeader from "../../components/ClientMealHeader/ClientMealHeader";
-import { useStoreState, useLocalStore } from "easy-peasy";
-import { gql, useLazyQuery, useQuery } from "@apollo/client";
+import { useStoreState } from "easy-peasy";
+import { gql, useQuery } from "@apollo/client";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
 import "../../styles/edit.css";
 import ArrowLeft from "../../assets/images/svg/ArrowLeft.svg";
@@ -42,7 +42,7 @@ export default function ClientDiet() {
 
   let navIndex;
 
-  const { data: mealPlanData, loading, errors } = useQuery(GET_MEALPLAN, {
+  const { data: mealPlanData, loading } = useQuery(GET_MEALPLAN, {
     variables: {
       id: id,
     },
@@ -51,14 +51,17 @@ export default function ClientDiet() {
   const today = new Date().toLocaleString("en-us", { weekday: "long" });
 
   useEffect(async () => {
-    if (mealPlanData && mealPlanData.diet_plan[0] !== undefined) {
-      let i = mealPlanData.diet_plan[0].diet_dayPlans.findIndex(
-        (x) => x.name === today
-      );
+    async function fetchData() {
+      if (mealPlanData && mealPlanData.diet_plan[0] !== undefined) {
+        let i = mealPlanData.diet_plan[0].diet_dayPlans.findIndex(
+          (x) => x.name === today
+        );
 
-      navIndex = i;
-      setCount(i);
+        navIndex = i;
+        setCount(i);
+      }
     }
+    fetchData();
   }, [mealPlanData]);
 
   if (!mealPlanData && loading) {

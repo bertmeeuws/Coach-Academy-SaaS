@@ -76,7 +76,7 @@ export default function Client() {
 
   const [pic, setPic] = useState(undefined);
 
-  const { data, loading } = useQuery(GET_CLIENT_DATA, {
+  const { data } = useQuery(GET_CLIENT_DATA, {
     variables: {
       id: id,
     },
@@ -87,26 +87,29 @@ export default function Client() {
   const [GET_IMAGES] = useMutation(GENERATE_LINK);
 
   useEffect(async () => {
-    if (data) {
-      if (data.client[0].user.avatars.length !== 0) {
-        console.log(data.client[0].user);
+    async function fetch() {
+      if (data) {
+        if (data.client[0].user.avatars.length !== 0) {
+          console.log(data.client[0].user);
 
-        const { data: response, errors } = await GET_IMAGES({
-          variables: {
-            key: data.client[0].user.avatars[0].key,
-          },
-        });
-        console.log(response);
-        if (!errors) {
-          setPic(response.getS3ImageUrl.viewingLink);
+          const { data: response, errors } = await GET_IMAGES({
+            variables: {
+              key: data.client[0].user.avatars[0].key,
+            },
+          });
+          console.log(response);
+          if (!errors) {
+            setPic(response.getS3ImageUrl.viewingLink);
+          } else {
+            setPic(null);
+          }
         } else {
           setPic(null);
         }
-      } else {
-        setPic(null);
       }
     }
-  }, [data]);
+    fetch();
+  }, [data, GET_IMAGES()]);
 
   let dataSet = [];
   let labelsSet = [];

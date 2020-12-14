@@ -13,7 +13,7 @@ export default function MobileMenu({ clicked }) {
     return <Redirect to="/login" />;
   }
 
-  const logout = (e) => {
+  const logout = () => {
     deleteToken();
   };
 
@@ -59,7 +59,13 @@ export default function MobileMenu({ clicked }) {
             <span>Settings</span>
           </li>
         </Link>
-        <Link onClick={clicked} onClick={logout} className="link">
+        <Link
+          onClick={() => {
+            logout();
+            clicked();
+          }}
+          className="link"
+        >
           <li className="menu-list-item rounded">
             <span>Logout</span>
           </li>

@@ -1,8 +1,7 @@
 import React from "react";
 import MobileHeader from "../../components/MobileHeader/MobileHeader";
-import { useStoreState, useLocalStore } from "easy-peasy";
-import { gql, useLazyQuery, useMutation } from "@apollo/client";
-import { LoaderLarge } from "../../components/Loaders/Loaders";
+import { useStoreState } from "easy-peasy";
+import { gql, useMutation } from "@apollo/client";
 
 const AUTHORIZE = gql`
   mutation MyMutation($id: IdInput!) {
@@ -38,7 +37,7 @@ export default function Settings() {
         </h1>
         <button
           className="button synchronize-google-button"
-          onClick={(e) => getSteps()}
+          onClick={() => getSteps()}
         >
           Synchronize google account
         </button>

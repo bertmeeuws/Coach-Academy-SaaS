@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Meal_Item({ item, deleteFood }) {
+export default function MEAL_ITEM({ item, deleteFood }) {
   const { name, proteins, fats, carbs, unique_id } = item;
 
   return (

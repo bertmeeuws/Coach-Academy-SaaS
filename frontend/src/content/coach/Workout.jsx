@@ -122,12 +122,29 @@ export default function Workout() {
         item.unique === payload.unique ? (item.sets = payload.value) : item
       );
     }),
+    setNotes: action((_state, payload) => {
+      //find item in array
+      console.log(payload);
+      _state.Workouts[payload.day].exercises.map((item) =>
+        item.unique === payload.unique ? (item.notes = payload.value) : item
+      );
+    }),
+    deleteExercise: action((_state, payload) => {
+      console.log(payload);
+
+      _state.Workouts[payload.day].exercises = _state.Workouts[
+        payload.day
+      ].exercises.filter(function (obj) {
+        return obj.unique !== payload.unique;
+      });
+    }),
     clearFields: action((_state, payload) => {
       Object.values(_state.Workouts).forEach((day) => {
         day.name = "";
         day.exercises = [];
       });
     }),
+
     Workouts: {
       Monday: {
         day: "Monday",
@@ -199,8 +216,6 @@ export default function Workout() {
     return <p>Loading</p>;
   }
 
-  const handleDelete = () => {};
-
   const searchExercises = async () => {
     const { data } = await getExercises;
     if (data) {
@@ -258,7 +273,7 @@ export default function Workout() {
                 unique_id: exercise.unique,
                 exercise_id: exercise.id,
                 workout_id: workoutId,
-                
+                notes: exercise.notes,
               },
             },
           });
@@ -282,11 +297,23 @@ export default function Workout() {
         <Link className="client-workout-breadcrumbs--link" to="/clients">
           All clients
         </Link>
-        <img className="client-workout-breadcrumbs-icon" src={Breadcrumb}></img>
-        <Link className="client-workout-breadcrumbs--link" to={"/client/" + id}>
+        <img
+          className="client-workout-breadcrumbs-icon"
+          alt="Breadcrumbs icon"
+          src={Breadcrumb}
+        ></img>
+        <Link
+          className="client-workout-breadcrumbs--link"
+          alt="Breadcrumbs icon"
+          to={"/client/" + id}
+        >
           Maxime Vercruysse
         </Link>{" "}
-        <img className="client-workout-breadcrumbs-icon" src={Breadcrumb}></img>
+        <img
+          className="client-workout-breadcrumbs-icon"
+          alt="Breadcrumbs icon"
+          src={Breadcrumb}
+        ></img>
         <Link className="client-workout-breadcrumbs--link">
           Add workout plan
         </Link>
@@ -301,7 +328,9 @@ export default function Workout() {
               day="Monday"
               data={state.Workouts.Monday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
-              handleDelete={handleDelete}
+              handleDelete={(day, unique) =>
+                actions.deleteExercise({ day: day, unique: unique })
+              }
               setSets={(value, day, unique) =>
                 actions.setSets({ value, day, unique })
               }
@@ -310,6 +339,9 @@ export default function Workout() {
               }
               setRpe={(value, day, unique) =>
                 actions.setRpe({ value, day, unique })
+              }
+              setNotes={(value, day, unique) =>
+                actions.setNotes({ value, day, unique })
               }
             />
             <WorkoutDayPlan
@@ -318,7 +350,9 @@ export default function Workout() {
               day="Tuesday"
               data={state.Workouts.Tuesday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
-              handleDelete={handleDelete}
+              handleDelete={(unique) =>
+                actions.deleteExercise({ unique: unique })
+              }
               setSets={(value, day, unique) =>
                 actions.setSets({ value, day, unique })
               }
@@ -327,6 +361,9 @@ export default function Workout() {
               }
               setRpe={(value, day, unique) =>
                 actions.setRpe({ value, day, unique })
+              }
+              setNotes={(value, day, unique) =>
+                actions.setNotes({ value, day, unique })
               }
             />
             <WorkoutDayPlan
@@ -335,7 +372,9 @@ export default function Workout() {
               day="Wednesday"
               data={state.Workouts.Wednesday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
-              handleDelete={handleDelete}
+              handleDelete={(unique) =>
+                actions.deleteExercise({ unique: unique })
+              }
               setSets={(value, day, unique) =>
                 actions.setSets({ value, day, unique })
               }
@@ -344,6 +383,9 @@ export default function Workout() {
               }
               setRpe={(value, day, unique) =>
                 actions.setRpe({ value, day, unique })
+              }
+              setNotes={(value, day, unique) =>
+                actions.setNotes({ value, day, unique })
               }
             />
             <WorkoutDayPlan
@@ -352,7 +394,9 @@ export default function Workout() {
               day="Thursday"
               data={state.Workouts.Thursday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
-              handleDelete={handleDelete}
+              handleDelete={(unique) =>
+                actions.deleteExercise({ unique: unique })
+              }
               setSets={(value, day, unique) =>
                 actions.setSets({ value, day, unique })
               }
@@ -361,6 +405,9 @@ export default function Workout() {
               }
               setRpe={(value, day, unique) =>
                 actions.setRpe({ value, day, unique })
+              }
+              setNotes={(value, day, unique) =>
+                actions.setNotes({ value, day, unique })
               }
             />
             <WorkoutDayPlan
@@ -369,7 +416,9 @@ export default function Workout() {
               day="Friday"
               data={state.Workouts.Friday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
-              handleDelete={handleDelete}
+              handleDelete={(unique) =>
+                actions.deleteExercise({ unique: unique })
+              }
               setSets={(value, day, unique) =>
                 actions.setSets({ value, day, unique })
               }
@@ -378,6 +427,9 @@ export default function Workout() {
               }
               setRpe={(value, day, unique) =>
                 actions.setRpe({ value, day, unique })
+              }
+              setNotes={(value, day, unique) =>
+                actions.setNotes({ value, day, unique })
               }
             />
             <WorkoutDayPlan
@@ -386,7 +438,9 @@ export default function Workout() {
               day="Saturday"
               data={state.Workouts.Saturday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
-              handleDelete={handleDelete}
+              handleDelete={(unique) =>
+                actions.deleteExercise({ unique: unique })
+              }
               setSets={(value, day, unique) =>
                 actions.setSets({ value, day, unique })
               }
@@ -395,6 +449,9 @@ export default function Workout() {
               }
               setRpe={(value, day, unique) =>
                 actions.setRpe({ value, day, unique })
+              }
+              setNotes={(value, day, unique) =>
+                actions.setNotes({ value, day, unique })
               }
             />
             <WorkoutDayPlan
@@ -403,7 +460,9 @@ export default function Workout() {
               day="Sunday"
               data={state.Workouts.Sunday}
               dayTitle={(name, day) => actions.setDayTitle({ day, name })}
-              handleDelete={handleDelete}
+              handleDelete={(unique) =>
+                actions.deleteExercise({ unique: unique })
+              }
               setSets={(value, day, unique) =>
                 actions.setSets({ value, day, unique })
               }
@@ -412,6 +471,9 @@ export default function Workout() {
               }
               setRpe={(value, day, unique) =>
                 actions.setRpe({ value, day, unique })
+              }
+              setNotes={(value, day, unique) =>
+                actions.setNotes({ value, day, unique })
               }
             />
             <input className="client-workout-button shadow" type="submit" />

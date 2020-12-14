@@ -1,8 +1,7 @@
-import { selectionSetMatchesResult } from "@apollo/client/cache/inmemory/helpers";
 import React from "react";
-import Meal_Item from "../Meal_Item/Meal_Item";
+import MEAL_ITEM from "../Meal_Item/Meal_Item";
 
-export default function MealPlan_Meal({
+export default function MEALPLAN_MEAL({
   index,
   meal,
   setSelectedMealState,
@@ -24,7 +23,7 @@ export default function MealPlan_Meal({
       </div>
       {meal.map((item) => {
         return (
-          <Meal_Item
+          <MEAL_ITEM
             deleteFood={(unique) => deleteFood(unique, `meal${mealNumber}`)}
             item={item}
           />

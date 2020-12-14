@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import MobileHeader from "../../components/MobileHeader/MobileHeader";
-import { useStoreState, useLocalStore } from "easy-peasy";
-import { gql, useLazyQuery, useMutation, useQuery } from "@apollo/client";
+import { useStoreState } from "easy-peasy";
+import { gql, useQuery } from "@apollo/client";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
 import ArrowLeft from "../../assets/images/svg/ArrowLeft.svg";
 import ArrowRight from "../../assets/images/svg/ArrowRight.svg";

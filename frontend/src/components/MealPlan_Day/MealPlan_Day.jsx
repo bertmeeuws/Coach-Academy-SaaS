@@ -1,7 +1,7 @@
 import React from "react";
-import MealPlan_Meal from "../MealPlan_Meal/MealPlan_Meal";
+import MEALPLAN_MEAL from "../MealPlan_Meal/MealPlan_Meal";
 
-export default function MealPlan_Day({
+export default function MEALPLAN_DAY({
   data,
   setSelectedMealState,
   selectedMeal,
@@ -13,7 +13,7 @@ export default function MealPlan_Day({
     <div>
       {Object.values(meals).map((meal, index) => {
         return (
-          <MealPlan_Meal
+          <MEALPLAN_MEAL
             setSelectedMealState={setSelectedMealState}
             index={index}
             selectedMeal={selectedMeal}

@@ -105,7 +105,7 @@ function App() {
               <div className="content-grid">
                 <Sidebar />
                 <div className="container-grid">
-                  <Header title="Client" />
+                  <Header title="Dashboard" />
                   <Dashboard />
                 </div>
               </div>

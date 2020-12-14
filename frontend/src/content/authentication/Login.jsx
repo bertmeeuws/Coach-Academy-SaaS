@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import logo from "../../assets/images/logo.svg";
 import "../../styles/slider.css";
 import style from "./Login.module.css";
@@ -21,7 +21,7 @@ export default function Login() {
 
   const addToken = useStoreActions((actions) => actions.addToken);
   const addRoles = useStoreActions((actions) => actions.addRoles);
-  const deleteToken = useStoreActions((actions) => actions.deleteToken);
+
   const addId = useStoreActions((actions) => actions.addId);
 
   const rolesInState = useStoreState((state) => state.roles);

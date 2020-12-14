@@ -3,7 +3,7 @@ import SearchBar from "../../components/SearchBar/SearchBar";
 import AddButton from "../../components/AddButton/AddButton";
 import ClientItem from "../../components/ClientItem/ClientItem";
 import ClientOverview from "../../components/ClientOverview/ClientOverview";
-import { useSubscription, gql, useQuery } from "@apollo/client";
+import { gql, useQuery } from "@apollo/client";
 import { useStoreState } from "easy-peasy";
 
 const CLIENT_QUERY = gql`

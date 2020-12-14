@@ -5,7 +5,7 @@ import Breadcrumb from "../../assets/images/breadcrumbs.png";
 import { v4 as uuidv4 } from "uuid";
 import { useLocalStore, action } from "easy-peasy";
 import { gql, useMutation } from "@apollo/client";
-import MealPlan_Day from "../../components/MealPlan_Day/MealPlan_Day";
+import MEALPLAN_DAY from "../../components/MealPlan_Day/MealPlan_Day";
 import FoodSearchItem from "../../components/FoodSearchItem/FoodSearchItem";
 import FatSecret from "../../FatSecret.js";
 
@@ -282,15 +282,6 @@ export default function Diet() {
 
   const fatSecret = new FatSecret();
 
-  async function getRecipe(name) {
-    const { recipes } = await fatSecret.request({
-      method: "recipes.search",
-      search_expression: name,
-      max_results: 1,
-    });
-    return recipes;
-  }
-
   async function getFood(name) {
     const { foods } = await fatSecret.request({
       method: "foods.search",
@@ -460,7 +451,7 @@ export default function Diet() {
       <div className="client-diet-grid">
         <article className="diet-plan rounded shadow">
           <form onSubmit={addToDatabase}>
-            <MealPlan_Day
+            <MEALPLAN_DAY
               selectedMeal={state.selectedMeal}
               setSelectedMealState={(value) => {
                 actions.setSelectedMeal(String(value));

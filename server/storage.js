@@ -40,6 +40,7 @@ const upload = multer({
     },
     key: function (req, file, cb) {
       //generate unique file names for the server
+      console.log(file);
       const uuid = uuidv4();
       const key = `${req.s3_key_prefix}${uuid}`;
       console.log(key);
@@ -113,6 +114,9 @@ router.post("/getS3ImageUrl", async (req, res) => {
 
   // success
 });
+
+
+
 
 router.post(
   "/upload",

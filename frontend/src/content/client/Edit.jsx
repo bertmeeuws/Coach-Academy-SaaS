@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MobileHeader from "../../components/MobileHeader/MobileHeader";
 import { useStoreState, useStoreActions } from "easy-peasy";
-import { useQuery, gql, useMutation, useLazyQuery } from "@apollo/client";
-import { LoaderLarge } from "../../components/Loaders/Loaders";
+import { gql, useMutation, useLazyQuery } from "@apollo/client";
 import "../../styles/edit.css";
 import Upload from "../../assets/images/svg/upload.svg";
 import Dummy from "../../assets/images/profile1.jpg";
@@ -49,17 +48,6 @@ const CHANGE_USER_DATA = gql`
         profession
         surname
       }
-    }
-  }
-`;
-
-const IMAGES = gql`
-  query getImages($id: Int!) {
-    avatars(where: { user_id: { _eq: $id } }) {
-      originalName
-      mimetype
-      key
-      id
     }
   }
 `;
@@ -112,7 +100,7 @@ export default function Edit() {
         city: city,
         postal: postal,
         address: address,
-        postal: postal,
+
         dob: dob,
         height: height,
         phone: phone,
@@ -169,7 +157,7 @@ export default function Edit() {
     } else {
       fetchUserData();
     }
-  }, [userData]);
+  }, [userData, fetchURL(), fetchUserData()]);
 
   const submitEditProfile = async (e) => {
     e.preventDefault();
@@ -224,7 +212,7 @@ export default function Edit() {
       const inserted_file = response.data[0];
       console.log(inserted_file);
 
-      const { data, errors } = await INSERT_FILE({
+      const { data } = await INSERT_FILE({
         variables: {
           file: {
             key: inserted_file.key,

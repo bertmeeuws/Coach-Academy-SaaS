@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { gql, useMutation } from "@apollo/client";
 import Dummy from "../../assets/images/profile1.jpg";
-import Image from "../../assets/images/profile.png";
 import Email from "../../assets/images/email.png";
 import Phone from "../../assets/images/phone.png";
 
@@ -21,39 +20,32 @@ export default function ClientOverview({ client }) {
   console.log(client);
 
   useEffect(async () => {
-    if (client !== undefined) {
-      if (client.user.avatars.length !== 0) {
-        const { data, errors } = await GET_IMAGES({
-          variables: {
-            key: client.user.avatars[0].key,
-          },
-        });
+    async function fetchData() {
+      if (client !== undefined) {
+        if (client.user.avatars.length !== 0) {
+          const { data, errors } = await GET_IMAGES({
+            variables: {
+              key: client.user.avatars[0].key,
+            },
+          });
 
-        if (!errors) {
-          setPic(data.getS3ImageUrl.viewingLink);
+          if (!errors) {
+            setPic(data.getS3ImageUrl.viewingLink);
+          } else {
+            setPic(null);
+          }
         } else {
           setPic(null);
         }
-      } else {
-        setPic(null);
       }
     }
+    fetchData();
   }, [client]);
 
   if (client === undefined) {
     return <section className="client-overview rounded shadow"></section>;
   } else {
-    const {
-      surname,
-      name,
-      dob,
-      address,
-      postal,
-      city,
-      phone,
-      email,
-      user,
-    } = client;
+    const { surname, name, dob, address, postal, city, phone, email } = client;
 
     if (pic === undefined) {
       return <></>;

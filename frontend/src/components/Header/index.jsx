@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import style from "../Header/Header.module.css";
 import Alarm from "../../assets/images/svg/Alarm.svg";
 import Todo from "../../assets/images/svg/Todo.svg";
-import Me from "../../assets/images/svg/Me.png";
 import { format } from "date-fns";
 import { eoLocale } from "date-fns/locale/eo";
 import { gql, useQuery, useMutation } from "@apollo/client";
@@ -42,38 +41,38 @@ export default function Header({ title }) {
     locale: eoLocale,
   });
 
-  const { data, error } = useQuery(NAME, {
+  const { data } = useQuery(NAME, {
     variables: {
       id: id,
     },
   });
 
   useEffect(async () => {
-    if (data) {
-      if (data.coach[0].user.avatars.length !== 0) {
-        const { data: response, errors } = await GET_IMAGES({
-          variables: {
-            key: data.coach[0].user.avatars[0].key,
-          },
-        });
-        console.log(response);
-        if (!errors) {
-          setPic(response.getS3ImageUrl.viewingLink);
+    async function fetchData() {
+      if (data) {
+        if (data.coach[0].user.avatars.length !== 0) {
+          const { data: response, errors } = await GET_IMAGES({
+            variables: {
+              key: data.coach[0].user.avatars[0].key,
+            },
+          });
+          console.log(response);
+          if (!errors) {
+            setPic(response.getS3ImageUrl.viewingLink);
+            console.log(response.getS3ImageUrl.viewingLink);
+          } else {
+            setPic(null);
+          }
         } else {
           setPic(null);
         }
-      } else {
-        setPic(null);
       }
     }
-  }, []);
+    fetchData();
+  }, [data]);
 
   if (data) {
     console.log(data.coach[0].surname);
-  }
-
-  if (pic === undefined) {
-    return <></>;
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { TweenLite, Power3 } from "gsap";
 import style from "./FoodSearchItem.module.css";
 
