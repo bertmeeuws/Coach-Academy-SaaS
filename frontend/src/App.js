@@ -50,7 +50,7 @@ const getHeaders = () => {
 };
 
 const httpLink = new HttpLink({
-  uri: `http://${GRAPHQL_ENDPOINT}`,
+  uri: `https://${GRAPHQL_ENDPOINT}`,
   headers: getHeaders(),
 });
 
