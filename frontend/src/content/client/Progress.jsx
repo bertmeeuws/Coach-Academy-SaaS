@@ -4,6 +4,7 @@ import { useStoreState } from "easy-peasy";
 import { gql, useMutation, useQuery } from "@apollo/client";
 import { LoaderLarge } from "../../components/Loaders/Loaders";
 import "../../styles/progress.css";
+import axios from "axios";
 
 const GET_PROGRESS = gql`
   query GetProgress($id: Int!, $date: date!) {
@@ -62,6 +63,16 @@ const GET_PROGRESS = gql`
   }
 `;
 
+const UPLOAD_FILE = gql`
+  mutation insert_weighins($file: weighins_insert_input!) {
+    insert_weighins(objects: [$file]) {
+      returning {
+        id
+      }
+    }
+  }
+`;
+
 const IMAGES = gql`
   query getImages($id: Int!) {
     weighins(where: { user_id: { _eq: $id } }) {
@@ -87,6 +98,7 @@ export default function Progress() {
   const [file, setFile] = useState(null);
   const [pictures, setPictures] = useState([]);
 
+  const [INSERT_FILE] = useMutation(UPLOAD_FILE);
   const [GET_IMAGES] = useMutation(GENERATE_LINK);
 
   const { data: images, loading } = useQuery(IMAGES, {
@@ -95,11 +107,8 @@ export default function Progress() {
     },
   });
 
-  console.log(file);
-
   const fetchURL = async () => {
     let array = [];
-    // eslint-disable-next-line
     images.weighins.map(async (item) => {
       const { data } = await GET_IMAGES({
         variables: {
@@ -112,17 +121,11 @@ export default function Progress() {
     setPictures(array);
   };
 
-  useEffect(() => {
-    // eslint-disable-next-line
-    async function fetchData() {
-      if (images) {
-        // eslint-disable-next-line
-        await fetchURL();
-      } else {
-      }
+  useEffect(async () => {
+    if (images) {
+      await fetchURL();
+    } else {
     }
-    // eslint-disable-next-line
-    fetchData();
   }, [images]);
 
   const getDate = () => {
@@ -148,7 +151,7 @@ export default function Progress() {
       form_data.append("files", file);
 
       const response = await axios.post(
-        `http://174.138.12.116:5000/storage/upload`,
+        `http://host.docker.internal:3001/storage/upload`,
         form_data,
         {
           headers: {
@@ -162,7 +165,7 @@ export default function Progress() {
 
       const inserted_file = response.data[0];
 
-      await INSERT_FILE({
+      const { data } = await INSERT_FILE({
         variables: {
           file: {
             key: inserted_file.key,
@@ -180,7 +183,6 @@ export default function Progress() {
   };
 
   const renderPictures = () => {
-    // eslint-disable-next-line
     return pictures.map((link, index) => {
       return (
         <div key={index}>
