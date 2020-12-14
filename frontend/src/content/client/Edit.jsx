@@ -112,7 +112,7 @@ export default function Edit() {
     console.log(data);
     //console.log(item);
     axios
-      .get("http://174.138.12.116:5000/storage/file" + data.key)
+      .get("https://174.138.12.116:5000/storage/file" + data.key)
       .then((response) => {
         setFile(response.data.viewingLink);
         console.log(response.data.viewingLink);
