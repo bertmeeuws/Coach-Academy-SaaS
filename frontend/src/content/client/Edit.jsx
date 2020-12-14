@@ -123,6 +123,8 @@ export default function Edit() {
       });
   };
 
+  console.log("Test");
+
   useEffect(() => {
     if (userData) {
       if (userData.client.length !== 0) {
@@ -197,7 +199,7 @@ export default function Edit() {
       console.log(form_data);
 
       const response = await axios.post(
-        `http://host.docker.internal:3001/storage/upload`,
+        `https://174.138.12.116:5000/storage/upload`,
         form_data,
         {
           headers: {
