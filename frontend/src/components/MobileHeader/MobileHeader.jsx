@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Cross as Hamburger } from "hamburger-react";
 import MobileMenu from "../../components/MobileMenu/MobileMenu";
-import { TweenLite, Power3 } from "gsap";
+import { TweenLite, Power3, gsap } from "gsap";
 import { format } from "date-fns";
 import { gql, useLazyQuery } from "@apollo/client";
 import { eoLocale } from "date-fns/locale/eo";
