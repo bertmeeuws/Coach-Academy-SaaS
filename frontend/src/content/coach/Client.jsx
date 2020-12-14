@@ -85,13 +85,13 @@ export default function Client() {
   const [chart, setChart] = useState("Weight");
 
   const [GET_IMAGES] = useMutation(GENERATE_LINK);
-
-  useEffect(async () => {
+  // eslint-disable-next-line
+  useEffect(() => {
     async function fetch() {
       if (data) {
         if (data.client[0].user.avatars.length !== 0) {
           console.log(data.client[0].user);
-
+          // eslint-disable-next-line
           const { data: response, errors } = await GET_IMAGES({
             variables: {
               key: data.client[0].user.avatars[0].key,
@@ -108,8 +108,10 @@ export default function Client() {
         }
       }
     }
+    // eslint-disable-next-line
     fetch();
-  }, [data, GET_IMAGES()]);
+    // eslint-disable-next-line
+  }, [data]);
 
   let dataSet = [];
   let labelsSet = [];
@@ -128,18 +130,21 @@ export default function Client() {
   if (data) {
     client = data.client[0];
     if (data.weight) {
+      // eslint-disable-next-line
       data.weight.map((item) => {
         dataSet.push(item.weight);
         labelsSet.push(item.date);
       });
     }
     if (data.steps) {
+      // eslint-disable-next-line
       data.steps.map((item) => {
         stepsSet.push(item.steps);
         stepsLabel.push(item.date);
       });
     }
     if (data.survey) {
+      // eslint-disable-next-line
       data.survey.map((item) => {
         surveySetCravings.push(item.craving);
         surveySetEnergyDay.push(item.energy_day);

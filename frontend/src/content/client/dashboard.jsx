@@ -180,8 +180,10 @@ export default function Dashboard() {
     },
   });
 
-  useEffect(async () => {
+  useEffect(() => {
+    // eslint-disable-next-line
     async function fetchData() {
+      // eslint-disable-next-line
       await fetchForSurveys();
     }
     if (hasSurvey) {
@@ -193,9 +195,10 @@ export default function Dashboard() {
         setCraving(hasSurvey.survey[0].craving);
       }
     } else {
+      // eslint-disable-next-line
       fetchData();
     }
-  }, [hasSurvey, fetchForSurveys()]);
+  }, [hasSurvey]);
 
   let hasTodayRendered = false;
 
@@ -260,6 +263,7 @@ export default function Dashboard() {
   };
 
   const renderDiet = () => {
+    // eslint-disable-next-line
     return data.diet_plan[0].diet_dayPlans.map((item, index) => {
       if (item.name === "Monday") {
         indexOfTodayDiet = index;
@@ -269,7 +273,9 @@ export default function Dashboard() {
         let proteins = 0;
         let carbs = 0;
         let fats = 0;
+        // eslint-disable-next-line
         item.diet_meals.map((meal) => {
+          // eslint-disable-next-line
           return meal.diet_mealItems.map((item) => {
             let amount = item.amount === null ? 100 : item.amount;
             //values are per 100 grams. Multiple to desired value
@@ -305,7 +311,9 @@ export default function Dashboard() {
         let proteins = 0;
         let carbs = 0;
         let fats = 0;
+        // eslint-disable-next-line
         item.diet_meals.map((meal) => {
+          // eslint-disable-next-line
           meal.diet_mealItems.map((item) => {
             let amount = item.amount === null ? 100 : item.amount;
             //values are per 100 grams. Multiple to desired value

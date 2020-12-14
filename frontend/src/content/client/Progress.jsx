@@ -62,16 +62,6 @@ const GET_PROGRESS = gql`
   }
 `;
 
-const UPLOAD_FILE = gql`
-  mutation insert_weighins($file: weighins_insert_input!) {
-    insert_weighins(objects: [$file]) {
-      returning {
-        id
-      }
-    }
-  }
-`;
-
 const IMAGES = gql`
   query getImages($id: Int!) {
     weighins(where: { user_id: { _eq: $id } }) {
@@ -97,7 +87,6 @@ export default function Progress() {
   const [file, setFile] = useState(null);
   const [pictures, setPictures] = useState([]);
 
-  //const [INSERT_FILE] = useMutation(UPLOAD_FILE);
   const [GET_IMAGES] = useMutation(GENERATE_LINK);
 
   const { data: images, loading } = useQuery(IMAGES, {
@@ -110,6 +99,7 @@ export default function Progress() {
 
   const fetchURL = async () => {
     let array = [];
+    // eslint-disable-next-line
     images.weighins.map(async (item) => {
       const { data } = await GET_IMAGES({
         variables: {
@@ -122,13 +112,16 @@ export default function Progress() {
     setPictures(array);
   };
 
-  useEffect(async () => {
+  useEffect(() => {
+    // eslint-disable-next-line
     async function fetchData() {
       if (images) {
+        // eslint-disable-next-line
         await fetchURL();
       } else {
       }
     }
+    // eslint-disable-next-line
     fetchData();
   }, [images]);
 
@@ -189,6 +182,7 @@ export default function Progress() {
   };
 
   const renderPictures = () => {
+    // eslint-disable-next-line
     return pictures.map((link, index) => {
       return (
         <div key={index}>

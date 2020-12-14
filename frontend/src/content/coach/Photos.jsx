@@ -56,17 +56,20 @@ export default function Photos() {
       id: id,
     },
   });
-
+  // eslint-disable-next-line
   const runFetch = async () => {
+    // eslint-disable-next-line
     await FETCH_DATA();
   };
-
-  useEffect(async () => {
+  // eslint-disable-next-line
+  useEffect(() => {
     async function effect() {
       if (data) {
         let dataSet = [];
         console.log(data);
+        // eslint-disable-next-line
         data.weighins.map((image) => {
+          // eslint-disable-next-line
           data.weight.map((weight) => {
             if (image.date === weight.date) {
               dataSet.push({
@@ -80,7 +83,8 @@ export default function Photos() {
         console.log(dataSet);
         setMatches(dataSet);
       } else {
-        runFetch();
+        // eslint-disable-next-line
+        await runFetch();
       }
     }
     effect();
@@ -128,7 +132,7 @@ export default function Photos() {
           <img
             className="client-workout-breadcrumbs-icon"
             src={Breadcrumb}
-            alt="photo of client"
+            alt="client"
           ></img>
           <Link
             className="client-workout-breadcrumbs--link"
@@ -139,7 +143,7 @@ export default function Photos() {
           <img
             className="client-workout-breadcrumbs-icon"
             src={Breadcrumb}
-            alt="photo of client"
+            alt="client"
           ></img>
           <Link className="client-workout-breadcrumbs--link">
             Weigh in photos
@@ -164,10 +168,7 @@ export default function Photos() {
               <p>1/1</p>
               <img className="nav-arrow" alt="Arrow" src={ArrowRight} />
             </div>
-            <img
-              src={image !== null ? image : ""}
-              alt="Picture of weighin client"
-            />
+            <img src={image !== null ? image : ""} alt="" />
           </div>
         </div>
       </section>

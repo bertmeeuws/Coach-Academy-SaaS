@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import Breadcrumb from "../../assets/images/breadcrumbs.png";
@@ -349,8 +349,8 @@ export default function Diet() {
         }
 
         try {
-          await meal.forEach(async (item, index) => {
-            const { data } = insertDietMealitem({
+          await meal.forEach(async (item) => {
+            await insertDietMealitem({
               variables: {
                 object: {
                   diet_dayPlan_id: dietMealId,
@@ -424,11 +424,19 @@ export default function Diet() {
         <Link className="client-workout-breadcrumbs--link" to="/clients">
           All clients
         </Link>
-        <img className="client-workout-breadcrumbs-icon" src={Breadcrumb}></img>
+        <img
+          className="client-workout-breadcrumbs-icon"
+          alt="Breadcrumb"
+          src={Breadcrumb}
+        ></img>
         <Link className="client-workout-breadcrumbs--link" to={"/client/" + id}>
           Maxime Vercruysse
         </Link>{" "}
-        <img className="client-workout-breadcrumbs-icon" src={Breadcrumb}></img>
+        <img
+          alt="Breadcrumb"
+          className="client-workout-breadcrumbs-icon"
+          src={Breadcrumb}
+        ></img>
         <Link className="client-workout-breadcrumbs--link">Add diet plan</Link>
       </div>
       <div className="client_diet-days">

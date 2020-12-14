@@ -15,8 +15,6 @@ export default function ClientItem({ onClick, surname, name, id, avatar }) {
 
   const [pic, setPic] = useState(undefined);
 
-  console.log(avatar.key);
-
   useEffect(() => {
     async function fetchData() {
       const { data, errors } = await GET_IMAGES({
@@ -32,7 +30,7 @@ export default function ClientItem({ onClick, surname, name, id, avatar }) {
       }
     }
     fetchData();
-  }, [GET_IMAGES(), avatar.key]);
+  }, []);
 
   console.log(pic);
 
