@@ -32,7 +32,7 @@ import ClientWorkout from "./content/client/Workout";
 import { StoreProvider } from "easy-peasy";
 import { store } from "./store";
 
-export const GRAPHQL_ENDPOINT = "coachacademy.hasura.app/v1/graphql";
+export const GRAPHQL_ENDPOINT = "localhost:8085/v1/graphql";
 
 const getHeaders = () => {
   const headers = {};
@@ -50,12 +50,12 @@ const getHeaders = () => {
 };
 
 const httpLink = new HttpLink({
-  uri: `https://${GRAPHQL_ENDPOINT}`,
+  uri: `http://${GRAPHQL_ENDPOINT}`,
   headers: getHeaders(),
 });
 
 const wsLink = new WebSocketLink({
-  uri: `wss://${GRAPHQL_ENDPOINT}`,
+  uri: `ws://${GRAPHQL_ENDPOINT}`,
   options: {
     reconnect: true,
     timeout: 30000,
@@ -105,7 +105,7 @@ function App() {
               <div className="content-grid">
                 <Sidebar />
                 <div className="container-grid">
-                  <Header title="Dashboard" />
+                  <Header title="Client" />
                   <Dashboard />
                 </div>
               </div>

@@ -151,7 +151,7 @@ export default function Progress() {
       form_data.append("files", file);
 
       const response = await axios.post(
-        `https://174.138.12.116:5000/storage/upload`,
+        `http://host.docker.internal:3001/storage/upload`,
         form_data,
         {
           headers: {

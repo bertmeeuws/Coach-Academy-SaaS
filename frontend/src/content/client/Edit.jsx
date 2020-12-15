@@ -112,7 +112,7 @@ export default function Edit() {
     console.log(data);
     //console.log(item);
     axios
-      .get("https://174.138.12.116:5000/storage/file" + data.key)
+      .get("http://host.docker.internal:3001/storage/file" + data.key)
       .then((response) => {
         setFile(response.data.viewingLink);
         console.log(response.data.viewingLink);
@@ -199,7 +199,7 @@ export default function Edit() {
       console.log(form_data);
 
       const response = await axios.post(
-        `https://174.138.12.116:5000/storage/upload`,
+        `http://host.docker.internal:3001/storage/upload`,
         form_data,
         {
           headers: {

@@ -15,13 +15,15 @@ const GET_WORKOUT = gql`
         workouts(order_by: { id: asc, order: asc }) {
           title
           day
-          exercise_in_workouts {
+          exercise_in_workouts(order_by: { order: asc }) {
             sets
             rpe
             reps
+            notes
             exercise {
               name
             }
+            order
           }
           id
           order
@@ -37,6 +39,8 @@ export default function ClientWorkout() {
   const [count, setCount] = useState(day - 1);
 
   const id = useStoreState((state) => state.user_id);
+
+  const [showNotes, setShowNotes] = useState(false);
 
   console.log(count);
 
@@ -70,13 +74,18 @@ export default function ClientWorkout() {
       //const { name } = exercise;
       if (exercise_in_workouts.length !== 0) {
         return exercise_in_workouts.map((item) => {
-          const { reps, sets, rpe } = item;
+          const { reps, sets, rpe, notes } = item;
           return (
             <>
               <p>{item.exercise.name}</p>
               <p>{sets}</p>
               <p>{reps}</p>
               <p>{rpe}</p>
+              {notes !== "" ? (
+                <p className="client-workout-notes">{item.notes}</p>
+              ) : (
+                ""
+              )}
             </>
           );
         });
@@ -121,7 +130,7 @@ export default function ClientWorkout() {
 
         <div className="client-workout-table">
           <div className="client-workout-table-header">
-            <p>Name</p>
+            <p>Exercise</p>
             <p>Sets</p>
             <p>Reps</p>
             <p>RPE</p>

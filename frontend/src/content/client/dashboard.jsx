@@ -379,7 +379,11 @@ export default function Dashboard() {
           </>
         );
       } else {
-        return <p>You have no exercises planned today.</p>;
+        return (
+          <p className="dashboard-workout-404">
+            You have no exercises planned today.
+          </p>
+        );
       }
     }
   };
@@ -486,7 +490,9 @@ export default function Dashboard() {
               {data.workout_plan.length !== 0 ? (
                 renderWorkout()
               ) : (
-                <p>You have no exercises planned today.</p>
+                <p className="dashboard-workout-404">
+                  You have no exercises planned today.
+                </p>
               )}
             </table>
           </Link>
@@ -498,7 +504,9 @@ export default function Dashboard() {
               renderDiet()
             ) : (
               <div className="dashboard-diet-404 shadow rounded">
-                <p>No diet plan has been assigned to you</p>
+                <p className="dashboard-workout-404">
+                  No diet plan has been assigned to you
+                </p>
               </div>
             )}
           </div>

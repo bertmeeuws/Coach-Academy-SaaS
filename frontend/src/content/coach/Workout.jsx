@@ -262,7 +262,7 @@ export default function Workout() {
       } catch (errors) {
         console.log(errors);
       }
-      await day.exercises.forEach(async (exercise) => {
+      await day.exercises.forEach(async (exercise, index) => {
         try {
           const { data } = await insertExerciseInWorkout({
             variables: {
@@ -274,6 +274,7 @@ export default function Workout() {
                 exercise_id: exercise.id,
                 workout_id: workoutId,
                 notes: exercise.notes,
+                order: index,
               },
             },
           });

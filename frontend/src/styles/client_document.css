@@ -36,6 +36,18 @@
   background-color: var(--white);
   color: var(--green);
 }
+.dashboard-workout-404 {
+  font-weight: 600;
+  text-align: center;
+}
+.client-workout-notes {
+  grid-column: 1/4 span;
+  color: var(--grey);
+  font-weight: 500;
+  font-size: 1.4rem;
+  margin-bottom: 1rem;
+  line-height: 2rem;
+}
 .client .client-stats {
   grid-area: stats;
   display: grid;
