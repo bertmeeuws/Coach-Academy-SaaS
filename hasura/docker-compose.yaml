@@ -26,5 +26,27 @@ services:
       HASURA_GRAPHQL_ADMIN_SECRET: my-secret
       HASURA_GRAPHQL_JWT_SECRET: '{ "type": "HS256", "key": "XM9RnWahz+qrjSJjG/RNCMTR55AWhj0BKkru9Ksr/rY=" }'
 
+  node-api:
+    build:
+      context: ../server
+      dockerfile: Dockerfile
+    volumes:
+        # You use a "bind mount" to sync the files from your local drive to some place inside the container
+        # In the Dockerfile, we used "WORKDIR /app" and copied the files to that folder, so we bind there
+      - ../server:/app
+        # this is a workaround to prevent host node_modules from accidently getting mounted in container
+        # in case you want to use node/npm both outside container for test/lint etc. and also inside container
+        # this will overwrite the default node_modules dir in container so it won't conflict with our
+        # /opt/node_app/node_modules location. Thanks to PR from @brnluiz
+      - notused:/app/node_modules
+    ports:
+      - "3001:3001"
+    depends_on:
+      - "graphql-engine"
+    restart: always
+    environment:
+      NODE_ENV: development
+
 volumes:
   db_data:
+  notused:

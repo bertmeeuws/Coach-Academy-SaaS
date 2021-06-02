@@ -11,21 +11,20 @@ const queryParse = require("query-string");
 const axios = require("axios");
 const { PreciseDate } = require("@google-cloud/precise-date");
 const morgan = require("morgan");
+
 const storage = require("./storage");
+
 //const routeList = require("express-routes-catalogue").default;
 
 //const { google } = require("googleapis");
 //import google from "googleapis";
 
 const app = express();
-app.use(
-  cors({
-    credentials: true,
-    origin: true,
-  })
-);
+
 app.use(morgan("tiny"));
 app.disable("x-powered-by");
+const corsMiddleware = cors({ credentials: true, origin: true });
+app.use(corsMiddleware);
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -33,7 +32,7 @@ const PORT = 3001;
 
 //const google = google;
 
-const HASURA_ENDPOINT = "http://localhost:8085/v1/graphql";
+const HASURA_ENDPOINT = "http://graphql-engine:8080/v1/graphql";
 const HASURA_ADMIN_SECRET = "my-secret";
 // Don't actually do this, read this from process.env in a real app
 const HASURA_GRAPHQL_JWT_SECRET =
@@ -44,24 +43,43 @@ const HASURA_GRAPHQL_JWT_SECRET =
 
 app.use("/storage", storage);
 
-const makeGraphQLClient = ({ url, headers }) => async ({
-  query,
-  variables,
-}) => {
-  const request = await fetch(url, {
-    headers,
-    method: "POST",
-    body: JSON.stringify({ query, variables }),
-  });
-  return request.json();
-};
+const makeGraphQLClient =
+  ({ url, headers }) =>
+  async ({ query, variables }) => {
+    const request = await fetch(url, {
+      headers,
+      method: "POST",
+      body: JSON.stringify({ query, variables }),
+    });
+    console.log(request);
+    return request.json();
+  };
 
 const sendQuery = makeGraphQLClient({
   url: HASURA_ENDPOINT,
   headers: {
+    "Content-Type": "application/json",
     "X-Hasura-Admin-Secret": HASURA_ADMIN_SECRET,
   },
 });
+
+/*
+const makeGraphQLClient =
+  ({ url, headers }) =>
+  async ({ query, variables }) => {
+    const payload = JSON.stringify({ query, variables });
+    const req = await axios.post(url, payload, { headers });
+    return req.data;
+  };
+
+const sendQuery = makeGraphQLClient({
+  url: "http://localhost:8085/v1/graphql",
+  headers: {
+    "X-Hasura-Admin-Secret": "my-secret",
+  },
+});
+
+*/
 
 function generateJWT({ allowedRoles, defaultRole, otherClaims }) {
   const payload = {
@@ -103,8 +121,7 @@ app.post("/api/actions/signup", async (req, res) => {
     query: `
         mutation InsertUser($user: user_insert_input!){
             insert_user_one(object: $user) {
-              id
-              
+              id             
             }
           }`,
     variables: { user },
@@ -135,6 +152,8 @@ app.post("/api/actions/signup", async (req, res) => {
       }`,
       variables: { coachData },
     });
+
+    console.log(signUpCoach);
 
     if (signUpCoach.errors)
       return res.status(400).json({ errors: signUpCoach.errors });
@@ -178,6 +197,8 @@ app.post("/api/actions/signup", async (req, res) => {
       }`,
       variables: { clientData },
     });
+
+    console.log(signUpClient);
 
     if (signUpClient.errors)
       return res.status(400).json({ errors: signUpClient.errors });
@@ -277,6 +298,78 @@ app.post("/api/actions/getfood", async (req, res) => {
   //const fit = google.fitness("v1");
 
   return res.json({ url: redirect });
+});
+
+/*
+app.post("/test", async (req, res) => {
+  const data = await axios({
+    url: "http://localhost:8085/v1/graphql",
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Hasura-Admin-Secret": "my-secret",
+      // any other headers you require go here
+    },
+    data: {
+      query: `
+      mutation MyMutation($user: user_insert_input!) {
+        insert_user_one(object: $user) {
+          id
+        }
+      }
+      
+      `,
+      variables: {
+        user: {
+          email: "tesqsdst@gmail.comm",
+          password: "dqsdsqqisjifze",
+          coach: true,
+        },
+      },
+    },
+  });
+
+  console.log(data);
+
+  return res.json({ value: true });
+});
+*/
+
+app.post("/test", async (req, res) => {
+  /*
+  const request = await axios.post("http://localhost:8085/v1/graphql", {
+    responseType: "json",
+    responseEncoding: "utf8",
+    headers: {
+      charset: "utf-8",
+      Accept: "application/json",
+      "Content-Type": "application/json",
+      "X-Hasura-Admin-Secret": "my-secret",
+      // any other headers you require go here
+    },
+    data: {
+      query: `
+      mutation MyMutation($user: user_insert_input!) {
+        insert_user_one(object: $user) {
+          id
+        }
+      }
+      `,
+      variables: {
+        user: {
+          email: "tesqsdst@gmail.comm",
+          password: "dqsdsqqisjifze",
+          coach: true,
+        },
+      },
+    },
+  });
+
+  const response = await request.data();
+  console.log("Axios response:", response);
+  */
+
+  return res.json({ value: true });
 });
 
 app.get("/api/actions/callback/", async (req, res) => {
